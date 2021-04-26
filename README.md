@@ -1,2 +1,2 @@
 # COBOL-CaseStudies
-Using IBM COBOL
+Using IBM System Z COBOL

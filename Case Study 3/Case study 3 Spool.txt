@@ -1,0 +1,3080 @@
+                   J E S 2  J O B  L O G  --  S Y S T E M  2 9 6 4  --  N O D E  S V S C J E S 2
+ 
+21.16.16 JOB03967 ---- THURSDAY,  20 AUG 2020 ----
+21.16.16 JOB03967  IRR010I  USERID KC03G9C  IS ASSIGNED TO THIS JOB.
+21.16.17 JOB03967  ICH70001I KC03G9C  LAST ACCESS AT 21:15:16 ON THURSDAY, AUGUST 20, 2020
+21.16.17 JOB03967  $HASP373 PCS3PRG1 STARTED - INIT 2    - CLASS A        - SYS 2964
+21.16.21 JOB03967  $HASP395 PCS3PRG1 ENDED - RC=0004
+------ JES2 JOB STATISTICS ------
+  20 AUG 2020 JOB EXECUTION DATE
+           87 CARDS READ
+        3,085 SYSOUT PRINT RECORDS
+            0 SYSOUT PUNCH RECORDS
+          200 SYSOUT SPOOL KBYTES
+         0.08 MINUTES EXECUTION TIME
+        1 //PCS3PRG1 JOB 1,NOTIFY=&SYSUID,REGION=0M                               JOB03967
+          //********************************************************************
+          //*        Pre Compile - Process API Statements (EXEC SQL ..)        *
+          //*                      Output is passed to compile step below      *
+          //********************************************************************
+          IEFC653I SUBSTITUTION JCL - 1,NOTIFY=KC03G9C,REGION=0M
+        2 //PC       EXEC PGM=DSNHPC,PARM='HOST(IBMCOB),SOURCE'
+        3 //STEPLIB  DD  DISP=SHR,DSN=DSNC10.DBCG.SDSNEXIT
+        4 //         DD  DISP=SHR,DSN=DSNC10.SDSNLOAD
+        5 //SYSIN    DD  DISP=SHR,DSN=&SYSUID..COBOL(PCS3PRG1)
+          IEFC653I SUBSTITUTION JCL - DISP=SHR,DSN=KC03G9C.COBOL(PCS3PRG1)
+        6 //DBRMLIB  DD  DISP=SHR,DSN=&SYSUID..DB2.DBRM(PCS3PRG1)
+          IEFC653I SUBSTITUTION JCL - DISP=SHR,DSN=KC03G9C.DB2.DBRM(PCS3PRG1)
+        7 //SYSCIN   DD  DSN=&&DSNHOUT,DISP=(MOD,PASS),UNIT=SYSDA,
+          //             SPACE=(800,(500,500))
+        8 //SYSLIB   DD  DISP=SHR,DSN=DSNC10.DBCG.SRCLIB.DATA
+        9 //         DD  DISP=SHR,DSN=DSNC10.SDSNLOAD
+       10 //SYSPRINT DD  SYSOUT=*
+       11 //SYSTERM  DD  SYSOUT=*
+       12 //SYSUDUMP DD  DUMMY
+       13 //SYSUT1   DD  SPACE=(800,(500,500),,,ROUND),UNIT=SYSDA
+       14 //SYSUT2   DD  SPACE=(800,(500,500),,,ROUND),UNIT=SYSDA
+          //********************************************************************
+          //*        Compile - output is object module and input to linkedit   *
+          //********************************************************************
+       15 //CK01   IF PC.RUN AND PC.RC EQ 0 THEN
+       16 //COB      EXEC PGM=IGYCRCTL,
+          //             PARM=(NOSEQUENCE,QUOTE,RENT,'PGMNAME(COMPAT),LIB,TEST')
+       17 //STEPLIB  DD  DISP=SHR,DSN=IGY420.SIGYCOMP
+       18 //SYSLIB   DD  DSN=&SYSUID..COPY(CCS3SLSW),DISP=SHR
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.COPY(CCS3SLSW),DISP=SHR
+       19 //SYSPRINT DD  SYSOUT=*
+       20 //SYSTERM  DD  SYSOUT=*
+       21 //SYSLIN   DD  DSN=&&LOADSET,DISP=(MOD,PASS),UNIT=SYSDA,
+          //             SPACE=(800,(500,500))
+       22 //SYSIN    DD  DSN=&&DSNHOUT,DISP=(OLD,DELETE)
+       23 //SYSUT1   DD  SPACE=(800,(500,500),,,ROUND),UNIT=SYSDA
+       24 //SYSUT2   DD  SPACE=(800,(500,500),,,ROUND),UNIT=SYSDA
+       25 //SYSUT3   DD  SPACE=(800,(500,500),,,ROUND),UNIT=SYSDA
+       26 //SYSUT4   DD  SPACE=(800,(500,500),,,ROUND),UNIT=SYSDA
+       27 //SYSUT5   DD  SPACE=(800,(500,500),,,ROUND),UNIT=SYSDA
+       28 //SYSUT6   DD  SPACE=(800,(500,500),,,ROUND),UNIT=SYSDA
+       29 //SYSUT7   DD  SPACE=(800,(500,500),,,ROUND),UNIT=SYSDA
+          //********************************************************************
+          //*        Linkedit - Output is executable module                    *
+          //********************************************************************
+       30 //LKED     EXEC PGM=IEWL,PARM='LIST,XREF',
+          //         COND=(4,LT,COB)
+       31 //SYSLIB   DD  DISP=SHR,DSN=CEE.SCEELKED
+       32 //         DD  DISP=SHR,DSN=DSNC10.SDSNLOAD
+       33 //         DD DSN=&SYSUID..LOAD,DISP=SHR
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.LOAD,DISP=SHR
+       34 //SYSLMOD  DD  DISP=SHR,DSN=&SYSUID..LOAD(PCS3PRG1)
+          IEFC653I SUBSTITUTION JCL - DISP=SHR,DSN=KC03G9C.LOAD(PCS3PRG1)
+       35 //SYSPRINT DD  SYSOUT=*
+       36 //SYSUT1   DD  SPACE=(1024,(50,50)),UNIT=SYSDA
+       37 //SYSLIN   DD  DSN=&&LOADSET,DISP=(OLD,DELETE)
+       38 //CK01E    ENDIF
+          //********************************************************************
+          //*        Bind the program with a PLAN (PxxxI)                      *
+          //********************************************************************
+       39 //CK02   IF LKED.RUN AND LKED.RC EQ 0 THEN
+       40 //BIND     EXEC PGM=IKJEFT01
+       41 //STEPLIB  DD DSN=DSNC10.SDSNLOAD,DISP=SHR
+       42 //DBRMLIB  DD  DISP=SHR,DSN=&SYSUID..DB2.DBRM(PCS3PRG1)
+          IEFC653I SUBSTITUTION JCL - DISP=SHR,DSN=KC03G9C.DB2.DBRM(PCS3PRG1)
+       43 //SYSUDUMP DD DUMMY
+       44 //SYSTSPRT DD SYSOUT=*
+       45 //SYSPRINT DD SYSOUT=*
+       46 //SYSTSIN  DD *
+       47 //CK02E    ENDIF
+          //********************************************************************
+          //*        Step to Run the program/plan                              *
+          //********************************************************************
+       48 //CK03   IF BIND.RUN AND BIND.RC LE 4 THEN
+       49 //RUN     EXEC PGM=IKJEFT01
+       50 //STEPLIB  DD DSN=DSNC10.SDSNLOAD,DISP=SHR
+       51 //SYSUDUMP DD DUMMY
+       52 //SYSTSPRT DD SYSOUT=*
+       53 //SYSPRINT DD SYSOUT=*
+       54 //REPORT   DD SYSOUT=*
+       55 //PRNT     DD SYSOUT=*
+       56 //SYSTSIN  DD *
+       57 //SYSIN DD DUMMY
+          /*
+       58 //CK03E    ENDIF
+ICH70001I KC03G9C  LAST ACCESS AT 21:15:16 ON THURSDAY, AUGUST 20, 2020
+IEFA111I PCS3PRG1 IS USING THE FOLLOWING JOB RELATED SETTINGS:
+         SWA=ABOVE,TIOT SIZE=32K,DSENQSHR=DISALLOW,GDGBIAS=JOB
+IEF236I ALLOC. FOR PCS3PRG1 PC
+IEF237I 0BD6 ALLOCATED TO STEPLIB
+IEF237I 0BD3 ALLOCATED TO
+IGD103I SMS ALLOCATED TO DDNAME SYSIN
+IGD103I SMS ALLOCATED TO DDNAME DBRMLIB
+IGD101I SMS ALLOCATED TO DDNAME (SYSCIN  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.DSNHOUT.H01 )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IEF237I 0BD6 ALLOCATED TO SYSLIB
+IEF237I 0BD3 ALLOCATED TO
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO SYSTERM
+IEF237I DMY  ALLOCATED TO SYSUDUMP
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT1  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134135    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT2  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134136    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IEF142I PCS3PRG1 PC - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   DSNC10.DBCG.SDSNEXIT                         KEPT
+IEF285I   VOL SER NOS= VPDC1B.
+IEF285I   DSNC10.SDSNLOAD                              KEPT
+IEF285I   VOL SER NOS= VTDC1A.
+IGD104I KC03G9C.COBOL                                RETAINED,  DDNAME=SYSIN
+IGD104I KC03G9C.DB2.DBRM                             RETAINED,  DDNAME=DBRMLIB
+IGD106I SYS20233.T211616.RA000.PCS3PRG1.DSNHOUT.H01  PASSED,    DDNAME=SYSCIN
+IEF285I   DSNC10.DBCG.SRCLIB.DATA                      KEPT
+IEF285I   VOL SER NOS= VPDC1B.
+IEF285I   DSNC10.SDSNLOAD                              KEPT
+IEF285I   VOL SER NOS= VTDC1A.
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000103.?         SYSOUT
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000104.?         SYSOUT
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134135     DELETED,   DDNAME=SYSUT1
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134136     DELETED,   DDNAME=SYSUT2
+IEF373I STEP/PC      /START 2020233.2116
+IEF032I STEP/PC      /STOP  2020233.2116
+        CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:   148K  SYS:   284K  EXT:     2584K  SYS:    12760K
+        ATB- REAL:                  4132K  SLOTS:                     0K
+             VIRT- ALLOC:      13M SHRD:       0M
+IEF236I ALLOC. FOR PCS3PRG1 COB
+IEF237I 185A ALLOCATED TO STEPLIB
+IGD103I SMS ALLOCATED TO DDNAME SYSLIB
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO SYSTERM
+IGD101I SMS ALLOCATED TO DDNAME (SYSLIN  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.LOADSET.H01 )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD103I SMS ALLOCATED TO DDNAME SYSIN
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT1  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134137    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT2  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134138    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT3  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134139    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT4  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134140    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT5  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134141    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT6  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134142    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT7  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134143    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IEF142I PCS3PRG1 COB - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   IGY420.SIGYCOMP                              KEPT
+IEF285I   VOL SER NOS= VTIGYG.
+IGD104I KC03G9C.COPY                                 RETAINED,  DDNAME=SYSLIB
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000105.?         SYSOUT
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000106.?         SYSOUT
+IGD106I SYS20233.T211616.RA000.PCS3PRG1.LOADSET.H01  PASSED,    DDNAME=SYSLIN
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.DSNHOUT.H01  DELETED,   DDNAME=SYSIN
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134137     DELETED,   DDNAME=SYSUT1
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134138     DELETED,   DDNAME=SYSUT2
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134139     DELETED,   DDNAME=SYSUT3
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134140     DELETED,   DDNAME=SYSUT4
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134141     DELETED,   DDNAME=SYSUT5
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134142     DELETED,   DDNAME=SYSUT6
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134143     DELETED,   DDNAME=SYSUT7
+IEF373I STEP/COB     /START 2020233.2116
+IEF032I STEP/COB     /STOP  2020233.2116
+        CPU:     0 HR  00 MIN  00.02 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:  7908K  SYS:   272K  EXT:  1641468K  SYS:    12496K
+        ATB- REAL:                  4144K  SLOTS:                     0K
+             VIRT- ALLOC:      15M SHRD:       0M
+IEF236I ALLOC. FOR PCS3PRG1 LKED
+IEF237I 1001 ALLOCATED TO SYSLIB
+IEF237I 0BD3 ALLOCATED TO
+IGD103I SMS ALLOCATED TO DDNAME
+IGD103I SMS ALLOCATED TO DDNAME SYSLMOD
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT1  )
+        DSN (SYS20233.T211616.RA000.PCS3PRG1.R0134144    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD103I SMS ALLOCATED TO DDNAME SYSLIN
+IEF142I PCS3PRG1 LKED - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   CEE.SCEELKED                                 KEPT
+IEF285I   VOL SER NOS= VTMVSC.
+IEF285I   DSNC10.SDSNLOAD                              KEPT
+IEF285I   VOL SER NOS= VTDC1A.
+IGD104I KC03G9C.LOAD                                 RETAINED,  DDNAME=
+IGD104I KC03G9C.LOAD                                 RETAINED,  DDNAME=SYSLMOD
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000107.?         SYSOUT
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.R0134144     DELETED,   DDNAME=SYSUT1
+IGD105I SYS20233.T211616.RA000.PCS3PRG1.LOADSET.H01  DELETED,   DDNAME=SYSLIN
+IEF373I STEP/LKED    /START 2020233.2116
+IEF032I STEP/LKED    /STOP  2020233.2116
+        CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:    88K  SYS:   252K  EXT:     1768K  SYS:    12472K
+        ATB- REAL:                  4156K  SLOTS:                     0K
+             VIRT- ALLOC:      17M SHRD:       0M
+IEF236I ALLOC. FOR PCS3PRG1 BIND
+IEF237I 0BD3 ALLOCATED TO STEPLIB
+IGD103I SMS ALLOCATED TO DDNAME DBRMLIB
+IEF237I DMY  ALLOCATED TO SYSUDUMP
+IEF237I JES2 ALLOCATED TO SYSTSPRT
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO SYSTSIN
+IEF142I PCS3PRG1 BIND - STEP WAS EXECUTED - COND CODE 0004
+IEF285I   DSNC10.SDSNLOAD                              KEPT
+IEF285I   VOL SER NOS= VTDC1A.
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000108.?         SYSOUT
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000109.?         SYSOUT
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000101.?         SYSIN
+IGD104I KC03G9C.DB2.DBRM                             RETAINED,  DDNAME=DBRMLIB
+IEF373I STEP/BIND    /START 2020233.2116
+IEF032I STEP/BIND    /STOP  2020233.2116
+        CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:   480K  SYS:   372K  EXT:      452K  SYS:    12988K
+        ATB- REAL:                  4156K  SLOTS:                     0K
+             VIRT- ALLOC:      17M SHRD:       0M
+IEF236I ALLOC. FOR PCS3PRG1 RUN
+IEF237I 0BD3 ALLOCATED TO STEPLIB
+IEF237I DMY  ALLOCATED TO SYSUDUMP
+IEF237I JES2 ALLOCATED TO SYSTSPRT
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO REPORT
+IEF237I JES2 ALLOCATED TO PRNT
+IEF237I JES2 ALLOCATED TO SYSTSIN
+IEF237I DMY  ALLOCATED TO SYSIN
+IGD103I SMS ALLOCATED TO DDNAME SYS00001
+IGD104I KC03G9C.LOAD                                 RETAINED,  DDNAME=SYS00001
+IEF142I PCS3PRG1 RUN - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   DSNC10.SDSNLOAD                              KEPT
+IEF285I   VOL SER NOS= VTDC1A.
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000110.?         SYSOUT
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000111.?         SYSOUT
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000112.?         SYSOUT
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000113.?         SYSOUT
+IEF285I   KC03G9C.PCS3PRG1.JOB03967.D0000102.?         SYSIN
+IEF373I STEP/RUN     /START 2020233.2116
+IEF032I STEP/RUN     /STOP  2020233.2116
+        CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:   596K  SYS:   352K  EXT:     1344K  SYS:    13008K
+        ATB- REAL:                  4156K  SLOTS:                     0K
+             VIRT- ALLOC:      17M SHRD:       0M
+IEF375I  JOB/PCS3PRG1/START 2020233.2116
+IEF033I  JOB/PCS3PRG1/STOP  2020233.2116
+        CPU:     0 HR  00 MIN  00.06 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+ DSN SYSTEM(DBCG)
+ BIND PLAN(PG9CR) MEMBER(PCS3PRG1) -
+      ACT(REP) ISO(CS) ENCODING(EBCDIC)
+ END
+ DSN SYSTEM(DBCG)
+ RUN PROGRAM(PCS3PRG1) PLAN(PG9CR) LIB('KC03G9C.LOAD')
+ END
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 1
+OPTIONS SPECIFIED: HOST(IBMCOB),SOURCE
+DSNHDECP LOADED FROM - (DSNC10.DBCG.SDSNEXIT(DSNHDECP))
+OPTIONS USED - SPECIFIED OR DEFAULTED
+     ATTACH(TSO)
+     CCSID(1047)
+     CONNECT(2)
+     DEC(15)
+     DECP(DSNHDECP)
+     FLAG(I)
+     HOST(IBMCOB)
+     LINECOUNT(60)
+     MARGINS(8,72)
+     SQLLEVEL(V12R1M501)
+     ONEPASS
+     OPTIONS
+     PERIOD
+     QUOTE
+     QUOTESQL
+     SOURCE
+     SQL(DB2)
+     STDSQL(NO)
+   NOXREF
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 2
+        1           *************************************************************
+        2           *  The CASE STUDY 3 for the course. A simple I/O program    *
+        3           *  that reads some data from an input file and writes a     *
+        4           *  simple report file.                                      *
+        5           *************************************************************
+        6            IDENTIFICATION DIVISION.
+        7            PROGRAM-ID.  PCS3PRG1.
+        8            AUTHOR. Sonia Friesen.
+        9
+       10           *************************************************************
+       11           *                       FANSHAWE COLLEGE                    *
+       12           *                                                           *
+       13           *                  COBOL Z/OS PROGRAM DESCRIPTION           *
+       14           *************************************************************
+       15           * PROGRAM DESCRIPTION:                                      *
+       16           *    A program where it takes a salesperons sales and       *
+       17           *    summerizes each branch totals and the company total    *
+       18           *                                                           *
+       19           * INPUT DD  NAME     FILE IDENTIFIER     FILE DESCRIPTION   *
+       20           * --------------     ---------------     ----------------   *
+       21           *                                                           *
+       22           * OUTPUT DD  NAME    FILE IDENTIFIER     FILE DESCRITION    *
+       23           * ---------------    ---------------     ---------------    *
+       24           * SALESRPT           PRNT                Prints a summary   *
+       25           *                                        informaiton for    *
+       26           *                                        each branch        *
+       27                                                                       *
+       28           * COPYBOOKS          DESCRIPTION                            *
+       29           * ---------          -----------                            *
+       30           *************************************************************
+       31           *************************************************************
+       32           *                 C H A N G E   L O G                       *
+       33           *************************************************************
+       34           *                                                           *
+       35           * VER. NO.  CHANGED BY        IMPLEMENTATION DATE           *
+       36           * --------  ----------        -------------------           *
+       37           *   1.0     Sonia Friesen    2020-07-16, 2:30pm             *
+       38           * DESCRIPTION OF CHANGE:                                    *
+       39           * ----------------------                                    *
+       40           *  USE A TRANSACTION LOG TO UPDATE SALESMASTER              *
+       41           *************************************************************
+       42            ENVIRONMENT DIVISION.
+       43            CONFIGURATION SECTION.
+       44            INPUT-OUTPUT SECTION.
+       45            FILE-CONTROL.
+       46                SELECT SALESRPT ASSIGN TO PRNT.
+       47
+       48            DATA DIVISION.
+       49            FILE SECTION.
+       50
+       51            FD  SALESRPT
+       52                RECORDING MODE IS F.
+       53            01  PRNT-REC                   PIC X(125).
+       54
+       55            WORKING-STORAGE SECTION.
+       56            COPY CCS3SLSW.
+       57
+       58           ***************************************************************
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 3
+       59           *                         WS-SWITCHES                         *
+       60           ***************************************************************
+       61            01 WS-SWITCHES.
+       62                05 WS-SALEMAST-EOF-SWITCH   PIC X         VALUE "N".
+       63                   88 WS-SALESMAST-EOF                    VALUE "Y".
+       64                   88 WS-SALESMAST-NOT-EOF                VALUE "N".
+       65                05 WS-SALESTRANS-EOF-SWITCH PIC X         VALUE 'N'.
+       66                   88 WS-SALESTRANS-EOF                   VALUE 'Y'.
+       67                   88 WS-SALESTRANS-NOT-EOF               VALUE 'N'.
+       68
+       69           **************************************************************
+       70           *                 HEADERS FOR TRANSACTION LOG                *
+       71           **************************************************************
+       72            01 WS-HEADING-LINE-1.
+       73                05 FILLER                   PIC X(1)      VALUE SPACES.
+       74                05 FILLER                   PIC X(6)      VALUE "PAGE  ".
+       75                05 WS-HL1-PAGENO            PIC Z9.
+       76                05 FILLER                   PIC X(25)     VALUE SPACES.
+       77                05 FILLER                   PIC X(4)      VALUE "ABC ".
+       78                05 FILLER                   PIC X(4)      VALUE "CORP".
+       79                05 FILLER                   PIC X(7)      VALUE "ORATION".
+       80                05 FILLER                   PIC X(25)     VALUE SPACES.
+       81                05 WS-HL1-MONTH             PIC 9(2).
+       82                05 FILLER                   PIC X(1)      VALUE "/".
+       83                05 WS-HL1-DAY               PIC 9(2).
+       84                05 FILLER                   PIC X(1)      VALUE "/".
+       85                05 WS-HL1-YEAR              PIC 9(4).
+       86                05 FILLER                   PIC X         VALUE SPACES.
+       87
+       88            01  WS-HEADING-LINE-2.
+       89                05  FILLER                  PIC X(30)    VALUE SPACES.
+       90                05  FILLER                  PIC X(5)     VALUE "SALES".
+       91                05  FILLER                  PIC X(10)    VALUE " TRANSACTI".
+       92                05  FILLER                  PIC X(6)     VALUE "ON LOG".
+       93
+       94            01 WS-HEADING-LINE-3.
+       95                05  FILLER                  PIC X(9)     VALUE "TRANS NO ".
+       96                05  FILLER                  PIC X(1)     VALUE SPACES.
+       97                05  FILLER                  PIC X(5)     VALUE "SALES".
+       98                05  FILLER                  PIC X(6)     VALUE "PERSON".
+       99                05  FILLER                  PIC X(5)     VALUE SPACES.
+      100                05  FILLER                  PIC X(6)     VALUE "TRANS ".
+      101                05  FILLER                  PIC X(4)     VALUE "DATE".
+      102                05  FILLER                  PIC X(7)     VALUE SPACES.
+      103                05  FILLER                  PIC X(4)     VALUE "TYPE".
+      104                05  FILLER                  PIC X(7)     VALUE SPACES.
+      105                05  FILLER                  PIC X(7)     VALUE "AMOUNT".
+      106
+      107            01 WS-TRANS-HEADER.
+      108                05 FILLER                  PIC X(1)      VALUE SPACES.
+      109                05 WS-TRANS-NUM            PIC 9(5)      VALUE ZERO.
+      110                05  FILLER                 PIC X(7)      VALUE SPACES.
+      111                05 WS-SALESPERSON-NUM      PIC 9(5)      VALUE ZERO.
+      112                05  FILLER                 PIC X(9)      VALUE SPACES.
+      113                05 WS-TRANS-DATE           PIC X(10)     VALUE SPACES.
+      114                05 FILLER                  PIC X(7)      VALUE SPACES.
+      115                05 WS-TRANS-TYPE           PIC X(7)      VALUE ZERO.
+      116                05  FILLER                 PIC X(3)      VALUE SPACES.
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 4
+      117                05 WS-TRANS-CHG-DATA       PIC X(12).
+      118
+      119             01 WS-COUNTER-HEADER-1.
+      120                05 FILLER                 PIC X(11)      VALUE '# OF SALES '.
+      121                05 FILLER                 PIC X(7)       VALUE 'TRANS '.
+      122                05 WS-SALES-CNT           PIC 9(3).
+      123
+      124            01 WS-COUNTER-HEADER-2.
+      125                05 FILLER                 PIC X(5)      VALUE '# OF '.
+      126                05 FILLER                 PIC X(7)       VALUE 'RETURN '.
+      127                05 FILLER                 PIC X(6)       VALUE 'TRANS '.
+      128                05 WS-RETURN-CNT          PIC 9(3).
+      129
+      130            01 WS-COUNTER-HEADER-3.
+      131                05 FILLER                 PIC X(9)      VALUE '# OF ADD '.
+      132                05 FILLER                 PIC X(7)       VALUE 'TRANS '.
+      133                05 WS-ADD-CNT             PIC 9(3).
+      134
+      135            01 WS-COUNTER-HEADER-4.
+      136                05 FILLER                 PIC X(11)      VALUE '# OF DELETE'.
+      137                05 FILLER                 PIC X(7)       VALUE ' TRANS '.
+      138                05 WS-DELETE-CNT          PIC 9(3).
+      139
+      140             01 WS-COUNTER-HEADER-5.
+      141                05 FILLER                 PIC X(11)      VALUE '# OF CHANGE'.
+      142                05 FILLER                 PIC X(7)       VALUE ' TRANS '.
+      143                05 WS-CHANGE-CNT          PIC 9(3).
+      144
+      145             01 WS-COUNTER-HEADER-6.
+      146                05 FILLER                 PIC X(5)      VALUE '# OF '.
+      147                05 FILLER                 PIC X(8)      VALUE 'INVALID '.
+      148                05 FILLER                 PIC X(7)      VALUE 'TRANS '.
+      149                05 WS-INVALID-CNT         PIC 9(3).
+      150           **************************************************************
+      151           *                       EDITING FIELDS                       *
+      152           **************************************************************
+      153            01 WS-EDIT-FIELD.
+      154                05 WS-RETURN-SALES           PIC S9(5)V99 COMP-3 VALUE ZERO.
+      155                05 WS-RETURN-TRANS-AMOUNT    PIC $$$,$$$.99CR.
+      156                05 WS-SALES-TRANS-AMOUNT     PIC $$$,$$$.$$      VALUE ZERO.
+      157           **************************************************************
+      158           *                   TRANSACTION COUNTERS                     *
+      159           **************************************************************
+      160            01 WS-TRANS-COUNTERS.
+      161                05 WS-ADD-COUNTER           PIC S9(3)  COMP-3    VALUE ZERO.
+      162                05 WS-DELETE-COUNTER        PIC S9(3)  COMP-3    VALUE ZERO.
+      163                05 WS-SALES-COUNTER         PIC S9(3)  COMP-3    VALUE ZERO.
+      164                05 WS-RETURN-COUNTER        PIC S9(3)  COMP-3    VALUE ZERO.
+      165                05 WS-CHANGE-COUNTER        PIC S9(3)  COMP-3    VALUE ZERO.
+      166                05 WS-INVALID-COUNTER       PIC S9(3)  COMP-3    VALUE ZERO.
+      167
+      168             01 WS-PAGE-NUMBER.
+      169                05 PG-COUNTER               PIC S9(3)      VALUE ZERO.
+      170
+      171           **************************************************************
+      172           *                         DATE FIELD                         *
+      173           **************************************************************
+      174            01 WS-DATE-VALUE.
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 5
+      175                05 WS-DATE-YEAR             PIC X(4)       VALUE SPACES.
+      176                05 WS-DATE-MONTH            PIC XX.
+      177                05 WS-DATE-DAY              PIC XX.
+      178
+      179            01 WS-TRANSCAC-DATE.
+      180                05 WS-DATE-TYEAR            PIC X(2)       VALUE SPACES.
+      181                05 WS-DATE-TMONTH           PIC XX.
+      182                05 WS-DATE-TDAY             PIC XX.
+      183
+      184            01 WS-BRANCH-KEY.
+      185               05 WS-BRANCH-NO                      PIC 9(3).
+      186               05 WS-DEPT-NO                        PIC 9(2).
+      187           **************************************************************
+      188           *                     ERROR LINE LAYOUT                      *
+      189           **************************************************************
+      190            01 WS-ERROR-LINE.
+      191                05 FILLER                    PIC X(1)     VALUE SPACES.
+      192                05 WS-ER-TRN-NO              PIC 9(5).
+      193                05 FILLER                    PIC X(7)     VALUE SPACES.
+      194                05 WS-ER-PROBLEM             PIC X(30).
+      195                05 FILLER                    PIC X        VALUE SPACES.
+      196                05 WS-RETCODE                PIC +9(5)    USAGE DISPLAY.
+      197                05 FILLER                    PIC X(5)     VALUE SPACES.
+      198
+      199           **************************************************************
+      200           *                     SWITCHES FOR TRANS                     *
+      201           **************************************************************
+      202            01 WS-SWITCHES.
+      203                10  WS-MORE-TRANS-ROWS            PIC X      VALUE "Y".
+      204                    88  WS-NO-MORE-TRANS-ROWS                VALUE "N".
+      205                10  WS-TRANS-TYPE-SWITCH          PIC X.
+      206                    88  TRANS-ADD                            VALUE 'A'.
+      207                    88  TRANS-DEL                            VALUE 'D'.
+      208                    88  TRANS-CHG                            VALUE 'C'.
+      209                    88  TRANS-SALE                           VALUE 'S'.
+      210                    88  TRANS-RET                            VALUE 'R'.
+      211           *****************************************************
+      212           * SQL INCLUDE FOR SQLDA / SQLCA
+      213           *****************************************************
+      214                EXEC SQL INCLUDE SQLDA END-EXEC.
+      215                EXEC SQL INCLUDE SQLCA END-EXEC.
+      216           ******************************************************************
+      217           * DCLGEN TABLE(SALESPERSON_TAB)                                  *
+      218           *        LIBRARY(KC03G9C.COBOL(SLSPDCL))                         *
+      219           *        LANGUAGE(COBOL)                                         *
+      220           *        QUOTE                                                   *
+      221           * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      222           ******************************************************************
+      223                EXEC SQL DECLARE SALESPERSON_TAB TABLE
+      224                ( SALESPERSON_NO                 CHAR(5) NOT NULL,
+      225                  SALESPERSON_LASTNAME           VARCHAR(15) NOT NULL,
+      226                  SALESPERSON_FIRSTNAME          VARCHAR(10) NOT NULL,
+      227                  SALESPERSON_GROSS_SALES        DECIMAL(9, 2) NOT NULL,
+      228                  SALESPERSON_RETURN_SALES       DECIMAL(9, 2) NOT NULL,
+      229                  SALESPERSON_BRANCH_NO          INTEGER NOT NULL,
+      230                  SALESPERSON_DEPT_NO            INTEGER NOT NULL,
+      231                  SALESPERSON_COMM_RATE          DECIMAL(4, 4) NOT NULL
+      232                ) END-EXEC.
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 6
+      233           ******************************************************************
+      234           * COBOL DECLARATION FOR TABLE SALESPERSON_TAB                    *
+      235           ******************************************************************
+      236            01  DCLSALESPERSON-TAB.
+      237                10 SALESPERSON-NO       PIC X(5).
+      238                10 SALESPERSON-LASTNAME.
+      239                   49 SALESPERSON-LASTNAME-LEN
+      240                      PIC S9(4) USAGE COMP.
+      241                   49 SALESPERSON-LASTNAME-TEXT
+      242                      PIC X(15).
+      243                10 SALESPERSON-FIRSTNAME.
+      244                   49 SALESPERSON-FIRSTNAME-LEN
+      245                      PIC S9(4) USAGE COMP.
+      246                   49 SALESPERSON-FIRSTNAME-TEXT
+      247                      PIC X(10).
+      248                10 SALESPERSON-GROSS-SALES
+      249                   PIC S9(7)V9(2) USAGE COMP-3.
+      250                10 SALESPERSON-RETURN-SALES
+      251                   PIC S9(7)V9(2) USAGE COMP-3.
+      252                10 SALESPERSON-BRANCH-NO
+      253                   PIC S9(9) USAGE COMP.
+      254                10 SALESPERSON-DEPT-NO  PIC S9(9) USAGE COMP.
+      255                10 SALESPERSON-COMM-RATE
+      256                   PIC SV9(4) USAGE COMP-3.
+      257           ******************************************************************
+      258           * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 8       *
+      259           ******************************************************************
+      260           ******************************************************************
+      261           * DCLGEN TABLE(SALESTRANS_TAB)                                   *
+      262           *        LIBRARY(KC03G9C.DB2.COBOL(TRANSDCL))                    *
+      263           *        ACTION(REPLACE)                                         *
+      264           *        LANGUAGE(COBOL)                                         *
+      265           *        QUOTE                                                   *
+      266           * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      267           ******************************************************************
+      268                EXEC SQL DECLARE SALESTRANS_TAB TABLE
+      269                ( TRANS_NO                       INTEGER NOT NULL,
+      270                  TRANS_TYPE                     CHAR(1) NOT NULL,
+      271                  TRANS_SALESPERSON_NO           CHAR(5) NOT NULL,
+      272                  TRANS_DATE                     DATE NOT NULL,
+      273                  TRANS_DATA                     VARCHAR(34) NOT NULL
+      274                ) END-EXEC.
+      275           ******************************************************************
+      276           * COBOL DECLARATION FOR TABLE SALESTRANS_TAB                     *
+      277           ******************************************************************
+      278            01  DCLSALESTRANS-TAB.
+      279                10 TRANS-NO             PIC S9(9) USAGE COMP.
+      280                10 TRANS-TYPE           PIC X(1).
+      281                10 TRANS-SALESPERSON-NO
+      282                   PIC X(5).
+      283                10 TRANS-DATE           PIC X(10).
+      284                10 TRANS-DATA.
+      285                   49 TRANS-DATA-LEN    PIC S9(4) USAGE COMP.
+      286                   49 TRANS-DATA-TEXT   PIC X(34).
+      287           ******************************************************************
+      288           * NEED A CURSOR AS OUR SQL RETURNS MORE THAN ONE ROW             *
+      289           ******************************************************************
+      290                EXEC SQL DECLARE TRANS_CURSOR CURSOR FOR
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 7
+      291                  SELECT TRANS_NO,
+      292                         TRANS_TYPE,
+      293                         TRANS_SALESPERSON_NO,
+      294                         TRANS_DATE,
+      295                         TRANS_DATA
+      296                     FROM SALESTRANS_TAB
+      297                     ORDER BY TRANS_NO
+      298                END-EXEC.
+      299           **************************************************************
+      300           *               START OF PROCEDURE DIVISION                  *
+      301           **************************************************************
+      302            PROCEDURE DIVISION.
+      303            A000-INITIALIZE.
+      304                OPEN OUTPUT SALESRPT.
+      305           *  OPEN CURSOR
+      306                EXEC SQL OPEN TRANS_CURSOR END-EXEC.
+      307                IF SQLCODE = 0
+      308                   PERFORM U300-GET-CURRENT-DATE
+      309                     PERFORM W100-WRITE-HEADER
+      310                     PERFORM C100-PROCESS-TRANSACTION
+      311                         UNTIL WS-NO-MORE-TRANS-ROWS
+      312                     PERFORM W200-WRITE-COUNTS
+      313                     CLOSE SALESRPT
+      314                   EXEC SQL CLOSE TRANS_CURSOR END-EXEC
+      315                ELSE
+      316                   MOVE SQLCODE TO WS-RETCODE
+      317                   MOVE 'A000 OPEN CURSOR ' TO WS-ER-PROBLEM
+      318                   WRITE PRNT-REC FROM WS-ERROR-LINE
+      319                END-IF.
+      320
+      321           * CLOSE CURSOR
+      322                EXEC SQL CLOSE TRANS_CURSOR END-EXEC.
+      323                GOBACK.
+      324           **************************************************************
+      325           *               PROCESSING THE TRANSACTION 1                 *
+      326           **************************************************************
+      327            C100-PROCESS-TRANSACTION.
+      328                PERFORM R000-READ-TRANSACTION-RECORD
+      329                EVALUATE TRUE
+      330                     WHEN TRANS-ADD
+      331                         MOVE TRANS-DATA-TEXT TO WS-TRANS-MAINTENANCE
+      332                         PERFORM C100-PROCESS-ADD
+      333                         PERFORM U200-PRINT-TRANSACTION-LINE
+      334                     WHEN TRANS-DEL
+      335                         MOVE TRANS-DATA-TEXT TO WS-TRANS-MAINTENANCE
+      336                         PERFORM W220-DELETE-SALESPERSON-ROW
+      337                         PERFORM U200-PRINT-TRANSACTION-LINE
+      338                     WHEN TRANS-CHG
+      339                         MOVE TRANS-DATA-TEXT TO WS-TRANS-MAINTENANCE
+      340                         PERFORM W200-UPDATE-SALESPERSON-ROW
+      341                         PERFORM U200-PRINT-TRANSACTION-LINE
+      342                     WHEN TRANS-SALE
+      343                         MOVE TRANS-DATA-TEXT TO WS-TRANS-SALE
+      344                         PERFORM W210-UPDATE-SALES
+      345                         PERFORM U200-PRINT-TRANSACTION-LINE
+      346                     WHEN TRANS-RET
+      347                         MOVE TRANS-DATA-TEXT TO WS-TRANS-RETURN
+      348                         PERFORM W210-UPDATE-RETURN
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 8
+      349                         PERFORM U200-PRINT-TRANSACTION-LINE
+      350                END-EVALUATE.
+      351
+      352           **************************************************************
+      353           *               PROCESSING THE TRANSACTION 2                 *
+      354           **************************************************************
+      355            C100-PROCESS-ADD.
+      356                PERFORM U100-MOVE-TRANS-TO-SALESPERSON
+      357                MOVE TRANS-NO TO WS-TRANS-NUM
+      358                MOVE 'ADD' TO WS-TRANS-TYPE
+      359                MOVE ZEROS TO SALESPERSON-RETURN-SALES.
+      360                MOVE ZEROS TO SALESPERSON-GROSS-SALES.
+      361                PERFORM W210-WRITE-SALESPERSON-ROW
+      362                IF SQLCODE = +0
+      363                     ADD 1 TO WS-ADD-COUNTER
+      364                     MOVE ' ' TO WS-TRANS-CHG-DATA
+      365                ELSE
+      366                    ADD 1 TO WS-INVALID-COUNTER
+      367                    MOVE TRANS-NO TO WS-ER-TRN-NO
+      368                    MOVE SQLCODE TO WS-RETCODE
+      369                    MOVE 'PROBLEM DOING ADD, STATUS IS:' TO WS-ER-PROBLEM
+      370                    WRITE PRNT-REC FROM WS-ERROR-LINE
+      371                END-IF.
+      372
+      373            W210-WRITE-SALESPERSON-ROW.
+      374                EXEC SQL
+      375                     INSERT INTO SALESPERSON_TAB
+      376                     ( SALESPERSON_NO, SALESPERSON_LASTNAME,
+      377                       SALESPERSON_FIRSTNAME,
+      378                       SALESPERSON_GROSS_SALES, SALESPERSON_RETURN_SALES,
+      379                       SALESPERSON_BRANCH_NO, SALESPERSON_DEPT_NO,
+      380                       SALESPERSON_COMM_RATE )
+      381                     VALUES
+      382                     ( :TRANS-SALESPERSON-NO, :SALESPERSON-LASTNAME,
+      383                       :SALESPERSON-FIRSTNAME,
+      384                       :SALESPERSON-GROSS-SALES, :SALESPERSON-RETURN-SALES,
+      385                       :SALESPERSON-BRANCH-NO, :SALESPERSON-DEPT-NO,
+      386                       :SALESPERSON-COMM-RATE )
+      387                  END-EXEC.
+      388
+      389            W220-DELETE-SALESPERSON-ROW.
+      390                MOVE TRANS-NO TO WS-TRANS-NUM
+      391                MOVE TRANS-SALESPERSON-NO TO SALESPERSON-NO
+      392                MOVE 'DELETE' TO WS-TRANS-TYPE
+      393                EXEC SQL
+      394                     DELETE FROM SALESPERSON_TAB
+      395                         WHERE SALESPERSON_NO = :TRANS-SALESPERSON-NO
+      396                END-EXEC
+      397                IF SQLCODE = +0
+      398                     ADD 1 TO WS-DELETE-COUNTER
+      399                     MOVE ' ' TO WS-TRANS-CHG-DATA
+      400                ELSE
+      401                     ADD 1 TO WS-INVALID-COUNTER
+      402                     MOVE TRANS-NO TO WS-ER-TRN-NO
+      403                     MOVE SQLCODE TO WS-RETCODE
+      404                     MOVE 'PROBLEM DOING DELETE, STATUS IS:' TO
+      405                             WS-ER-PROBLEM
+      406                     WRITE PRNT-REC FROM WS-ERROR-LINE
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 9
+      407                END-IF.
+      408
+      409            W200-UPDATE-SALESPERSON-ROW.
+      410                 MOVE TRANS-NO TO WS-TRANS-NUM
+      411                PERFORM U100-MOVE-TRANS-TO-SALESPERSON
+      412                COMPUTE WS-CHANGE-COUNTER = WS-CHANGE-COUNTER + 1
+      413                END-COMPUTE
+      414                MOVE 'CHANGE' TO WS-TRANS-TYPE
+      415                EXEC SQL
+      416                     UPDATE SALESPERSON_TAB
+      417                     SET SALESPERSON_LASTNAME = :SALESPERSON-LASTNAME,
+      418                         SALESPERSON_FIRSTNAME = :SALESPERSON-FIRSTNAME,
+      419                         SALESPERSON_COMM_RATE = :SALESPERSON-COMM-RATE,
+      420                         SALESPERSON_BRANCH_NO = :SALESPERSON-BRANCH-NO,
+      421                         SALESPERSON_DEPT_NO = :SALESPERSON-DEPT-NO
+      422                     WHERE SALESPERSON_NO = :TRANS-SALESPERSON-NO
+      423                END-EXEC
+      424                IF SQLCODE = +0
+      425                     ADD 1 TO WS-CHANGE-COUNTER
+      426                     MOVE ' ' TO WS-TRANS-CHG-DATA
+      427                 ELSE
+      428                     ADD 1 TO WS-INVALID-COUNTER
+      429                     MOVE TRANS-NO TO WS-ER-TRN-NO
+      430                     MOVE SQLCODE TO WS-RETCODE
+      431                     MOVE 'PROBLEM DOING CHANGE, STATUS IS:' TO
+      432                             WS-ER-PROBLEM
+      433                     WRITE PRNT-REC FROM WS-ERROR-LINE
+      434                 END-IF.
+      435
+      436            W210-UPDATE-SALES.
+      437                MOVE TRANS-NO TO WS-TRANS-NUM
+      438                MOVE TRANS-SALESPERSON-NO TO SALESPERSON-NO
+      439                MOVE 'SALES' TO WS-TRANS-TYPE
+      440                 COMPUTE WS-SALES-AMOUNT ROUNDED = WS-SALES-AMOUNT -
+      441                                     (WS-SALES-AMOUNT * WS-DISCOUNT-PCT)
+      442                END-COMPUTE
+      443                MOVE WS-SALES-AMOUNT TO SALESPERSON-GROSS-SALES
+      444                EXEC SQL
+      445                   UPDATE SALESPERSON_TAB
+      446                       SET
+      447                         SALESPERSON_GROSS_SALES = SALESPERSON_GROSS_SALES +
+      448                         :SALESPERSON-GROSS-SALES
+      449                       WHERE
+      450                       SALESPERSON_NO = :TRANS-SALESPERSON-NO
+      451                END-EXEC
+      452                IF SQLCODE = +0
+      453                     ADD 1 TO WS-SALES-COUNTER
+      454                      MOVE SALESPERSON-GROSS-SALES TO WS-SALES-TRANS-AMOUNT
+      455                      MOVE WS-SALES-TRANS-AMOUNT TO WS-TRANS-CHG-DATA
+      456                 ELSE
+      457                     ADD 1 TO WS-INVALID-COUNTER
+      458                     MOVE TRANS-NO TO WS-ER-TRN-NO
+      459                     MOVE SQLCODE TO WS-RETCODE
+      460                     MOVE 'PROBLEM DOING SALES, STATUS IS:' TO
+      461                             WS-ER-PROBLEM
+      462                     WRITE PRNT-REC FROM WS-ERROR-LINE
+      463                 END-IF.
+      464
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 10
+      465            W210-UPDATE-RETURN.
+      466                MOVE TRANS-NO TO WS-TRANS-NUM
+      467                MOVE TRANS-SALESPERSON-NO TO SALESPERSON-NO
+      468                MOVE 'RETURN' TO WS-TRANS-TYPE
+      469                MOVE WS-RETURN-AMOUNT TO WS-RETURN-SALES
+      470                EXEC SQL
+      471                   UPDATE SALESPERSON_TAB
+      472                      SET
+      473                        SALESPERSON_RETURN_SALES = SALESPERSON_RETURN_SALES +
+      474                        :WS-RETURN-SALES
+      475                      WHERE
+      476                      SALESPERSON_NO = :TRANS-SALESPERSON-NO
+      477                END-EXEC
+      478                COMPUTE WS-RETURN-SALES = WS-RETURN-SALES * -1
+      479                END-COMPUTE
+      480                MOVE WS-RETURN-SALES TO WS-RETURN-TRANS-AMOUNT
+      481                IF SQLCODE = +0
+      482                     ADD 1 TO WS-RETURN-COUNTER
+      483                     MOVE WS-RETURN-TRANS-AMOUNT TO WS-TRANS-CHG-DATA
+      484                ELSE
+      485                     ADD 1 TO WS-INVALID-COUNTER
+      486                     MOVE TRANS-NO TO WS-ER-TRN-NO
+      487                     MOVE SQLCODE TO WS-RETCODE
+      488                     MOVE 'PROBLEM DOING RETURN, STATUS IS:' TO
+      489                             WS-ER-PROBLEM
+      490                     WRITE PRNT-REC FROM WS-ERROR-LINE
+      491                 END-IF.
+      492
+      493           **************************************************************
+      494           *                    MOVE THE TRANSACTION                    *
+      495           **************************************************************
+      496            U100-MOVE-TRANS-TO-SALESPERSON.
+      497                MOVE WS-TRANS-LAST-NAME       TO  SALESPERSON-LASTNAME-TEXT.
+      498                MOVE WS-TRANS-FIRST-NAME      TO  SALESPERSON-FIRSTNAME-TEXT.
+      499                COMPUTE SALESPERSON-FIRSTNAME-LEN =
+      500                     FUNCTION LENGTH (SALESPERSON-FIRSTNAME-TEXT)
+      501                END-COMPUTE.
+      502                COMPUTE SALESPERSON-LASTNAME-LEN =
+      503                     FUNCTION LENGTH (SALESPERSON-LASTNAME-TEXT)
+      504                END-COMPUTE.
+      505                MOVE WS-TRANS-DEPT-NO         TO  SALESPERSON-DEPT-NO.
+      506                MOVE WS-TRANS-BRANCH-NO       TO  SALESPERSON-BRANCH-NO.
+      507                MOVE WS-TRANS-COMM-RATE       TO  SALESPERSON-COMM-RATE.
+      508                MOVE TRANS-SALESPERSON-NO     TO  SALESPERSON-NO.
+      509
+      510            U200-PRINT-TRANSACTION-LINE.
+      511                MOVE TRANS-NO TO WS-TRANS-NUM
+      512                MOVE TRANS-SALESPERSON-NO TO WS-SALESPERSON-NUM
+      513                MOVE TRANS-DATE TO WS-TRANS-DATE
+      514                WRITE PRNT-REC FROM WS-TRANS-HEADER.
+      515
+      516            U300-GET-CURRENT-DATE.
+      517                ACCEPT WS-DATE-VALUE FROM DATE YYYYMMDD
+      518                MOVE WS-DATE-MONTH TO WS-HL1-MONTH
+      519                MOVE WS-DATE-DAY TO WS-HL1-DAY
+      520                MOVE WS-DATE-YEAR TO WS-HL1-YEAR.
+      521
+      522            W100-WRITE-HEADER.
+DB2 SQL PRECOMPILER         VERSION 12 REL. 1.0                                                       PAGE 11
+      523                COMPUTE PG-COUNTER = PG-COUNTER + 1
+      524                MOVE PG-COUNTER TO WS-HL1-PAGENO
+      525                WRITE PRNT-REC FROM WS-HEADING-LINE-1
+      526                WRITE PRNT-REC FROM WS-HEADING-LINE-2
+      527                WRITE PRNT-REC FROM WS-HEADING-LINE-3.
+      528
+      529            W200-WRITE-COUNTS.
+      530                MOVE WS-ADD-COUNTER TO WS-ADD-CNT
+      531                MOVE WS-DELETE-COUNTER TO WS-DELETE-CNT
+      532                MOVE WS-CHANGE-COUNTER TO WS-CHANGE-CNT
+      533                MOVE WS-SALES-COUNTER TO WS-SALES-CNT
+      534                MOVE WS-INVALID-COUNTER TO WS-INVALID-CNT
+      535                MOVE WS-RETURN-COUNTER TO WS-RETURN-CNT
+      536                WRITE PRNT-REC FROM WS-COUNTER-HEADER-1
+      537                WRITE PRNT-REC FROM WS-COUNTER-HEADER-2
+      538                WRITE PRNT-REC FROM WS-COUNTER-HEADER-3
+      539                WRITE PRNT-REC FROM WS-COUNTER-HEADER-4
+      540                WRITE PRNT-REC FROM WS-COUNTER-HEADER-5
+      541                WRITE PRNT-REC FROM WS-COUNTER-HEADER-6.
+      542
+      543           **************************************************************
+      544           *                   READS THE TRANSACTION                    *
+      545           **************************************************************
+      546            R000-READ-TRANSACTION-RECORD.
+      547                EXEC SQL
+      548                    FETCH TRANS_CURSOR INTO   :TRANS-NO,
+      549                    :TRANS-TYPE,
+      550                    :TRANS-SALESPERSON-NO,
+      551                    :TRANS-DATE,
+      552                    :TRANS-DATA
+      553                END-EXEC.
+      554                IF SQLCODE = +100
+      555                     MOVE 'N' TO WS-MORE-TRANS-ROWS
+      556                ELSE
+      557                   MOVE TRANS-TYPE TO WS-TRANS-TYPE-SWITCH
+      558                END-IF.
+DB2 SQL PRECOMPILER         STATISTICS                                                                PAGE 12
+SOURCE STATISTICS
+  SOURCE LINES READ: 558
+  NUMBER OF SYMBOLS: 111
+  SYMBOL TABLE BYTES EXCLUDING ATTRIBUTES: 12344
+THERE WERE 0 MESSAGES FOR THIS PROGRAM.
+THERE WERE 0 MESSAGES SUPPRESSED BY THE FLAG OPTION.
+244752 BYTES OF STORAGE WERE USED BY THE PRECOMPILER.
+RETURN CODE IS 0
+SOURCE STATISTICS
+  SOURCE LINES READ: 558
+  NUMBER OF SYMBOLS: 111
+  SYMBOL TABLE BYTES EXCLUDING ATTRIBUTES: 12344
+THERE WERE 0 MESSAGES FOR THIS PROGRAM.
+THERE WERE 0 MESSAGES SUPPRESSED BY THE FLAG OPTION.
+244752 BYTES OF STORAGE WERE USED BY THE PRECOMPILER.
+RETURN CODE IS 0
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0                         Date 08/20/2020  Time 21:16:19   Page     1
+Invocation parameters:
+ NOSEQUENCE,QUOTE,RENT,PGMNAME(COMPAT),LIB,TEST
+Options in effect:
+ NOADATA
+   ADV
+   QUOTE
+   ARITH(COMPAT)
+ NOAWO
+ NOBLOCK0
+   BUFSIZE(4096)
+ NOCICS
+   CODEPAGE(1140)
+ NOCOMPILE(S)
+ NOCURRENCY
+   DATA(31)
+ NODATEPROC
+   DBCS
+ NODECK
+ NODIAGTRUNC
+ NODLL
+ NODUMP
+ NODYNAM
+ NOEXIT
+ NOEXPORTALL
+ NOFASTSRT
+   FLAG(I,I)
+ NOFLAGMIG4
+ NOFLAGSTD
+   INTDATE(ANSI)
+   LANGUAGE(EN)
+   LIB
+   LINECOUNT(60)
+ NOLIST
+ NOMAP
+ NOMDECK
+ NONAME
+   NSYMBOL(NATIONAL)
+ NONUMBER
+   NUMPROC(NOPFD)
+   OBJECT
+ NOOFFSET
+ NOOPTIMIZE
+   OUTDD(SYSOUT)
+   PGMNAME(COMPAT)
+   RENT
+   RMODE(AUTO)
+ NOSEQUENCE
+   SIZE(MAX)
+   SOURCE
+   SPACE(1)
+ NOSQL
+   SQLCCSID
+ NOSSRANGE
+ NOTERM
+   TEST(HOOK,NOSEPARATE,NOEJPD)
+ NOTHREAD
+   TRUNC(STD)
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0                         Date 08/20/2020  Time 21:16:19   Page     2
+ NOVBREF
+ NOWORD
+   XMLPARSE(XMLSS)
+   XREF(FULL)
+ NOZONECHECK
+   YEARWINDOW(1900)
+   ZWB
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page     3
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+/* PCS3PRG1
+  000001               *************************************************************
+  000002               *  The CASE STUDY 3 for the course. A simple I/O program    *
+  000003               *  that reads some data from an input file and writes a     *
+  000004               *  simple report file.                                      *
+  000005               *************************************************************
+  000006                IDENTIFICATION DIVISION.
+  000007                PROGRAM-ID.  PCS3PRG1.
+  000008                AUTHOR. Sonia Friesen.
+  000009
+  000010               *************************************************************
+  000011               *                       FANSHAWE COLLEGE                    *
+  000012               *                                                           *
+  000013               *                  COBOL Z/OS PROGRAM DESCRIPTION           *
+  000014               *************************************************************
+  000015               * PROGRAM DESCRIPTION:                                      *
+  000016               *    A program where it takes a salesperons sales and       *
+  000017               *    summerizes each branch totals and the company total    *
+  000018               *                                                           *
+  000019               * INPUT DD  NAME     FILE IDENTIFIER     FILE DESCRIPTION   *
+  000020               * --------------     ---------------     ----------------   *
+  000021               *                                                           *
+  000022               * OUTPUT DD  NAME    FILE IDENTIFIER     FILE DESCRITION    *
+  000023               * ---------------    ---------------     ---------------    *
+  000024               * SALESRPT           PRNT                Prints a summary   *
+  000025               *                                        informaiton for    *
+  000026               *                                        each branch        *
+  000027                                                                           *
+  000028               * COPYBOOKS          DESCRIPTION                            *
+  000029               * ---------          -----------                            *
+  000030               *************************************************************
+  000031               *************************************************************
+  000032               *                 C H A N G E   L O G                       *
+  000033               *************************************************************
+  000034               *                                                           *
+  000035               * VER. NO.  CHANGED BY        IMPLEMENTATION DATE           *
+  000036               * --------  ----------        -------------------           *
+  000037               *   1.0     Sonia Friesen    2020-07-16, 2:30pm             *
+  000038               * DESCRIPTION OF CHANGE:                                    *
+  000039               * ----------------------                                    *
+  000040               *  USE A TRANSACTION LOG TO UPDATE SALESMASTER              *
+  000041               *************************************************************
+  000042                ENVIRONMENT DIVISION.
+  000043                CONFIGURATION SECTION.
+  000044                INPUT-OUTPUT SECTION.
+  000045                FILE-CONTROL.
+  000046                    SELECT SALESRPT ASSIGN TO PRNT.                                       51
+  000047
+  000048                DATA DIVISION.
+  000049                FILE SECTION.
+  000050
+  000051                FD  SALESRPT
+  000052                    RECORDING MODE IS F.
+  000053                01  PRNT-REC                   PIC X(125).
+  000054
+  000055                WORKING-STORAGE SECTION.
+  000056                COPY CCS3SLSW.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page     4
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000057C              *************************************************************
+  000058C              *                     COPYBOOK CCS2SLSW                     *
+  000059C              *             WORKIGN STORAGE TRANSCATION LAYOUT            *
+  000060C              *                     FOR CASE STUDY #3                     *
+  000061C              *************************************************************
+  000062C               01 WS-TRANS-SALE.
+  000063C                   05 WS-SALES-AMOUNT           PIC 9(5)V99.
+  000064C                   05 WS-DISCOUNT-PCT           PIC V99.
+  000065C                   05 FILLER                    PIC X(25).
+  000066C
+  000067C               01 WS-TRANS-RETURN.
+  000068C                   05 WS-RETURN-AMOUNT          PIC 9(5)V99.
+  000069C                   05 FILLER                    PIC X(27).
+  000070C
+  000071C               01 WS-TRANS-MAINTENANCE.
+  000072C                   05 WS-TRANS-LAST-NAME        PIC X(15).
+  000073C                   05 WS-TRANS-FIRST-NAME       PIC X(10).
+  000074C                   05 WS-TRANS-BRANCH-NO        PIC 9(3).
+  000075C                   05 WS-TRANS-DEPT-NO          PIC 99.
+  000076C                   05 WS-TRANS-COMM-RATE        PIC V9999.
+  000077C
+  000078
+  000079               ***************************************************************
+  000080               *                         WS-SWITCHES                         *
+  000081               ***************************************************************
+  000082                01 WS-SWITCHES.
+  000083                    05 WS-SALEMAST-EOF-SWITCH   PIC X         VALUE "N".
+  000084                       88 WS-SALESMAST-EOF                    VALUE "Y".
+  000085                       88 WS-SALESMAST-NOT-EOF                VALUE "N".
+  000086                    05 WS-SALESTRANS-EOF-SWITCH PIC X         VALUE 'N'.
+  000087                       88 WS-SALESTRANS-EOF                   VALUE 'Y'.
+  000088                       88 WS-SALESTRANS-NOT-EOF               VALUE 'N'.
+  000089
+  000090               **************************************************************
+  000091               *                 HEADERS FOR TRANSACTION LOG                *
+  000092               **************************************************************
+  000093                01 WS-HEADING-LINE-1.
+  000094                    05 FILLER                   PIC X(1)      VALUE SPACES.               IMP
+  000095                    05 FILLER                   PIC X(6)      VALUE "PAGE  ".
+  000096                    05 WS-HL1-PAGENO            PIC Z9.
+  000097                    05 FILLER                   PIC X(25)     VALUE SPACES.               IMP
+  000098                    05 FILLER                   PIC X(4)      VALUE "ABC ".
+  000099                    05 FILLER                   PIC X(4)      VALUE "CORP".
+  000100                    05 FILLER                   PIC X(7)      VALUE "ORATION".
+  000101                    05 FILLER                   PIC X(25)     VALUE SPACES.               IMP
+  000102                    05 WS-HL1-MONTH             PIC 9(2).
+  000103                    05 FILLER                   PIC X(1)      VALUE "/".
+  000104                    05 WS-HL1-DAY               PIC 9(2).
+  000105                    05 FILLER                   PIC X(1)      VALUE "/".
+  000106                    05 WS-HL1-YEAR              PIC 9(4).
+  000107                    05 FILLER                   PIC X         VALUE SPACES.               IMP
+  000108
+  000109                01  WS-HEADING-LINE-2.
+  000110                    05  FILLER                  PIC X(30)    VALUE SPACES.                IMP
+  000111                    05  FILLER                  PIC X(5)     VALUE "SALES".
+  000112                    05  FILLER                  PIC X(10)    VALUE " TRANSACTI".
+  000113                    05  FILLER                  PIC X(6)     VALUE "ON LOG".
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page     5
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000114
+  000115                01 WS-HEADING-LINE-3.
+  000116                    05  FILLER                  PIC X(9)     VALUE "TRANS NO ".
+  000117                    05  FILLER                  PIC X(1)     VALUE SPACES.                IMP
+  000118                    05  FILLER                  PIC X(5)     VALUE "SALES".
+  000119                    05  FILLER                  PIC X(6)     VALUE "PERSON".
+  000120                    05  FILLER                  PIC X(5)     VALUE SPACES.                IMP
+  000121                    05  FILLER                  PIC X(6)     VALUE "TRANS ".
+  000122                    05  FILLER                  PIC X(4)     VALUE "DATE".
+  000123                    05  FILLER                  PIC X(7)     VALUE SPACES.                IMP
+  000124                    05  FILLER                  PIC X(4)     VALUE "TYPE".
+  000125                    05  FILLER                  PIC X(7)     VALUE SPACES.                IMP
+  000126                    05  FILLER                  PIC X(7)     VALUE "AMOUNT".
+  000127
+  000128                01 WS-TRANS-HEADER.
+  000129                    05 FILLER                  PIC X(1)      VALUE SPACES.                IMP
+  000130                    05 WS-TRANS-NUM            PIC 9(5)      VALUE ZERO.                  IMP
+  000131                    05  FILLER                 PIC X(7)      VALUE SPACES.                IMP
+  000132                    05 WS-SALESPERSON-NUM      PIC 9(5)      VALUE ZERO.                  IMP
+  000133                    05  FILLER                 PIC X(9)      VALUE SPACES.                IMP
+  000134                    05 WS-TRANS-DATE           PIC X(10)     VALUE SPACES.                IMP
+  000135                    05 FILLER                  PIC X(7)      VALUE SPACES.                IMP
+  000136                    05 WS-TRANS-TYPE           PIC X(7)      VALUE ZERO.                  IMP
+  000137                    05  FILLER                 PIC X(3)      VALUE SPACES.                IMP
+  000138                    05 WS-TRANS-CHG-DATA       PIC X(12).
+  000139
+  000140                 01 WS-COUNTER-HEADER-1.
+  000141                    05 FILLER                 PIC X(11)      VALUE '# OF SALES '.
+  000142                    05 FILLER                 PIC X(7)       VALUE 'TRANS '.
+  000143                    05 WS-SALES-CNT           PIC 9(3).
+  000144
+  000145                01 WS-COUNTER-HEADER-2.
+  000146                    05 FILLER                 PIC X(5)      VALUE '# OF '.
+  000147                    05 FILLER                 PIC X(7)       VALUE 'RETURN '.
+  000148                    05 FILLER                 PIC X(6)       VALUE 'TRANS '.
+  000149                    05 WS-RETURN-CNT          PIC 9(3).
+  000150
+  000151                01 WS-COUNTER-HEADER-3.
+  000152                    05 FILLER                 PIC X(9)      VALUE '# OF ADD '.
+  000153                    05 FILLER                 PIC X(7)       VALUE 'TRANS '.
+  000154                    05 WS-ADD-CNT             PIC 9(3).
+  000155
+  000156                01 WS-COUNTER-HEADER-4.
+  000157                    05 FILLER                 PIC X(11)      VALUE '# OF DELETE'.
+  000158                    05 FILLER                 PIC X(7)       VALUE ' TRANS '.
+  000159                    05 WS-DELETE-CNT          PIC 9(3).
+  000160
+  000161                 01 WS-COUNTER-HEADER-5.
+  000162                    05 FILLER                 PIC X(11)      VALUE '# OF CHANGE'.
+  000163                    05 FILLER                 PIC X(7)       VALUE ' TRANS '.
+  000164                    05 WS-CHANGE-CNT          PIC 9(3).
+  000165
+  000166                 01 WS-COUNTER-HEADER-6.
+  000167                    05 FILLER                 PIC X(5)      VALUE '# OF '.
+  000168                    05 FILLER                 PIC X(8)      VALUE 'INVALID '.
+  000169                    05 FILLER                 PIC X(7)      VALUE 'TRANS '.
+  000170                    05 WS-INVALID-CNT         PIC 9(3).
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page     6
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000171               **************************************************************
+  000172               *                       EDITING FIELDS                       *
+  000173               **************************************************************
+  000174                01 WS-EDIT-FIELD.
+  000175                    05 WS-RETURN-SALES           PIC S9(5)V99 COMP-3 VALUE ZERO.          IMP
+  000176                    05 WS-RETURN-TRANS-AMOUNT    PIC $$$,$$$.99CR.
+  000177                    05 WS-SALES-TRANS-AMOUNT     PIC $$$,$$$.$$      VALUE ZERO.          IMP
+  000178               **************************************************************
+  000179               *                   TRANSACTION COUNTERS                     *
+  000180               **************************************************************
+  000181                01 WS-TRANS-COUNTERS.
+  000182                    05 WS-ADD-COUNTER           PIC S9(3)  COMP-3    VALUE ZERO.          IMP
+  000183                    05 WS-DELETE-COUNTER        PIC S9(3)  COMP-3    VALUE ZERO.          IMP
+  000184                    05 WS-SALES-COUNTER         PIC S9(3)  COMP-3    VALUE ZERO.          IMP
+  000185                    05 WS-RETURN-COUNTER        PIC S9(3)  COMP-3    VALUE ZERO.          IMP
+  000186                    05 WS-CHANGE-COUNTER        PIC S9(3)  COMP-3    VALUE ZERO.          IMP
+  000187                    05 WS-INVALID-COUNTER       PIC S9(3)  COMP-3    VALUE ZERO.          IMP
+  000188
+  000189                 01 WS-PAGE-NUMBER.
+  000190                    05 PG-COUNTER               PIC S9(3)      VALUE ZERO.                IMP
+  000191
+  000192               **************************************************************
+  000193               *                         DATE FIELD                         *
+  000194               **************************************************************
+  000195                01 WS-DATE-VALUE.
+  000196                    05 WS-DATE-YEAR             PIC X(4)       VALUE SPACES.              IMP
+  000197                    05 WS-DATE-MONTH            PIC XX.
+  000198                    05 WS-DATE-DAY              PIC XX.
+  000199
+  000200                01 WS-TRANSCAC-DATE.
+  000201                    05 WS-DATE-TYEAR            PIC X(2)       VALUE SPACES.              IMP
+  000202                    05 WS-DATE-TMONTH           PIC XX.
+  000203                    05 WS-DATE-TDAY             PIC XX.
+  000204
+  000205                01 WS-BRANCH-KEY.
+  000206                   05 WS-BRANCH-NO                      PIC 9(3).
+  000207                   05 WS-DEPT-NO                        PIC 9(2).
+  000208               **************************************************************
+  000209               *                     ERROR LINE LAYOUT                      *
+  000210               **************************************************************
+  000211                01 WS-ERROR-LINE.
+  000212                    05 FILLER                    PIC X(1)     VALUE SPACES.               IMP
+  000213                    05 WS-ER-TRN-NO              PIC 9(5).
+  000214                    05 FILLER                    PIC X(7)     VALUE SPACES.               IMP
+  000215                    05 WS-ER-PROBLEM             PIC X(30).
+  000216                    05 FILLER                    PIC X        VALUE SPACES.               IMP
+  000217                    05 WS-RETCODE                PIC +9(5)    USAGE DISPLAY.
+  000218                    05 FILLER                    PIC X(5)     VALUE SPACES.               IMP
+  000219
+  000220               **************************************************************
+  000221               *                     SWITCHES FOR TRANS                     *
+  000222               **************************************************************
+  000223                01 WS-SWITCHES.
+  000224                    10  WS-MORE-TRANS-ROWS            PIC X      VALUE "Y".
+  000225                        88  WS-NO-MORE-TRANS-ROWS                VALUE "N".
+  000226                    10  WS-TRANS-TYPE-SWITCH          PIC X.
+  000227                        88  TRANS-ADD                            VALUE 'A'.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page     7
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000228                        88  TRANS-DEL                            VALUE 'D'.
+  000229                        88  TRANS-CHG                            VALUE 'C'.
+  000230                        88  TRANS-SALE                           VALUE 'S'.
+  000231                        88  TRANS-RET                            VALUE 'R'.
+  000232               *****************************************************
+  000233               * SQL INCLUDE FOR SQLDA / SQLCA
+  000234               *****************************************************
+  000235               *****EXEC SQL INCLUDE SQLDA END-EXEC.
+  000236                 01 SQLDA.
+  000237                    05 SQLDAID PIC X(8).
+  000238                    05 SQLDABC PIC S9(9) COMP-5.
+  000239                    05 SQLN    PIC S9(4) COMP-5.
+  000240                    05 SQLD    PIC S9(4) COMP-5.
+  000241                    05 SQLVAR  OCCURS 0 TO 750 TIMES DEPENDING ON SQLN.                   239
+  000242                       10 SQLVAR1.
+  000243                          15 SQLTYPE PIC S9(4) COMP-5.
+  000244                          15 SQLLEN  PIC S9(4) COMP-5.
+  000245                          15 FILLER  REDEFINES SQLLEN.                                    244
+  000246                             20 SQLPRECISION   PIC X.
+  000247                             20 SQLSCALE       PIC X.
+  000248                          15 SQLDATA POINTER.
+  000249                          15 SQLIND  POINTER.
+  000250                          15 SQLNAME.
+  000251                             49 SQLNAMEL PIC S9(4) COMP-5.
+  000252                             49 SQLNAMEC PIC X(30).
+  000253                       10 SQLVAR2 REDEFINES SQLVAR1.                                      242
+  000254                          15 SQLVAR2-RESERVED-1 PIC S9(9) COMP-5.
+  000255                          15 SQLLONGLEN         REDEFINES SQLVAR2-RESERVED-1              254
+  000256                                                PIC S9(9) COMP-5.
+  000257                          15 SQLVAR2-RESERVED-2 PIC S9(9) COMP-5.
+  000258                          15 SQLDATALEN         POINTER.
+  000259                          15 SQLDATATYPE-NAME.
+  000260                             20 SQLDATATYPE-NAMEL PIC S9(4) COMP-5.
+  000261                             20 SQLDATATYPE-NAMEC PIC X(30).
+  000262               *****EXEC SQL INCLUDE SQLCA END-EXEC.
+  000263                 01 SQLCA.
+  000264                    05 SQLCAID     PIC X(8).
+  000265                    05 SQLCABC     PIC S9(9) COMP-5.
+  000266                    05 SQLCODE     PIC S9(9) COMP-5.
+  000267                    05 SQLERRM.
+  000268                       49 SQLERRML PIC S9(4) COMP-5.
+  000269                       49 SQLERRMC PIC X(70).
+  000270                    05 SQLERRP     PIC X(8).
+  000271                    05 SQLERRD     OCCURS 6 TIMES
+  000272                                   PIC S9(9) COMP-5.
+  000273                    05 SQLWARN.
+  000274                       10 SQLWARN0 PIC X.
+  000275                       10 SQLWARN1 PIC X.
+  000276                       10 SQLWARN2 PIC X.
+  000277                       10 SQLWARN3 PIC X.
+  000278                       10 SQLWARN4 PIC X.
+  000279                       10 SQLWARN5 PIC X.
+  000280                       10 SQLWARN6 PIC X.
+  000281                       10 SQLWARN7 PIC X.
+  000282                    05 SQLEXT.
+  000283                       10 SQLWARN8 PIC X.
+  000284                       10 SQLWARN9 PIC X.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page     8
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000285                       10 SQLWARNA PIC X.
+  000286                       10 SQLSTATE PIC X(5).
+  000287               ******************************************************************
+  000288               * DCLGEN TABLE(SALESPERSON_TAB)                                  *
+  000289               *        LIBRARY(KC03G9C.COBOL(SLSPDCL))                         *
+  000290               *        LANGUAGE(COBOL)                                         *
+  000291               *        QUOTE                                                   *
+  000292               * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+  000293               ******************************************************************
+  000294               *****EXEC SQL DECLARE SALESPERSON_TAB TABLE
+  000295               *****( SALESPERSON_NO                 CHAR(5) NOT NULL,
+  000296               *****  SALESPERSON_LASTNAME           VARCHAR(15) NOT NULL,
+  000297               *****  SALESPERSON_FIRSTNAME          VARCHAR(10) NOT NULL,
+  000298               *****  SALESPERSON_GROSS_SALES        DECIMAL(9, 2) NOT NULL,
+  000299               *****  SALESPERSON_RETURN_SALES       DECIMAL(9, 2) NOT NULL,
+  000300               *****  SALESPERSON_BRANCH_NO          INTEGER NOT NULL,
+  000301               *****  SALESPERSON_DEPT_NO            INTEGER NOT NULL,
+  000302               *****  SALESPERSON_COMM_RATE          DECIMAL(4, 4) NOT NULL
+  000303               *****) END-EXEC.
+  000304               ******************************************************************
+  000305               * COBOL DECLARATION FOR TABLE SALESPERSON_TAB                    *
+  000306               ******************************************************************
+  000307                01  DCLSALESPERSON-TAB.
+  000308                    10 SALESPERSON-NO       PIC X(5).
+  000309                    10 SALESPERSON-LASTNAME.
+  000310                       49 SALESPERSON-LASTNAME-LEN
+  000311                          PIC S9(4) USAGE COMP.
+  000312                       49 SALESPERSON-LASTNAME-TEXT
+  000313                          PIC X(15).
+  000314                    10 SALESPERSON-FIRSTNAME.
+  000315                       49 SALESPERSON-FIRSTNAME-LEN
+  000316                          PIC S9(4) USAGE COMP.
+  000317                       49 SALESPERSON-FIRSTNAME-TEXT
+  000318                          PIC X(10).
+  000319                    10 SALESPERSON-GROSS-SALES
+  000320                       PIC S9(7)V9(2) USAGE COMP-3.
+  000321                    10 SALESPERSON-RETURN-SALES
+  000322                       PIC S9(7)V9(2) USAGE COMP-3.
+  000323                    10 SALESPERSON-BRANCH-NO
+  000324                       PIC S9(9) USAGE COMP.
+  000325                    10 SALESPERSON-DEPT-NO  PIC S9(9) USAGE COMP.
+  000326                    10 SALESPERSON-COMM-RATE
+  000327                       PIC SV9(4) USAGE COMP-3.
+  000328               ******************************************************************
+  000329               * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 8       *
+  000330               ******************************************************************
+  000331               ******************************************************************
+  000332               * DCLGEN TABLE(SALESTRANS_TAB)                                   *
+  000333               *        LIBRARY(KC03G9C.DB2.COBOL(TRANSDCL))                    *
+  000334               *        ACTION(REPLACE)                                         *
+  000335               *        LANGUAGE(COBOL)                                         *
+  000336               *        QUOTE                                                   *
+  000337               * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+  000338               ******************************************************************
+  000339               *****EXEC SQL DECLARE SALESTRANS_TAB TABLE
+  000340               *****( TRANS_NO                       INTEGER NOT NULL,
+  000341               *****  TRANS_TYPE                     CHAR(1) NOT NULL,
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page     9
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000342               *****  TRANS_SALESPERSON_NO           CHAR(5) NOT NULL,
+  000343               *****  TRANS_DATE                     DATE NOT NULL,
+  000344               *****  TRANS_DATA                     VARCHAR(34) NOT NULL
+  000345               *****) END-EXEC.
+  000346               ******************************************************************
+  000347               * COBOL DECLARATION FOR TABLE SALESTRANS_TAB                     *
+  000348               ******************************************************************
+  000349                01  DCLSALESTRANS-TAB.
+  000350                    10 TRANS-NO             PIC S9(9) USAGE COMP.
+  000351                    10 TRANS-TYPE           PIC X(1).
+  000352                    10 TRANS-SALESPERSON-NO
+  000353                       PIC X(5).
+  000354                    10 TRANS-DATE           PIC X(10).
+  000355                    10 TRANS-DATA.
+  000356                       49 TRANS-DATA-LEN    PIC S9(4) USAGE COMP.
+  000357                       49 TRANS-DATA-TEXT   PIC X(34).
+  000358               ******************************************************************
+  000359               * NEED A CURSOR AS OUR SQL RETURNS MORE THAN ONE ROW             *
+  000360               ******************************************************************
+  000361               *****EXEC SQL DECLARE TRANS_CURSOR CURSOR FOR
+  000362               *****  SELECT TRANS_NO,
+  000363               *****         TRANS_TYPE,
+  000364               *****         TRANS_SALESPERSON_NO,
+  000365               *****         TRANS_DATE,
+  000366               *****         TRANS_DATA
+  000367               *****     FROM SALESTRANS_TAB
+  000368               *****     ORDER BY TRANS_NO
+  000369               *****END-EXEC.
+  000370               **************************************************************
+  000371               *               START OF PROCEDURE DIVISION                  *
+  000372               **************************************************************
+  000373                 77 SQL-TEMP      PIC X(128).
+  000374                 77 DSN-TEMP      PIC S9(9)  COMP-5.
+  000375                 77 DSN-TMP2      PIC S9(18) COMP-3.
+  000376                 77 DSNNROWS      PIC S9(9)  COMP-5.
+  000377                 77 DSNNTYPE      PIC S9(4)  COMP-5.
+  000378                 77 DSNNLEN       PIC S9(4)  COMP-5.
+  000379                 77 SQL-NULL      PIC S9(9) COMP-5 VALUE +0.
+  000380                 77 SQL-INIT-FLAG PIC S9(4) COMP-5 VALUE +0.
+  000381                    88 SQL-INIT-DONE VALUE +1.
+  000382                 77 SQL-FILE-READ      PIC S9(9) COMP-5 VALUE +2.
+  000383                 77 SQL-FILE-CREATE    PIC S9(9) COMP-5 VALUE +8.
+  000384                 77 SQL-FILE-OVERWRITE PIC S9(9) COMP-5 VALUE +16.
+  000385                 77 SQL-FILE-APPEND    PIC S9(9) COMP-5 VALUE +32.
+  000386                 01 SQL-PLIST4.
+  000387                    05 SQL-PLIST-CON   PIC S9(9) COMP-5 VALUE +4194304.
+  000388                    05 SQL-CALLTYPE    PIC S9(4) COMP-5 VALUE +50.
+  000389                    05 SQL-PROG-NAME   PIC X(8)  VALUE X"5043533350524731".
+  000390                    05 SQL-TIMESTAMP-1 PIC S9(9) COMP-5 VALUE +453825161.
+  000391                    05 SQL-TIMESTAMP-2 PIC S9(9) COMP-5 VALUE +110489305.
+  000392                    05 SQL-SECTION     PIC S9(4) COMP-5 VALUE +1.
+  000393                    05 SQL-CODEPTR     PIC S9(9) COMP-5.
+  000394                    05 SQL-VPARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000395                    05 SQL-APARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000396                    05 FILLER          PIC S9(4) COMP-5 VALUE +1208.
+  000397                    05 SQL-STMT-TYPE   PIC S9(4) COMP-5 VALUE +3.
+  000398                    05 SQL-STMT-NUM    PIC S9(9) COMP-5 VALUE +306.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    10
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000399                    05 SQL-PLIST-FLG   PIC S9(4) COMP-5 VALUE +0.
+  000400                    05 FILLER          PIC X(18) VALUE
+  000401                       X"000000000000000000000000000000000000".
+  000402                 01 SQL-PLIST5.
+  000403                    05 SQL-PLIST-CON   PIC S9(9) COMP-5 VALUE +4194304.
+  000404                    05 SQL-CALLTYPE    PIC S9(4) COMP-5 VALUE +45.
+  000405                    05 SQL-PROG-NAME   PIC X(8)  VALUE X"5043533350524731".
+  000406                    05 SQL-TIMESTAMP-1 PIC S9(9) COMP-5 VALUE +453825161.
+  000407                    05 SQL-TIMESTAMP-2 PIC S9(9) COMP-5 VALUE +110489305.
+  000408                    05 SQL-SECTION     PIC S9(4) COMP-5 VALUE +1.
+  000409                    05 SQL-CODEPTR     PIC S9(9) COMP-5.
+  000410                    05 SQL-VPARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000411                    05 SQL-APARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000412                    05 FILLER          PIC S9(4) COMP-5 VALUE +1208.
+  000413                    05 SQL-STMT-TYPE   PIC S9(4) COMP-5 VALUE +5.
+  000414                    05 SQL-STMT-NUM    PIC S9(9) COMP-5 VALUE +314.
+  000415                    05 SQL-PLIST-FLG   PIC S9(4) COMP-5 VALUE +0.
+  000416                    05 FILLER          PIC X(18) VALUE
+  000417                       X"000000000000000000000000000000000000".
+  000418                 01 SQL-PLIST6.
+  000419                    05 SQL-PLIST-CON   PIC S9(9) COMP-5 VALUE +4194304.
+  000420                    05 SQL-CALLTYPE    PIC S9(4) COMP-5 VALUE +45.
+  000421                    05 SQL-PROG-NAME   PIC X(8)  VALUE X"5043533350524731".
+  000422                    05 SQL-TIMESTAMP-1 PIC S9(9) COMP-5 VALUE +453825161.
+  000423                    05 SQL-TIMESTAMP-2 PIC S9(9) COMP-5 VALUE +110489305.
+  000424                    05 SQL-SECTION     PIC S9(4) COMP-5 VALUE +1.
+  000425                    05 SQL-CODEPTR     PIC S9(9) COMP-5.
+  000426                    05 SQL-VPARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000427                    05 SQL-APARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000428                    05 FILLER          PIC S9(4) COMP-5 VALUE +1208.
+  000429                    05 SQL-STMT-TYPE   PIC S9(4) COMP-5 VALUE +5.
+  000430                    05 SQL-STMT-NUM    PIC S9(9) COMP-5 VALUE +322.
+  000431                    05 SQL-PLIST-FLG   PIC S9(4) COMP-5 VALUE +0.
+  000432                    05 FILLER          PIC X(18) VALUE
+  000433                       X"000000000000000000000000000000000000".
+  000434                 01 SQL-PLIST7.
+  000435                    05 SQL-PLIST-CON   PIC S9(9) COMP-5 VALUE +4210688.
+  000436                    05 SQL-CALLTYPE    PIC S9(4) COMP-5 VALUE +30.
+  000437                    05 SQL-PROG-NAME   PIC X(8)  VALUE X"5043533350524731".
+  000438                    05 SQL-TIMESTAMP-1 PIC S9(9) COMP-5 VALUE +453825161.
+  000439                    05 SQL-TIMESTAMP-2 PIC S9(9) COMP-5 VALUE +110489305.
+  000440                    05 SQL-SECTION     PIC S9(4) COMP-5 VALUE +2.
+  000441                    05 SQL-CODEPTR     PIC S9(9) COMP-5.
+  000442                    05 SQL-VPARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000443                    05 SQL-APARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000444                    05 FILLER          PIC S9(4) COMP-5 VALUE +1208.
+  000445                    05 SQL-STMT-TYPE   PIC S9(4) COMP-5 VALUE +232.
+  000446                    05 SQL-STMT-NUM    PIC S9(9) COMP-5 VALUE +375.
+  000447                    05 SQL-PLIST-FLG   PIC S9(4) COMP-5 VALUE +0.
+  000448                    05 FILLER          PIC X(18) VALUE
+  000449                       X"000000000000000000000000000000000000".
+  000450                    05 SQL-PVAR-LIST7.
+  000451                       10 PRE-SQLDAID  PIC X(8)  VALUE "SQLDA  ".
+  000452                       10 PRE-SQLDABC  PIC S9(9) COMP-5 VALUE +368.
+  000453                       10 PRE-SQLN     PIC S9(4) COMP-5 VALUE +8.
+  000454                       10 PRE-SQLLD    PIC S9(4) COMP-5 VALUE +8.
+  000455                       10 PRE-SQLVAR.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    11
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000456                         12 SQLVAR-BASE1.
+  000457                           15 SQL-PVAR-TYPE1      PIC S9(4) COMP-5 VALUE +452.
+  000458                           15 SQL-PVAR-LEN1       PIC S9(4) COMP-5 VALUE +5.
+  000459                           15 SQL-PVAR-ADDRS1.
+  000460                              20 SQL-PVAR-ADDR1   PIC S9(9) COMP-5.
+  000461                              20 SQL-PVAR-IND1    PIC S9(9) COMP-5.
+  000462                           15 SQL-PVAR-NAME1.
+  000463                              20 SQL-PVAR-NAMEL1  PIC S9(4) COMP-5 VALUE +0.
+  000464                              20 SQL-PVAR-NAMEC1  PIC X(30) VALUE " ".
+  000465                         12 SQLVAR-BASE2.
+  000466                           15 SQL-PVAR-TYPE2      PIC S9(4) COMP-5 VALUE +448.
+  000467                           15 SQL-PVAR-LEN2       PIC S9(4) COMP-5 VALUE +15.
+  000468                           15 SQL-PVAR-ADDRS2.
+  000469                              20 SQL-PVAR-ADDR2   PIC S9(9) COMP-5.
+  000470                              20 SQL-PVAR-IND2    PIC S9(9) COMP-5.
+  000471                           15 SQL-PVAR-NAME2.
+  000472                              20 SQL-PVAR-NAMEL2  PIC S9(4) COMP-5 VALUE +0.
+  000473                              20 SQL-PVAR-NAMEC2  PIC X(30) VALUE " ".
+  000474                         12 SQLVAR-BASE3.
+  000475                           15 SQL-PVAR-TYPE3      PIC S9(4) COMP-5 VALUE +448.
+  000476                           15 SQL-PVAR-LEN3       PIC S9(4) COMP-5 VALUE +10.
+  000477                           15 SQL-PVAR-ADDRS3.
+  000478                              20 SQL-PVAR-ADDR3   PIC S9(9) COMP-5.
+  000479                              20 SQL-PVAR-IND3    PIC S9(9) COMP-5.
+  000480                           15 SQL-PVAR-NAME3.
+  000481                              20 SQL-PVAR-NAMEL3  PIC S9(4) COMP-5 VALUE +0.
+  000482                              20 SQL-PVAR-NAMEC3  PIC X(30) VALUE " ".
+  000483                         12 SQLVAR-BASE4.
+  000484                           15 SQL-PVAR-TYPE4      PIC S9(4) COMP-5 VALUE +484.
+  000485                           15 SQL-PVAR-LEN4       PIC S9(4) COMP-5 VALUE +2306.
+  000486                           15 SQL-PVAR-ADDRS4.
+  000487                              20 SQL-PVAR-ADDR4   PIC S9(9) COMP-5.
+  000488                              20 SQL-PVAR-IND4    PIC S9(9) COMP-5.
+  000489                           15 SQL-PVAR-NAME4.
+  000490                              20 SQL-PVAR-NAMEL4  PIC S9(4) COMP-5 VALUE +0.
+  000491                              20 SQL-PVAR-NAMEC4  PIC X(30) VALUE " ".
+  000492                         12 SQLVAR-BASE5.
+  000493                           15 SQL-PVAR-TYPE5      PIC S9(4) COMP-5 VALUE +484.
+  000494                           15 SQL-PVAR-LEN5       PIC S9(4) COMP-5 VALUE +2306.
+  000495                           15 SQL-PVAR-ADDRS5.
+  000496                              20 SQL-PVAR-ADDR5   PIC S9(9) COMP-5.
+  000497                              20 SQL-PVAR-IND5    PIC S9(9) COMP-5.
+  000498                           15 SQL-PVAR-NAME5.
+  000499                              20 SQL-PVAR-NAMEL5  PIC S9(4) COMP-5 VALUE +0.
+  000500                              20 SQL-PVAR-NAMEC5  PIC X(30) VALUE " ".
+  000501                         12 SQLVAR-BASE6.
+  000502                           15 SQL-PVAR-TYPE6      PIC S9(4) COMP-5 VALUE +496.
+  000503                           15 SQL-PVAR-LEN6       PIC S9(4) COMP-5 VALUE +4.
+  000504                           15 SQL-PVAR-ADDRS6.
+  000505                              20 SQL-PVAR-ADDR6   PIC S9(9) COMP-5.
+  000506                              20 SQL-PVAR-IND6    PIC S9(9) COMP-5.
+  000507                           15 SQL-PVAR-NAME6.
+  000508                              20 SQL-PVAR-NAMEL6  PIC S9(4) COMP-5 VALUE +0.
+  000509                              20 SQL-PVAR-NAMEC6  PIC X(30) VALUE " ".
+  000510                         12 SQLVAR-BASE7.
+  000511                           15 SQL-PVAR-TYPE7      PIC S9(4) COMP-5 VALUE +496.
+  000512                           15 SQL-PVAR-LEN7       PIC S9(4) COMP-5 VALUE +4.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    12
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000513                           15 SQL-PVAR-ADDRS7.
+  000514                              20 SQL-PVAR-ADDR7   PIC S9(9) COMP-5.
+  000515                              20 SQL-PVAR-IND7    PIC S9(9) COMP-5.
+  000516                           15 SQL-PVAR-NAME7.
+  000517                              20 SQL-PVAR-NAMEL7  PIC S9(4) COMP-5 VALUE +0.
+  000518                              20 SQL-PVAR-NAMEC7  PIC X(30) VALUE " ".
+  000519                         12 SQLVAR-BASE8.
+  000520                           15 SQL-PVAR-TYPE8      PIC S9(4) COMP-5 VALUE +484.
+  000521                           15 SQL-PVAR-LEN8       PIC S9(4) COMP-5 VALUE +1028.
+  000522                           15 SQL-PVAR-ADDRS8.
+  000523                              20 SQL-PVAR-ADDR8   PIC S9(9) COMP-5.
+  000524                              20 SQL-PVAR-IND8    PIC S9(9) COMP-5.
+  000525                           15 SQL-PVAR-NAME8.
+  000526                              20 SQL-PVAR-NAMEL8  PIC S9(4) COMP-5 VALUE +0.
+  000527                              20 SQL-PVAR-NAMEC8  PIC X(30) VALUE " ".
+  000528                 01 SQL-PLIST8.
+  000529                    05 SQL-PLIST-CON   PIC S9(9) COMP-5 VALUE +4210688.
+  000530                    05 SQL-CALLTYPE    PIC S9(4) COMP-5 VALUE +30.
+  000531                    05 SQL-PROG-NAME   PIC X(8)  VALUE X"5043533350524731".
+  000532                    05 SQL-TIMESTAMP-1 PIC S9(9) COMP-5 VALUE +453825161.
+  000533                    05 SQL-TIMESTAMP-2 PIC S9(9) COMP-5 VALUE +110489305.
+  000534                    05 SQL-SECTION     PIC S9(4) COMP-5 VALUE +3.
+  000535                    05 SQL-CODEPTR     PIC S9(9) COMP-5.
+  000536                    05 SQL-VPARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000537                    05 SQL-APARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000538                    05 FILLER          PIC S9(4) COMP-5 VALUE +1208.
+  000539                    05 SQL-STMT-TYPE   PIC S9(4) COMP-5 VALUE +233.
+  000540                    05 SQL-STMT-NUM    PIC S9(9) COMP-5 VALUE +394.
+  000541                    05 SQL-PLIST-FLG   PIC S9(4) COMP-5 VALUE +0.
+  000542                    05 FILLER          PIC X(18) VALUE
+  000543                       X"000000000000000000000000000000000000".
+  000544                    05 SQL-PVAR-LIST8.
+  000545                       10 PRE-SQLDAID  PIC X(8)  VALUE "SQLDA  ".
+  000546                       10 PRE-SQLDABC  PIC S9(9) COMP-5 VALUE +60.
+  000547                       10 PRE-SQLN     PIC S9(4) COMP-5 VALUE +1.
+  000548                       10 PRE-SQLLD    PIC S9(4) COMP-5 VALUE +1.
+  000549                       10 PRE-SQLVAR.
+  000550                         12 SQLVAR-BASE1.
+  000551                           15 SQL-PVAR-TYPE1      PIC S9(4) COMP-5 VALUE +452.
+  000552                           15 SQL-PVAR-LEN1       PIC S9(4) COMP-5 VALUE +5.
+  000553                           15 SQL-PVAR-ADDRS1.
+  000554                              20 SQL-PVAR-ADDR1   PIC S9(9) COMP-5.
+  000555                              20 SQL-PVAR-IND1    PIC S9(9) COMP-5.
+  000556                           15 SQL-PVAR-NAME1.
+  000557                              20 SQL-PVAR-NAMEL1  PIC S9(4) COMP-5 VALUE +0.
+  000558                              20 SQL-PVAR-NAMEC1  PIC X(30) VALUE " ".
+  000559                 01 SQL-PLIST9.
+  000560                    05 SQL-PLIST-CON   PIC S9(9) COMP-5 VALUE +4210688.
+  000561                    05 SQL-CALLTYPE    PIC S9(4) COMP-5 VALUE +30.
+  000562                    05 SQL-PROG-NAME   PIC X(8)  VALUE X"5043533350524731".
+  000563                    05 SQL-TIMESTAMP-1 PIC S9(9) COMP-5 VALUE +453825161.
+  000564                    05 SQL-TIMESTAMP-2 PIC S9(9) COMP-5 VALUE +110489305.
+  000565                    05 SQL-SECTION     PIC S9(4) COMP-5 VALUE +4.
+  000566                    05 SQL-CODEPTR     PIC S9(9) COMP-5.
+  000567                    05 SQL-VPARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000568                    05 SQL-APARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000569                    05 FILLER          PIC S9(4) COMP-5 VALUE +1208.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    13
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000570                    05 SQL-STMT-TYPE   PIC S9(4) COMP-5 VALUE +234.
+  000571                    05 SQL-STMT-NUM    PIC S9(9) COMP-5 VALUE +416.
+  000572                    05 SQL-PLIST-FLG   PIC S9(4) COMP-5 VALUE +0.
+  000573                    05 FILLER          PIC X(18) VALUE
+  000574                       X"000000000000000000000000000000000000".
+  000575                    05 SQL-PVAR-LIST9.
+  000576                       10 PRE-SQLDAID  PIC X(8)  VALUE "SQLDA  ".
+  000577                       10 PRE-SQLDABC  PIC S9(9) COMP-5 VALUE +280.
+  000578                       10 PRE-SQLN     PIC S9(4) COMP-5 VALUE +6.
+  000579                       10 PRE-SQLLD    PIC S9(4) COMP-5 VALUE +6.
+  000580                       10 PRE-SQLVAR.
+  000581                         12 SQLVAR-BASE1.
+  000582                           15 SQL-PVAR-TYPE1      PIC S9(4) COMP-5 VALUE +448.
+  000583                           15 SQL-PVAR-LEN1       PIC S9(4) COMP-5 VALUE +15.
+  000584                           15 SQL-PVAR-ADDRS1.
+  000585                              20 SQL-PVAR-ADDR1   PIC S9(9) COMP-5.
+  000586                              20 SQL-PVAR-IND1    PIC S9(9) COMP-5.
+  000587                           15 SQL-PVAR-NAME1.
+  000588                              20 SQL-PVAR-NAMEL1  PIC S9(4) COMP-5 VALUE +0.
+  000589                              20 SQL-PVAR-NAMEC1  PIC X(30) VALUE " ".
+  000590                         12 SQLVAR-BASE2.
+  000591                           15 SQL-PVAR-TYPE2      PIC S9(4) COMP-5 VALUE +448.
+  000592                           15 SQL-PVAR-LEN2       PIC S9(4) COMP-5 VALUE +10.
+  000593                           15 SQL-PVAR-ADDRS2.
+  000594                              20 SQL-PVAR-ADDR2   PIC S9(9) COMP-5.
+  000595                              20 SQL-PVAR-IND2    PIC S9(9) COMP-5.
+  000596                           15 SQL-PVAR-NAME2.
+  000597                              20 SQL-PVAR-NAMEL2  PIC S9(4) COMP-5 VALUE +0.
+  000598                              20 SQL-PVAR-NAMEC2  PIC X(30) VALUE " ".
+  000599                         12 SQLVAR-BASE3.
+  000600                           15 SQL-PVAR-TYPE3      PIC S9(4) COMP-5 VALUE +484.
+  000601                           15 SQL-PVAR-LEN3       PIC S9(4) COMP-5 VALUE +1028.
+  000602                           15 SQL-PVAR-ADDRS3.
+  000603                              20 SQL-PVAR-ADDR3   PIC S9(9) COMP-5.
+  000604                              20 SQL-PVAR-IND3    PIC S9(9) COMP-5.
+  000605                           15 SQL-PVAR-NAME3.
+  000606                              20 SQL-PVAR-NAMEL3  PIC S9(4) COMP-5 VALUE +0.
+  000607                              20 SQL-PVAR-NAMEC3  PIC X(30) VALUE " ".
+  000608                         12 SQLVAR-BASE4.
+  000609                           15 SQL-PVAR-TYPE4      PIC S9(4) COMP-5 VALUE +496.
+  000610                           15 SQL-PVAR-LEN4       PIC S9(4) COMP-5 VALUE +4.
+  000611                           15 SQL-PVAR-ADDRS4.
+  000612                              20 SQL-PVAR-ADDR4   PIC S9(9) COMP-5.
+  000613                              20 SQL-PVAR-IND4    PIC S9(9) COMP-5.
+  000614                           15 SQL-PVAR-NAME4.
+  000615                              20 SQL-PVAR-NAMEL4  PIC S9(4) COMP-5 VALUE +0.
+  000616                              20 SQL-PVAR-NAMEC4  PIC X(30) VALUE " ".
+  000617                         12 SQLVAR-BASE5.
+  000618                           15 SQL-PVAR-TYPE5      PIC S9(4) COMP-5 VALUE +496.
+  000619                           15 SQL-PVAR-LEN5       PIC S9(4) COMP-5 VALUE +4.
+  000620                           15 SQL-PVAR-ADDRS5.
+  000621                              20 SQL-PVAR-ADDR5   PIC S9(9) COMP-5.
+  000622                              20 SQL-PVAR-IND5    PIC S9(9) COMP-5.
+  000623                           15 SQL-PVAR-NAME5.
+  000624                              20 SQL-PVAR-NAMEL5  PIC S9(4) COMP-5 VALUE +0.
+  000625                              20 SQL-PVAR-NAMEC5  PIC X(30) VALUE " ".
+  000626                         12 SQLVAR-BASE6.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    14
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000627                           15 SQL-PVAR-TYPE6      PIC S9(4) COMP-5 VALUE +452.
+  000628                           15 SQL-PVAR-LEN6       PIC S9(4) COMP-5 VALUE +5.
+  000629                           15 SQL-PVAR-ADDRS6.
+  000630                              20 SQL-PVAR-ADDR6   PIC S9(9) COMP-5.
+  000631                              20 SQL-PVAR-IND6    PIC S9(9) COMP-5.
+  000632                           15 SQL-PVAR-NAME6.
+  000633                              20 SQL-PVAR-NAMEL6  PIC S9(4) COMP-5 VALUE +0.
+  000634                              20 SQL-PVAR-NAMEC6  PIC X(30) VALUE " ".
+  000635                 01 SQL-PLIST10.
+  000636                    05 SQL-PLIST-CON   PIC S9(9) COMP-5 VALUE +4210688.
+  000637                    05 SQL-CALLTYPE    PIC S9(4) COMP-5 VALUE +30.
+  000638                    05 SQL-PROG-NAME   PIC X(8)  VALUE X"5043533350524731".
+  000639                    05 SQL-TIMESTAMP-1 PIC S9(9) COMP-5 VALUE +453825161.
+  000640                    05 SQL-TIMESTAMP-2 PIC S9(9) COMP-5 VALUE +110489305.
+  000641                    05 SQL-SECTION     PIC S9(4) COMP-5 VALUE +5.
+  000642                    05 SQL-CODEPTR     PIC S9(9) COMP-5.
+  000643                    05 SQL-VPARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000644                    05 SQL-APARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000645                    05 FILLER          PIC S9(4) COMP-5 VALUE +1208.
+  000646                    05 SQL-STMT-TYPE   PIC S9(4) COMP-5 VALUE +234.
+  000647                    05 SQL-STMT-NUM    PIC S9(9) COMP-5 VALUE +445.
+  000648                    05 SQL-PLIST-FLG   PIC S9(4) COMP-5 VALUE +0.
+  000649                    05 FILLER          PIC X(18) VALUE
+  000650                       X"000000000000000000000000000000000000".
+  000651                    05 SQL-PVAR-LIST10.
+  000652                       10 PRE-SQLDAID  PIC X(8)  VALUE "SQLDA  ".
+  000653                       10 PRE-SQLDABC  PIC S9(9) COMP-5 VALUE +104.
+  000654                       10 PRE-SQLN     PIC S9(4) COMP-5 VALUE +2.
+  000655                       10 PRE-SQLLD    PIC S9(4) COMP-5 VALUE +2.
+  000656                       10 PRE-SQLVAR.
+  000657                         12 SQLVAR-BASE1.
+  000658                           15 SQL-PVAR-TYPE1      PIC S9(4) COMP-5 VALUE +484.
+  000659                           15 SQL-PVAR-LEN1       PIC S9(4) COMP-5 VALUE +2306.
+  000660                           15 SQL-PVAR-ADDRS1.
+  000661                              20 SQL-PVAR-ADDR1   PIC S9(9) COMP-5.
+  000662                              20 SQL-PVAR-IND1    PIC S9(9) COMP-5.
+  000663                           15 SQL-PVAR-NAME1.
+  000664                              20 SQL-PVAR-NAMEL1  PIC S9(4) COMP-5 VALUE +0.
+  000665                              20 SQL-PVAR-NAMEC1  PIC X(30) VALUE " ".
+  000666                         12 SQLVAR-BASE2.
+  000667                           15 SQL-PVAR-TYPE2      PIC S9(4) COMP-5 VALUE +452.
+  000668                           15 SQL-PVAR-LEN2       PIC S9(4) COMP-5 VALUE +5.
+  000669                           15 SQL-PVAR-ADDRS2.
+  000670                              20 SQL-PVAR-ADDR2   PIC S9(9) COMP-5.
+  000671                              20 SQL-PVAR-IND2    PIC S9(9) COMP-5.
+  000672                           15 SQL-PVAR-NAME2.
+  000673                              20 SQL-PVAR-NAMEL2  PIC S9(4) COMP-5 VALUE +0.
+  000674                              20 SQL-PVAR-NAMEC2  PIC X(30) VALUE " ".
+  000675                 01 SQL-PLIST11.
+  000676                    05 SQL-PLIST-CON   PIC S9(9) COMP-5 VALUE +4210688.
+  000677                    05 SQL-CALLTYPE    PIC S9(4) COMP-5 VALUE +30.
+  000678                    05 SQL-PROG-NAME   PIC X(8)  VALUE X"5043533350524731".
+  000679                    05 SQL-TIMESTAMP-1 PIC S9(9) COMP-5 VALUE +453825161.
+  000680                    05 SQL-TIMESTAMP-2 PIC S9(9) COMP-5 VALUE +110489305.
+  000681                    05 SQL-SECTION     PIC S9(4) COMP-5 VALUE +6.
+  000682                    05 SQL-CODEPTR     PIC S9(9) COMP-5.
+  000683                    05 SQL-VPARMPTR    PIC S9(9) COMP-5 VALUE +0.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    15
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000684                    05 SQL-APARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000685                    05 FILLER          PIC S9(4) COMP-5 VALUE +1208.
+  000686                    05 SQL-STMT-TYPE   PIC S9(4) COMP-5 VALUE +234.
+  000687                    05 SQL-STMT-NUM    PIC S9(9) COMP-5 VALUE +471.
+  000688                    05 SQL-PLIST-FLG   PIC S9(4) COMP-5 VALUE +0.
+  000689                    05 FILLER          PIC X(18) VALUE
+  000690                       X"000000000000000000000000000000000000".
+  000691                    05 SQL-PVAR-LIST11.
+  000692                       10 PRE-SQLDAID  PIC X(8)  VALUE "SQLDA  ".
+  000693                       10 PRE-SQLDABC  PIC S9(9) COMP-5 VALUE +104.
+  000694                       10 PRE-SQLN     PIC S9(4) COMP-5 VALUE +2.
+  000695                       10 PRE-SQLLD    PIC S9(4) COMP-5 VALUE +2.
+  000696                       10 PRE-SQLVAR.
+  000697                         12 SQLVAR-BASE1.
+  000698                           15 SQL-PVAR-TYPE1      PIC S9(4) COMP-5 VALUE +484.
+  000699                           15 SQL-PVAR-LEN1       PIC S9(4) COMP-5 VALUE +1794.
+  000700                           15 SQL-PVAR-ADDRS1.
+  000701                              20 SQL-PVAR-ADDR1   PIC S9(9) COMP-5.
+  000702                              20 SQL-PVAR-IND1    PIC S9(9) COMP-5.
+  000703                           15 SQL-PVAR-NAME1.
+  000704                              20 SQL-PVAR-NAMEL1  PIC S9(4) COMP-5 VALUE +0.
+  000705                              20 SQL-PVAR-NAMEC1  PIC X(30) VALUE " ".
+  000706                         12 SQLVAR-BASE2.
+  000707                           15 SQL-PVAR-TYPE2      PIC S9(4) COMP-5 VALUE +452.
+  000708                           15 SQL-PVAR-LEN2       PIC S9(4) COMP-5 VALUE +5.
+  000709                           15 SQL-PVAR-ADDRS2.
+  000710                              20 SQL-PVAR-ADDR2   PIC S9(9) COMP-5.
+  000711                              20 SQL-PVAR-IND2    PIC S9(9) COMP-5.
+  000712                           15 SQL-PVAR-NAME2.
+  000713                              20 SQL-PVAR-NAMEL2  PIC S9(4) COMP-5 VALUE +0.
+  000714                              20 SQL-PVAR-NAMEC2  PIC X(30) VALUE " ".
+  000715                 01 SQL-PLIST12.
+  000716                    05 SQL-PLIST-CON   PIC S9(9) COMP-5 VALUE +4195328.
+  000717                    05 SQL-CALLTYPE    PIC S9(4) COMP-5 VALUE +30.
+  000718                    05 SQL-PROG-NAME   PIC X(8)  VALUE X"5043533350524731".
+  000719                    05 SQL-TIMESTAMP-1 PIC S9(9) COMP-5 VALUE +453825161.
+  000720                    05 SQL-TIMESTAMP-2 PIC S9(9) COMP-5 VALUE +110489305.
+  000721                    05 SQL-SECTION     PIC S9(4) COMP-5 VALUE +1.
+  000722                    05 SQL-CODEPTR     PIC S9(9) COMP-5.
+  000723                    05 SQL-VPARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000724                    05 SQL-APARMPTR    PIC S9(9) COMP-5 VALUE +0.
+  000725                    05 FILLER          PIC S9(4) COMP-5 VALUE +1208.
+  000726                    05 SQL-STMT-TYPE   PIC S9(4) COMP-5 VALUE +4.
+  000727                    05 SQL-STMT-NUM    PIC S9(9) COMP-5 VALUE +548.
+  000728                    05 SQL-PLIST-FLG   PIC S9(4) COMP-5 VALUE +0.
+  000729                    05 FILLER          PIC X(18) VALUE
+  000730                       X"000000000000000000000000000000000000".
+  000731                    05 SQL-AVAR-LIST12.
+  000732                       10 PRE-SQLDAID  PIC X(8)  VALUE "SQLDA  ".
+  000733                       10 PRE-SQLDABC  PIC S9(9) COMP-5 VALUE +236.
+  000734                       10 PRE-SQLN     PIC S9(4) COMP-5 VALUE +5.
+  000735                       10 PRE-SQLLD    PIC S9(4) COMP-5 VALUE +5.
+  000736                       10 PRE-SQLVAR.
+  000737                         12 SQLVAR-BASE1.
+  000738                           15 SQL-AVAR-TYPE1      PIC S9(4) COMP-5 VALUE +496.
+  000739                           15 SQL-AVAR-LEN1       PIC S9(4) COMP-5 VALUE +4.
+  000740                           15 SQL-AVAR-ADDRS1.
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    16
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000741                              20 SQL-AVAR-ADDR1   PIC S9(9) COMP-5.
+  000742                              20 SQL-AVAR-IND1    PIC S9(9) COMP-5.
+  000743                           15 SQL-AVAR-NAME1.
+  000744                              20 SQL-AVAR-NAMEL1  PIC S9(4) COMP-5 VALUE +0.
+  000745                              20 SQL-AVAR-NAMEC1  PIC X(30) VALUE " ".
+  000746                         12 SQLVAR-BASE2.
+  000747                           15 SQL-AVAR-TYPE2      PIC S9(4) COMP-5 VALUE +452.
+  000748                           15 SQL-AVAR-LEN2       PIC S9(4) COMP-5 VALUE +1.
+  000749                           15 SQL-AVAR-ADDRS2.
+  000750                              20 SQL-AVAR-ADDR2   PIC S9(9) COMP-5.
+  000751                              20 SQL-AVAR-IND2    PIC S9(9) COMP-5.
+  000752                           15 SQL-AVAR-NAME2.
+  000753                              20 SQL-AVAR-NAMEL2  PIC S9(4) COMP-5 VALUE +0.
+  000754                              20 SQL-AVAR-NAMEC2  PIC X(30) VALUE " ".
+  000755                         12 SQLVAR-BASE3.
+  000756                           15 SQL-AVAR-TYPE3      PIC S9(4) COMP-5 VALUE +452.
+  000757                           15 SQL-AVAR-LEN3       PIC S9(4) COMP-5 VALUE +5.
+  000758                           15 SQL-AVAR-ADDRS3.
+  000759                              20 SQL-AVAR-ADDR3   PIC S9(9) COMP-5.
+  000760                              20 SQL-AVAR-IND3    PIC S9(9) COMP-5.
+  000761                           15 SQL-AVAR-NAME3.
+  000762                              20 SQL-AVAR-NAMEL3  PIC S9(4) COMP-5 VALUE +0.
+  000763                              20 SQL-AVAR-NAMEC3  PIC X(30) VALUE " ".
+  000764                         12 SQLVAR-BASE4.
+  000765                           15 SQL-AVAR-TYPE4      PIC S9(4) COMP-5 VALUE +452.
+  000766                           15 SQL-AVAR-LEN4       PIC S9(4) COMP-5 VALUE +10.
+  000767                           15 SQL-AVAR-ADDRS4.
+  000768                              20 SQL-AVAR-ADDR4   PIC S9(9) COMP-5.
+  000769                              20 SQL-AVAR-IND4    PIC S9(9) COMP-5.
+  000770                           15 SQL-AVAR-NAME4.
+  000771                              20 SQL-AVAR-NAMEL4  PIC S9(4) COMP-5 VALUE +0.
+  000772                              20 SQL-AVAR-NAMEC4  PIC X(30) VALUE " ".
+  000773                         12 SQLVAR-BASE5.
+  000774                           15 SQL-AVAR-TYPE5      PIC S9(4) COMP-5 VALUE +448.
+  000775                           15 SQL-AVAR-LEN5       PIC S9(4) COMP-5 VALUE +34.
+  000776                           15 SQL-AVAR-ADDRS5.
+  000777                              20 SQL-AVAR-ADDR5   PIC S9(9) COMP-5.
+  000778                              20 SQL-AVAR-IND5    PIC S9(9) COMP-5.
+  000779                           15 SQL-AVAR-NAME5.
+  000780                              20 SQL-AVAR-NAMEL5  PIC S9(4) COMP-5 VALUE +0.
+  000781                              20 SQL-AVAR-NAMEC5  PIC X(30) VALUE " ".
+  000782
+  000783                PROCEDURE DIVISION.
+  000784                DSNSQL SECTION.
+  000785                SQL-SKIP.
+  000786                    GO TO SQL-INIT-END.                                                   840
+  000787                SQL-INITIAL.
+  000788                    MOVE 1 TO SQL-INIT-FLAG.                                              380
+  000789                    CALL "DSNHADDR" USING SQL-CODEPTR OF SQL-PLIST4 SQLCA.                EXT 393 386 263
+  000790                    CALL "DSNHADDR" USING SQL-CODEPTR OF SQL-PLIST5 SQLCA.                EXT 409 402 263
+  000791                    CALL "DSNHADDR" USING SQL-CODEPTR OF SQL-PLIST6 SQLCA.                EXT 425 418 263
+  000792                    CALL "DSNHADDR" USING SQL-VPARMPTR OF SQL-PLIST7 SQL-PVAR-LIS         EXT 442 434 450
+  000793               -    T7.
+  000794                    CALL "DSNHADD2" USING SQL-PVAR-ADDRS1 IN                              EXT 459
+  000795                    SQL-PVAR-LIST7 TRANS-SALESPERSON-NO OF DCLSALESTRANS-TAB SQL-         450 352 349 379
+  000796               -    NULL SALESPERSON-LASTNAME OF DCLSALESPERSON-TAB SQL-NULL SALE         309 307 379 314
+  000797               -    SPERSON-FIRSTNAME OF DCLSALESPERSON-TAB SQL-NULL SALESPERSON-         307 379 319
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    17
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000798               -    GROSS-SALES OF DCLSALESPERSON-TAB SQL-NULL SALESPERSON-RETURN         307 379 321
+  000799               -    -SALES OF DCLSALESPERSON-TAB SQL-NULL SALESPERSON-BRANCH-NO O         307 379 323
+  000800               -    F DCLSALESPERSON-TAB SQL-NULL SALESPERSON-DEPT-NO OF DCLSALES         307 379 325 307
+  000801               -    PERSON-TAB SQL-NULL SALESPERSON-COMM-RATE OF DCLSALESPERSON-T         379 326 307
+  000802               -    AB SQL-NULL                                                           379
+  000803                    CALL "DSNHADDR" USING SQL-CODEPTR OF SQL-PLIST7 SQLCA.                EXT 441 434 263
+  000804                    CALL "DSNHADDR" USING SQL-VPARMPTR OF SQL-PLIST8 SQL-PVAR-LIS         EXT 536 528 544
+  000805               -    T8.
+  000806                    CALL "DSNHADD2" USING SQL-PVAR-ADDRS1 IN                              EXT 553
+  000807                    SQL-PVAR-LIST8 TRANS-SALESPERSON-NO OF DCLSALESTRANS-TAB SQL-         544 352 349 379
+  000808               -    NULL
+  000809                    CALL "DSNHADDR" USING SQL-CODEPTR OF SQL-PLIST8 SQLCA.                EXT 535 528 263
+  000810                    CALL "DSNHADDR" USING SQL-VPARMPTR OF SQL-PLIST9 SQL-PVAR-LIS         EXT 567 559 575
+  000811               -    T9.
+  000812                    CALL "DSNHADD2" USING SQL-PVAR-ADDRS1 IN                              EXT 584
+  000813                    SQL-PVAR-LIST9 SALESPERSON-LASTNAME OF DCLSALESPERSON-TAB SQL         575 309 307 379
+  000814               -    -NULL SALESPERSON-FIRSTNAME OF DCLSALESPERSON-TAB SQL-NULL SA         314 307 379 326
+  000815               -    LESPERSON-COMM-RATE OF DCLSALESPERSON-TAB SQL-NULL SALESPERSO         307 379 323
+  000816               -    N-BRANCH-NO OF DCLSALESPERSON-TAB SQL-NULL SALESPERSON-DEPT-N         307 379 325
+  000817               -    O OF DCLSALESPERSON-TAB SQL-NULL TRANS-SALESPERSON-NO OF DCLS         307 379 352 349
+  000818               -    ALESTRANS-TAB SQL-NULL                                                379
+  000819                    CALL "DSNHADDR" USING SQL-CODEPTR OF SQL-PLIST9 SQLCA.                EXT 566 559 263
+  000820                    CALL "DSNHADDR" USING SQL-VPARMPTR OF SQL-PLIST10 SQL-PVAR-LI         EXT 643 635 651
+  000821               -    ST10.
+  000822                    CALL "DSNHADD2" USING SQL-PVAR-ADDRS1 IN                              EXT 660
+  000823                    SQL-PVAR-LIST10 SALESPERSON-GROSS-SALES OF DCLSALESPERSON-TAB         651 319 307
+  000824                    SQL-NULL TRANS-SALESPERSON-NO OF DCLSALESTRANS-TAB SQL-NULL           379 352 349 379
+  000825                    CALL "DSNHADDR" USING SQL-CODEPTR OF SQL-PLIST10 SQLCA.               EXT 642 635 263
+  000826                    CALL "DSNHADDR" USING SQL-VPARMPTR OF SQL-PLIST11 SQL-PVAR-LI         EXT 683 675 691
+  000827               -    ST11.
+  000828                    CALL "DSNHADD2" USING SQL-PVAR-ADDRS1 IN                              EXT 700
+  000829                    SQL-PVAR-LIST11 WS-RETURN-SALES OF WS-EDIT-FIELD SQL-NULL TRA         691 175 174 379 352
+  000830               -    NS-SALESPERSON-NO OF DCLSALESTRANS-TAB SQL-NULL                       349 379
+  000831                    CALL "DSNHADDR" USING SQL-CODEPTR OF SQL-PLIST11 SQLCA.               EXT 682 675 263
+  000832                    CALL "DSNHADDR" USING SQL-APARMPTR OF SQL-PLIST12 SQL-AVAR-LI         EXT 724 715 731
+  000833               -    ST12.
+  000834                    CALL "DSNHADD2" USING SQL-AVAR-ADDRS1 IN                              EXT 740
+  000835                    SQL-AVAR-LIST12 TRANS-NO OF DCLSALESTRANS-TAB SQL-NULL TRANS-         731 350 349 379 351
+  000836               -    TYPE OF DCLSALESTRANS-TAB SQL-NULL TRANS-SALESPERSON-NO OF DC         349 379 352 349
+  000837               -    LSALESTRANS-TAB SQL-NULL TRANS-DATE OF DCLSALESTRANS-TAB SQL-         379 354 349 379
+  000838               -    NULL TRANS-DATA OF DCLSALESTRANS-TAB SQL-NULL.                        355 349 379
+  000839                    CALL "DSNHADDR" USING SQL-CODEPTR OF SQL-PLIST12 SQLCA.               EXT 722 715 263
+  000840                SQL-INIT-END.
+  000841                    CONTINUE.
+  000842
+  000843                A000-INITIALIZE.
+  000844                    OPEN OUTPUT SALESRPT.                                                 51
+  000845               *  OPEN CURSOR
+  000846               *****EXEC SQL OPEN TRANS_CURSOR END-EXEC.
+  000847                    PERFORM SQL-INITIAL UNTIL SQL-INIT-DONE                               787 381
+  000848                    CALL "DSNHLI" USING SQL-PLIST4                                        EXT 386
+  000849                    END-CALL.
+  000850                    IF SQLCODE = 0                                                        266
+  000851      1                PERFORM U300-GET-CURRENT-DATE                                      1080
+  000852      1                  PERFORM W100-WRITE-HEADER                                        1086
+  000853      1                  PERFORM C100-PROCESS-TRANSACTION                                 876
+  000854      1                      UNTIL WS-NO-MORE-TRANS-ROWS                                  225
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    18
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000855      1                  PERFORM W200-WRITE-COUNTS                                        1093
+  000856      1                  CLOSE SALESRPT                                                   51
+  000857               *****   EXEC SQL CLOSE TRANS_CURSOR END-EXEC
+  000858      1             PERFORM SQL-INITIAL UNTIL SQL-INIT-DONE                               787 381
+  000859      1             CALL "DSNHLI" USING SQL-PLIST5                                        EXT 402
+  000860      1             END-CALL
+  000861                    ELSE
+  000862      1                MOVE SQLCODE TO WS-RETCODE                                         266 217
+  000863      1                MOVE 'A000 OPEN CURSOR ' TO WS-ER-PROBLEM                          215
+  000864      1                WRITE PRNT-REC FROM WS-ERROR-LINE                                  53 211
+  000865                    END-IF.
+  000866
+  000867               * CLOSE CURSOR
+  000868               *****EXEC SQL CLOSE TRANS_CURSOR END-EXEC.
+  000869                    PERFORM SQL-INITIAL UNTIL SQL-INIT-DONE                               787 381
+  000870                    CALL "DSNHLI" USING SQL-PLIST6                                        EXT 418
+  000871                    END-CALL.
+  000872                    GOBACK.
+  000873               **************************************************************
+  000874               *               PROCESSING THE TRANSACTION 1                 *
+  000875               **************************************************************
+  000876                C100-PROCESS-TRANSACTION.
+  000877                    PERFORM R000-READ-TRANSACTION-RECORD                                  1110
+  000878                    EVALUATE TRUE
+  000879                         WHEN TRANS-ADD                                                   227
+  000880      1                      MOVE TRANS-DATA-TEXT TO WS-TRANS-MAINTENANCE                 357 71
+  000881      1                      PERFORM C100-PROCESS-ADD                                     904
+  000882      1                      PERFORM U200-PRINT-TRANSACTION-LINE                          1074
+  000883                         WHEN TRANS-DEL                                                   228
+  000884      1                      MOVE TRANS-DATA-TEXT TO WS-TRANS-MAINTENANCE                 357 71
+  000885      1                      PERFORM W220-DELETE-SALESPERSON-ROW                          941
+  000886      1                      PERFORM U200-PRINT-TRANSACTION-LINE                          1074
+  000887                         WHEN TRANS-CHG                                                   229
+  000888      1                      MOVE TRANS-DATA-TEXT TO WS-TRANS-MAINTENANCE                 357 71
+  000889      1                      PERFORM W200-UPDATE-SALESPERSON-ROW                          964
+  000890      1                      PERFORM U200-PRINT-TRANSACTION-LINE                          1074
+  000891                         WHEN TRANS-SALE                                                  230
+  000892      1                      MOVE TRANS-DATA-TEXT TO WS-TRANS-SALE                        357 62
+  000893      1                      PERFORM W210-UPDATE-SALES                                    994
+  000894      1                      PERFORM U200-PRINT-TRANSACTION-LINE                          1074
+  000895                         WHEN TRANS-RET                                                   231
+  000896      1                      MOVE TRANS-DATA-TEXT TO WS-TRANS-RETURN                      357 67
+  000897      1                      PERFORM W210-UPDATE-RETURN                                   1026
+  000898      1                      PERFORM U200-PRINT-TRANSACTION-LINE                          1074
+  000899                    END-EVALUATE.
+  000900
+  000901               **************************************************************
+  000902               *               PROCESSING THE TRANSACTION 2                 *
+  000903               **************************************************************
+  000904                C100-PROCESS-ADD.
+  000905                    PERFORM U100-MOVE-TRANS-TO-SALESPERSON                                1060
+  000906                    MOVE TRANS-NO TO WS-TRANS-NUM                                         350 130
+  000907                    MOVE 'ADD' TO WS-TRANS-TYPE                                           136
+  000908                    MOVE ZEROS TO SALESPERSON-RETURN-SALES.                               IMP 321
+  000909                    MOVE ZEROS TO SALESPERSON-GROSS-SALES.                                IMP 319
+  000910                    PERFORM W210-WRITE-SALESPERSON-ROW                                    922
+  000911                    IF SQLCODE = +0                                                       266
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    19
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000912      1                  ADD 1 TO WS-ADD-COUNTER                                          182
+  000913      1                  MOVE ' ' TO WS-TRANS-CHG-DATA                                    138
+  000914                    ELSE
+  000915      1                 ADD 1 TO WS-INVALID-COUNTER                                       187
+  000916      1                 MOVE TRANS-NO TO WS-ER-TRN-NO                                     350 213
+  000917      1                 MOVE SQLCODE TO WS-RETCODE                                        266 217
+  000918      1                 MOVE 'PROBLEM DOING ADD, STATUS IS:' TO WS-ER-PROBLEM             215
+  000919      1                 WRITE PRNT-REC FROM WS-ERROR-LINE                                 53 211
+  000920                    END-IF.
+  000921
+  000922                W210-WRITE-SALESPERSON-ROW.
+  000923               *****EXEC SQL
+  000924               *****     INSERT INTO SALESPERSON_TAB
+  000925               *****     ( SALESPERSON_NO, SALESPERSON_LASTNAME,
+  000926               *****       SALESPERSON_FIRSTNAME,
+  000927               *****       SALESPERSON_GROSS_SALES, SALESPERSON_RETURN_SALES,
+  000928               *****       SALESPERSON_BRANCH_NO, SALESPERSON_DEPT_NO,
+  000929               *****       SALESPERSON_COMM_RATE )
+  000930               *****     VALUES
+  000931               *****     ( :TRANS-SALESPERSON-NO, :SALESPERSON-LASTNAME,
+  000932               *****       :SALESPERSON-FIRSTNAME,
+  000933               *****       :SALESPERSON-GROSS-SALES, :SALESPERSON-RETURN-SALES,
+  000934               *****       :SALESPERSON-BRANCH-NO, :SALESPERSON-DEPT-NO,
+  000935               *****       :SALESPERSON-COMM-RATE )
+  000936               *****  END-EXEC.
+  000937                    PERFORM SQL-INITIAL UNTIL SQL-INIT-DONE                               787 381
+  000938                    CALL "DSNHLI" USING SQL-PLIST7                                        EXT 434
+  000939                    END-CALL.
+  000940
+  000941                W220-DELETE-SALESPERSON-ROW.
+  000942                    MOVE TRANS-NO TO WS-TRANS-NUM                                         350 130
+  000943                    MOVE TRANS-SALESPERSON-NO TO SALESPERSON-NO                           352 308
+  000944                    MOVE 'DELETE' TO WS-TRANS-TYPE                                        136
+  000945               *****EXEC SQL
+  000946               *****     DELETE FROM SALESPERSON_TAB
+  000947               *****         WHERE SALESPERSON_NO = :TRANS-SALESPERSON-NO
+  000948               *****END-EXEC
+  000949                    PERFORM SQL-INITIAL UNTIL SQL-INIT-DONE                               787 381
+  000950                    CALL "DSNHLI" USING SQL-PLIST8                                        EXT 528
+  000951                    END-CALL
+  000952                    IF SQLCODE = +0                                                       266
+  000953      1                  ADD 1 TO WS-DELETE-COUNTER                                       183
+  000954      1                  MOVE ' ' TO WS-TRANS-CHG-DATA                                    138
+  000955                    ELSE
+  000956      1                  ADD 1 TO WS-INVALID-COUNTER                                      187
+  000957      1                  MOVE TRANS-NO TO WS-ER-TRN-NO                                    350 213
+  000958      1                  MOVE SQLCODE TO WS-RETCODE                                       266 217
+  000959      1                  MOVE 'PROBLEM DOING DELETE, STATUS IS:' TO
+  000960      1                          WS-ER-PROBLEM                                            215
+  000961      1                  WRITE PRNT-REC FROM WS-ERROR-LINE                                53 211
+  000962                    END-IF.
+  000963
+  000964                W200-UPDATE-SALESPERSON-ROW.
+  000965                     MOVE TRANS-NO TO WS-TRANS-NUM                                        350 130
+  000966                    PERFORM U100-MOVE-TRANS-TO-SALESPERSON                                1060
+  000967                    COMPUTE WS-CHANGE-COUNTER = WS-CHANGE-COUNTER + 1                     186 186
+  000968                    END-COMPUTE
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    20
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000969                    MOVE 'CHANGE' TO WS-TRANS-TYPE                                        136
+  000970               *****EXEC SQL
+  000971               *****     UPDATE SALESPERSON_TAB
+  000972               *****     SET SALESPERSON_LASTNAME = :SALESPERSON-LASTNAME,
+  000973               *****         SALESPERSON_FIRSTNAME = :SALESPERSON-FIRSTNAME,
+  000974               *****         SALESPERSON_COMM_RATE = :SALESPERSON-COMM-RATE,
+  000975               *****         SALESPERSON_BRANCH_NO = :SALESPERSON-BRANCH-NO,
+  000976               *****         SALESPERSON_DEPT_NO = :SALESPERSON-DEPT-NO
+  000977               *****     WHERE SALESPERSON_NO = :TRANS-SALESPERSON-NO
+  000978               *****END-EXEC
+  000979                    PERFORM SQL-INITIAL UNTIL SQL-INIT-DONE                               787 381
+  000980                    CALL "DSNHLI" USING SQL-PLIST9                                        EXT 559
+  000981                    END-CALL
+  000982                    IF SQLCODE = +0                                                       266
+  000983      1                  ADD 1 TO WS-CHANGE-COUNTER                                       186
+  000984      1                  MOVE ' ' TO WS-TRANS-CHG-DATA                                    138
+  000985                     ELSE
+  000986      1                  ADD 1 TO WS-INVALID-COUNTER                                      187
+  000987      1                  MOVE TRANS-NO TO WS-ER-TRN-NO                                    350 213
+  000988      1                  MOVE SQLCODE TO WS-RETCODE                                       266 217
+  000989      1                  MOVE 'PROBLEM DOING CHANGE, STATUS IS:' TO
+  000990      1                          WS-ER-PROBLEM                                            215
+  000991      1                  WRITE PRNT-REC FROM WS-ERROR-LINE                                53 211
+  000992                     END-IF.
+  000993
+  000994                W210-UPDATE-SALES.
+  000995                    MOVE TRANS-NO TO WS-TRANS-NUM                                         350 130
+  000996                    MOVE TRANS-SALESPERSON-NO TO SALESPERSON-NO                           352 308
+  000997                    MOVE 'SALES' TO WS-TRANS-TYPE                                         136
+  000998                     COMPUTE WS-SALES-AMOUNT ROUNDED = WS-SALES-AMOUNT -                  63 63
+  000999                                         (WS-SALES-AMOUNT * WS-DISCOUNT-PCT)              63 64
+  001000                    END-COMPUTE
+  001001                    MOVE WS-SALES-AMOUNT TO SALESPERSON-GROSS-SALES                       63 319
+  001002               *****EXEC SQL
+  001003               *****   UPDATE SALESPERSON_TAB
+  001004               *****       SET
+  001005               *****         SALESPERSON_GROSS_SALES = SALESPERSON_GROSS_SALES +
+  001006               *****         :SALESPERSON-GROSS-SALES
+  001007               *****       WHERE
+  001008               *****       SALESPERSON_NO = :TRANS-SALESPERSON-NO
+  001009               *****END-EXEC
+  001010                    PERFORM SQL-INITIAL UNTIL SQL-INIT-DONE                               787 381
+  001011                    CALL "DSNHLI" USING SQL-PLIST10                                       EXT 635
+  001012                    END-CALL
+  001013                    IF SQLCODE = +0                                                       266
+  001014      1                  ADD 1 TO WS-SALES-COUNTER                                        184
+  001015      1                   MOVE SALESPERSON-GROSS-SALES TO WS-SALES-TRANS-AMOUNT           319 177
+  001016      1                   MOVE WS-SALES-TRANS-AMOUNT TO WS-TRANS-CHG-DATA                 177 138
+  001017                     ELSE
+  001018      1                  ADD 1 TO WS-INVALID-COUNTER                                      187
+  001019      1                  MOVE TRANS-NO TO WS-ER-TRN-NO                                    350 213
+  001020      1                  MOVE SQLCODE TO WS-RETCODE                                       266 217
+  001021      1                  MOVE 'PROBLEM DOING SALES, STATUS IS:' TO
+  001022      1                          WS-ER-PROBLEM                                            215
+  001023      1                  WRITE PRNT-REC FROM WS-ERROR-LINE                                53 211
+  001024                     END-IF.
+  001025
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    21
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  001026                W210-UPDATE-RETURN.
+  001027                    MOVE TRANS-NO TO WS-TRANS-NUM                                         350 130
+  001028                    MOVE TRANS-SALESPERSON-NO TO SALESPERSON-NO                           352 308
+  001029                    MOVE 'RETURN' TO WS-TRANS-TYPE                                        136
+  001030                    MOVE WS-RETURN-AMOUNT TO WS-RETURN-SALES                              68 175
+  001031               *****EXEC SQL
+  001032               *****   UPDATE SALESPERSON_TAB
+  001033               *****      SET
+  001034               *****        SALESPERSON_RETURN_SALES = SALESPERSON_RETURN_SALES +
+  001035               *****        :WS-RETURN-SALES
+  001036               *****      WHERE
+  001037               *****      SALESPERSON_NO = :TRANS-SALESPERSON-NO
+  001038               *****END-EXEC
+  001039                    PERFORM SQL-INITIAL UNTIL SQL-INIT-DONE                               787 381
+  001040                    CALL "DSNHLI" USING SQL-PLIST11                                       EXT 675
+  001041                    END-CALL
+  001042                    COMPUTE WS-RETURN-SALES = WS-RETURN-SALES * -1                        175 175
+  001043                    END-COMPUTE
+  001044                    MOVE WS-RETURN-SALES TO WS-RETURN-TRANS-AMOUNT                        175 176
+  001045                    IF SQLCODE = +0                                                       266
+  001046      1                  ADD 1 TO WS-RETURN-COUNTER                                       185
+  001047      1                  MOVE WS-RETURN-TRANS-AMOUNT TO WS-TRANS-CHG-DATA                 176 138
+  001048                    ELSE
+  001049      1                  ADD 1 TO WS-INVALID-COUNTER                                      187
+  001050      1                  MOVE TRANS-NO TO WS-ER-TRN-NO                                    350 213
+  001051      1                  MOVE SQLCODE TO WS-RETCODE                                       266 217
+  001052      1                  MOVE 'PROBLEM DOING RETURN, STATUS IS:' TO
+  001053      1                          WS-ER-PROBLEM                                            215
+  001054      1                  WRITE PRNT-REC FROM WS-ERROR-LINE                                53 211
+  001055                     END-IF.
+  001056
+  001057               **************************************************************
+  001058               *                    MOVE THE TRANSACTION                    *
+  001059               **************************************************************
+  001060                U100-MOVE-TRANS-TO-SALESPERSON.
+  001061                    MOVE WS-TRANS-LAST-NAME       TO  SALESPERSON-LASTNAME-TEXT.          72 312
+  001062                    MOVE WS-TRANS-FIRST-NAME      TO  SALESPERSON-FIRSTNAME-TEXT.         73 317
+  001063                    COMPUTE SALESPERSON-FIRSTNAME-LEN =                                   315
+  001064                         FUNCTION LENGTH (SALESPERSON-FIRSTNAME-TEXT)                     IFN 317
+  001065                    END-COMPUTE.
+  001066                    COMPUTE SALESPERSON-LASTNAME-LEN =                                    310
+  001067                         FUNCTION LENGTH (SALESPERSON-LASTNAME-TEXT)                      IFN 312
+  001068                    END-COMPUTE.
+  001069                    MOVE WS-TRANS-DEPT-NO         TO  SALESPERSON-DEPT-NO.                75 325
+  001070                    MOVE WS-TRANS-BRANCH-NO       TO  SALESPERSON-BRANCH-NO.              74 323
+  001071                    MOVE WS-TRANS-COMM-RATE       TO  SALESPERSON-COMM-RATE.              76 326
+  001072                    MOVE TRANS-SALESPERSON-NO     TO  SALESPERSON-NO.                     352 308
+  001073
+  001074                U200-PRINT-TRANSACTION-LINE.
+  001075                    MOVE TRANS-NO TO WS-TRANS-NUM                                         350 130
+  001076                    MOVE TRANS-SALESPERSON-NO TO WS-SALESPERSON-NUM                       352 132
+  001077                    MOVE TRANS-DATE TO WS-TRANS-DATE                                      354 134
+  001078                    WRITE PRNT-REC FROM WS-TRANS-HEADER.                                  53 128
+  001079
+  001080                U300-GET-CURRENT-DATE.
+  001081                    ACCEPT WS-DATE-VALUE FROM DATE YYYYMMDD                               195
+  001082                    MOVE WS-DATE-MONTH TO WS-HL1-MONTH                                    197 102
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    22
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  001083                    MOVE WS-DATE-DAY TO WS-HL1-DAY                                        198 104
+  001084                    MOVE WS-DATE-YEAR TO WS-HL1-YEAR.                                     196 106
+  001085
+  001086                W100-WRITE-HEADER.
+  001087                    COMPUTE PG-COUNTER = PG-COUNTER + 1                                   190 190
+  001088                    MOVE PG-COUNTER TO WS-HL1-PAGENO                                      190 96
+  001089                    WRITE PRNT-REC FROM WS-HEADING-LINE-1                                 53 93
+  001090                    WRITE PRNT-REC FROM WS-HEADING-LINE-2                                 53 109
+  001091                    WRITE PRNT-REC FROM WS-HEADING-LINE-3.                                53 115
+  001092
+  001093                W200-WRITE-COUNTS.
+  001094                    MOVE WS-ADD-COUNTER TO WS-ADD-CNT                                     182 154
+  001095                    MOVE WS-DELETE-COUNTER TO WS-DELETE-CNT                               183 159
+  001096                    MOVE WS-CHANGE-COUNTER TO WS-CHANGE-CNT                               186 164
+  001097                    MOVE WS-SALES-COUNTER TO WS-SALES-CNT                                 184 143
+  001098                    MOVE WS-INVALID-COUNTER TO WS-INVALID-CNT                             187 170
+  001099                    MOVE WS-RETURN-COUNTER TO WS-RETURN-CNT                               185 149
+  001100                    WRITE PRNT-REC FROM WS-COUNTER-HEADER-1                               53 140
+  001101                    WRITE PRNT-REC FROM WS-COUNTER-HEADER-2                               53 145
+  001102                    WRITE PRNT-REC FROM WS-COUNTER-HEADER-3                               53 151
+  001103                    WRITE PRNT-REC FROM WS-COUNTER-HEADER-4                               53 156
+  001104                    WRITE PRNT-REC FROM WS-COUNTER-HEADER-5                               53 161
+  001105                    WRITE PRNT-REC FROM WS-COUNTER-HEADER-6.                              53 166
+  001106
+  001107               **************************************************************
+  001108               *                   READS THE TRANSACTION                    *
+  001109               **************************************************************
+  001110                R000-READ-TRANSACTION-RECORD.
+  001111               *****EXEC SQL
+  001112               *****    FETCH TRANS_CURSOR INTO   :TRANS-NO,
+  001113               *****    :TRANS-TYPE,
+  001114               *****    :TRANS-SALESPERSON-NO,
+  001115               *****    :TRANS-DATE,
+  001116               *****    :TRANS-DATA
+  001117               *****END-EXEC.
+  001118                    PERFORM SQL-INITIAL UNTIL SQL-INIT-DONE                               787 381
+  001119                    CALL "DSNHLI" USING SQL-PLIST12                                       EXT 715
+  001120                    END-CALL.
+  001121                    IF SQLCODE = +100                                                     266
+  001122      1                  MOVE 'N' TO WS-MORE-TRANS-ROWS                                   224
+  001123                    ELSE
+  001124      1                MOVE TRANS-TYPE TO WS-TRANS-TYPE-SWITCH                            351 226
+  001125                    END-IF.
+*/ PCS3PRG1
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    23
+An "M" preceding a data-name reference indicates that the data-name is modified by this reference.
+ 
+ Defined   Cross-reference of data names   References
+ 
+     307   DCLSALESPERSON-TAB . . . . . .  796 797 798 799 800 800 801 813 814 815 816 817 823
+     349   DCLSALESTRANS-TAB. . . . . . .  795 807 817 824 830 835 836 836 837 838
+     374   DSN-TEMP
+     375   DSN-TMP2
+     378   DSNNLEN
+     376   DSNNROWS
+     377   DSNNTYPE
+     190   PG-COUNTER . . . . . . . . . .  M1087 1087 1088
+     452   PRE-SQLDABC
+     546   PRE-SQLDABC
+     577   PRE-SQLDABC
+     653   PRE-SQLDABC
+     693   PRE-SQLDABC
+     733   PRE-SQLDABC
+     451   PRE-SQLDAID
+     545   PRE-SQLDAID
+     576   PRE-SQLDAID
+     652   PRE-SQLDAID
+     692   PRE-SQLDAID
+     732   PRE-SQLDAID
+     454   PRE-SQLLD
+     548   PRE-SQLLD
+     579   PRE-SQLLD
+     655   PRE-SQLLD
+     695   PRE-SQLLD
+     735   PRE-SQLLD
+     453   PRE-SQLN
+     547   PRE-SQLN
+     578   PRE-SQLN
+     654   PRE-SQLN
+     694   PRE-SQLN
+     734   PRE-SQLN
+     455   PRE-SQLVAR
+     549   PRE-SQLVAR
+     580   PRE-SQLVAR
+     656   PRE-SQLVAR
+     696   PRE-SQLVAR
+     736   PRE-SQLVAR
+      53   PRNT-REC . . . . . . . . . . .  M864 M919 M961 M991 M1023 M1054 M1078 M1089 M1090 M1091 M1100 M1101 M1102 M1103
+                                           M1104 M1105
+     323   SALESPERSON-BRANCH-NO. . . . .  799 815 M1070
+     326   SALESPERSON-COMM-RATE. . . . .  801 814 M1071
+     325   SALESPERSON-DEPT-NO. . . . . .  800 816 M1069
+     314   SALESPERSON-FIRSTNAME. . . . .  796 814
+     315   SALESPERSON-FIRSTNAME-LEN. . .  M1063
+     317   SALESPERSON-FIRSTNAME-TEXT . .  M1062 1064
+     319   SALESPERSON-GROSS-SALES. . . .  797 823 M909 M1001 1015
+     309   SALESPERSON-LASTNAME . . . . .  796 813
+     310   SALESPERSON-LASTNAME-LEN . . .  M1066
+     312   SALESPERSON-LASTNAME-TEXT. . .  M1061 1067
+     308   SALESPERSON-NO . . . . . . . .  M943 M996 M1028 M1072
+     321   SALESPERSON-RETURN-SALES . . .  798 M908
+      51   SALESRPT . . . . . . . . . . .  46 844 856
+     395   SQL-APARMPTR
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    24
+ Defined   Cross-reference of data names   References
+ 
+     411   SQL-APARMPTR
+     427   SQL-APARMPTR
+     443   SQL-APARMPTR
+     537   SQL-APARMPTR
+     568   SQL-APARMPTR
+     644   SQL-APARMPTR
+     684   SQL-APARMPTR
+     724   SQL-APARMPTR . . . . . . . . .  832
+     740   SQL-AVAR-ADDRS1. . . . . . . .  834
+     749   SQL-AVAR-ADDRS2
+     758   SQL-AVAR-ADDRS3
+     767   SQL-AVAR-ADDRS4
+     776   SQL-AVAR-ADDRS5
+     741   SQL-AVAR-ADDR1
+     750   SQL-AVAR-ADDR2
+     759   SQL-AVAR-ADDR3
+     768   SQL-AVAR-ADDR4
+     777   SQL-AVAR-ADDR5
+     742   SQL-AVAR-IND1
+     751   SQL-AVAR-IND2
+     760   SQL-AVAR-IND3
+     769   SQL-AVAR-IND4
+     778   SQL-AVAR-IND5
+     739   SQL-AVAR-LEN1
+     748   SQL-AVAR-LEN2
+     757   SQL-AVAR-LEN3
+     766   SQL-AVAR-LEN4
+     775   SQL-AVAR-LEN5
+     731   SQL-AVAR-LIST12. . . . . . . .  832 835
+     745   SQL-AVAR-NAMEC1
+     754   SQL-AVAR-NAMEC2
+     763   SQL-AVAR-NAMEC3
+     772   SQL-AVAR-NAMEC4
+     781   SQL-AVAR-NAMEC5
+     744   SQL-AVAR-NAMEL1
+     753   SQL-AVAR-NAMEL2
+     762   SQL-AVAR-NAMEL3
+     771   SQL-AVAR-NAMEL4
+     780   SQL-AVAR-NAMEL5
+     743   SQL-AVAR-NAME1
+     752   SQL-AVAR-NAME2
+     761   SQL-AVAR-NAME3
+     770   SQL-AVAR-NAME4
+     779   SQL-AVAR-NAME5
+     738   SQL-AVAR-TYPE1
+     747   SQL-AVAR-TYPE2
+     756   SQL-AVAR-TYPE3
+     765   SQL-AVAR-TYPE4
+     774   SQL-AVAR-TYPE5
+     388   SQL-CALLTYPE
+     404   SQL-CALLTYPE
+     420   SQL-CALLTYPE
+     436   SQL-CALLTYPE
+     530   SQL-CALLTYPE
+     561   SQL-CALLTYPE
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    25
+ Defined   Cross-reference of data names   References
+ 
+     637   SQL-CALLTYPE
+     677   SQL-CALLTYPE
+     717   SQL-CALLTYPE
+     393   SQL-CODEPTR. . . . . . . . . .  789
+     409   SQL-CODEPTR. . . . . . . . . .  790
+     425   SQL-CODEPTR. . . . . . . . . .  791
+     441   SQL-CODEPTR. . . . . . . . . .  803
+     535   SQL-CODEPTR. . . . . . . . . .  809
+     566   SQL-CODEPTR. . . . . . . . . .  819
+     642   SQL-CODEPTR. . . . . . . . . .  825
+     682   SQL-CODEPTR. . . . . . . . . .  831
+     722   SQL-CODEPTR. . . . . . . . . .  839
+     385   SQL-FILE-APPEND
+     383   SQL-FILE-CREATE
+     384   SQL-FILE-OVERWRITE
+     382   SQL-FILE-READ
+     381   SQL-INIT-DONE. . . . . . . . .  847 858 869 937 949 979 1010 1039 1118
+     380   SQL-INIT-FLAG. . . . . . . . .  M788
+     379   SQL-NULL . . . . . . . . . . .  795 796 797 798 799 800 801 802 807 813 814 815 816 817 818 824 824 829 830 835
+                                           836 837 837 838
+     387   SQL-PLIST-CON
+     403   SQL-PLIST-CON
+     419   SQL-PLIST-CON
+     435   SQL-PLIST-CON
+     529   SQL-PLIST-CON
+     560   SQL-PLIST-CON
+     636   SQL-PLIST-CON
+     676   SQL-PLIST-CON
+     716   SQL-PLIST-CON
+     399   SQL-PLIST-FLG
+     415   SQL-PLIST-FLG
+     431   SQL-PLIST-FLG
+     447   SQL-PLIST-FLG
+     541   SQL-PLIST-FLG
+     572   SQL-PLIST-FLG
+     648   SQL-PLIST-FLG
+     688   SQL-PLIST-FLG
+     728   SQL-PLIST-FLG
+     635   SQL-PLIST10. . . . . . . . . .  820 825 1011
+     675   SQL-PLIST11. . . . . . . . . .  826 831 1040
+     715   SQL-PLIST12. . . . . . . . . .  832 839 1119
+     386   SQL-PLIST4 . . . . . . . . . .  789 848
+     402   SQL-PLIST5 . . . . . . . . . .  790 859
+     418   SQL-PLIST6 . . . . . . . . . .  791 870
+     434   SQL-PLIST7 . . . . . . . . . .  792 803 938
+     528   SQL-PLIST8 . . . . . . . . . .  804 809 950
+     559   SQL-PLIST9 . . . . . . . . . .  810 819 980
+     389   SQL-PROG-NAME
+     405   SQL-PROG-NAME
+     421   SQL-PROG-NAME
+     437   SQL-PROG-NAME
+     531   SQL-PROG-NAME
+     562   SQL-PROG-NAME
+     638   SQL-PROG-NAME
+     678   SQL-PROG-NAME
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    26
+ Defined   Cross-reference of data names   References
+ 
+     718   SQL-PROG-NAME
+     459   SQL-PVAR-ADDRS1. . . . . . . .  794
+     553   SQL-PVAR-ADDRS1. . . . . . . .  806
+     584   SQL-PVAR-ADDRS1. . . . . . . .  812
+     660   SQL-PVAR-ADDRS1. . . . . . . .  822
+     700   SQL-PVAR-ADDRS1. . . . . . . .  828
+     468   SQL-PVAR-ADDRS2
+     593   SQL-PVAR-ADDRS2
+     669   SQL-PVAR-ADDRS2
+     709   SQL-PVAR-ADDRS2
+     477   SQL-PVAR-ADDRS3
+     602   SQL-PVAR-ADDRS3
+     486   SQL-PVAR-ADDRS4
+     611   SQL-PVAR-ADDRS4
+     495   SQL-PVAR-ADDRS5
+     620   SQL-PVAR-ADDRS5
+     504   SQL-PVAR-ADDRS6
+     629   SQL-PVAR-ADDRS6
+     513   SQL-PVAR-ADDRS7
+     522   SQL-PVAR-ADDRS8
+     460   SQL-PVAR-ADDR1
+     554   SQL-PVAR-ADDR1
+     585   SQL-PVAR-ADDR1
+     661   SQL-PVAR-ADDR1
+     701   SQL-PVAR-ADDR1
+     469   SQL-PVAR-ADDR2
+     594   SQL-PVAR-ADDR2
+     670   SQL-PVAR-ADDR2
+     710   SQL-PVAR-ADDR2
+     478   SQL-PVAR-ADDR3
+     603   SQL-PVAR-ADDR3
+     487   SQL-PVAR-ADDR4
+     612   SQL-PVAR-ADDR4
+     496   SQL-PVAR-ADDR5
+     621   SQL-PVAR-ADDR5
+     505   SQL-PVAR-ADDR6
+     630   SQL-PVAR-ADDR6
+     514   SQL-PVAR-ADDR7
+     523   SQL-PVAR-ADDR8
+     461   SQL-PVAR-IND1
+     555   SQL-PVAR-IND1
+     586   SQL-PVAR-IND1
+     662   SQL-PVAR-IND1
+     702   SQL-PVAR-IND1
+     470   SQL-PVAR-IND2
+     595   SQL-PVAR-IND2
+     671   SQL-PVAR-IND2
+     711   SQL-PVAR-IND2
+     479   SQL-PVAR-IND3
+     604   SQL-PVAR-IND3
+     488   SQL-PVAR-IND4
+     613   SQL-PVAR-IND4
+     497   SQL-PVAR-IND5
+     622   SQL-PVAR-IND5
+     506   SQL-PVAR-IND6
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    27
+ Defined   Cross-reference of data names   References
+ 
+     631   SQL-PVAR-IND6
+     515   SQL-PVAR-IND7
+     524   SQL-PVAR-IND8
+     458   SQL-PVAR-LEN1
+     552   SQL-PVAR-LEN1
+     583   SQL-PVAR-LEN1
+     659   SQL-PVAR-LEN1
+     699   SQL-PVAR-LEN1
+     467   SQL-PVAR-LEN2
+     592   SQL-PVAR-LEN2
+     668   SQL-PVAR-LEN2
+     708   SQL-PVAR-LEN2
+     476   SQL-PVAR-LEN3
+     601   SQL-PVAR-LEN3
+     485   SQL-PVAR-LEN4
+     610   SQL-PVAR-LEN4
+     494   SQL-PVAR-LEN5
+     619   SQL-PVAR-LEN5
+     503   SQL-PVAR-LEN6
+     628   SQL-PVAR-LEN6
+     512   SQL-PVAR-LEN7
+     521   SQL-PVAR-LEN8
+     651   SQL-PVAR-LIST10. . . . . . . .  820 823
+     691   SQL-PVAR-LIST11. . . . . . . .  826 829
+     450   SQL-PVAR-LIST7 . . . . . . . .  792 795
+     544   SQL-PVAR-LIST8 . . . . . . . .  804 807
+     575   SQL-PVAR-LIST9 . . . . . . . .  810 813
+     464   SQL-PVAR-NAMEC1
+     558   SQL-PVAR-NAMEC1
+     589   SQL-PVAR-NAMEC1
+     665   SQL-PVAR-NAMEC1
+     705   SQL-PVAR-NAMEC1
+     473   SQL-PVAR-NAMEC2
+     598   SQL-PVAR-NAMEC2
+     674   SQL-PVAR-NAMEC2
+     714   SQL-PVAR-NAMEC2
+     482   SQL-PVAR-NAMEC3
+     607   SQL-PVAR-NAMEC3
+     491   SQL-PVAR-NAMEC4
+     616   SQL-PVAR-NAMEC4
+     500   SQL-PVAR-NAMEC5
+     625   SQL-PVAR-NAMEC5
+     509   SQL-PVAR-NAMEC6
+     634   SQL-PVAR-NAMEC6
+     518   SQL-PVAR-NAMEC7
+     527   SQL-PVAR-NAMEC8
+     463   SQL-PVAR-NAMEL1
+     557   SQL-PVAR-NAMEL1
+     588   SQL-PVAR-NAMEL1
+     664   SQL-PVAR-NAMEL1
+     704   SQL-PVAR-NAMEL1
+     472   SQL-PVAR-NAMEL2
+     597   SQL-PVAR-NAMEL2
+     673   SQL-PVAR-NAMEL2
+     713   SQL-PVAR-NAMEL2
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    28
+ Defined   Cross-reference of data names   References
+ 
+     481   SQL-PVAR-NAMEL3
+     606   SQL-PVAR-NAMEL3
+     490   SQL-PVAR-NAMEL4
+     615   SQL-PVAR-NAMEL4
+     499   SQL-PVAR-NAMEL5
+     624   SQL-PVAR-NAMEL5
+     508   SQL-PVAR-NAMEL6
+     633   SQL-PVAR-NAMEL6
+     517   SQL-PVAR-NAMEL7
+     526   SQL-PVAR-NAMEL8
+     462   SQL-PVAR-NAME1
+     556   SQL-PVAR-NAME1
+     587   SQL-PVAR-NAME1
+     663   SQL-PVAR-NAME1
+     703   SQL-PVAR-NAME1
+     471   SQL-PVAR-NAME2
+     596   SQL-PVAR-NAME2
+     672   SQL-PVAR-NAME2
+     712   SQL-PVAR-NAME2
+     480   SQL-PVAR-NAME3
+     605   SQL-PVAR-NAME3
+     489   SQL-PVAR-NAME4
+     614   SQL-PVAR-NAME4
+     498   SQL-PVAR-NAME5
+     623   SQL-PVAR-NAME5
+     507   SQL-PVAR-NAME6
+     632   SQL-PVAR-NAME6
+     516   SQL-PVAR-NAME7
+     525   SQL-PVAR-NAME8
+     457   SQL-PVAR-TYPE1
+     551   SQL-PVAR-TYPE1
+     582   SQL-PVAR-TYPE1
+     658   SQL-PVAR-TYPE1
+     698   SQL-PVAR-TYPE1
+     466   SQL-PVAR-TYPE2
+     591   SQL-PVAR-TYPE2
+     667   SQL-PVAR-TYPE2
+     707   SQL-PVAR-TYPE2
+     475   SQL-PVAR-TYPE3
+     600   SQL-PVAR-TYPE3
+     484   SQL-PVAR-TYPE4
+     609   SQL-PVAR-TYPE4
+     493   SQL-PVAR-TYPE5
+     618   SQL-PVAR-TYPE5
+     502   SQL-PVAR-TYPE6
+     627   SQL-PVAR-TYPE6
+     511   SQL-PVAR-TYPE7
+     520   SQL-PVAR-TYPE8
+     392   SQL-SECTION
+     408   SQL-SECTION
+     424   SQL-SECTION
+     440   SQL-SECTION
+     534   SQL-SECTION
+     565   SQL-SECTION
+     641   SQL-SECTION
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    29
+ Defined   Cross-reference of data names   References
+ 
+     681   SQL-SECTION
+     721   SQL-SECTION
+     398   SQL-STMT-NUM
+     414   SQL-STMT-NUM
+     430   SQL-STMT-NUM
+     446   SQL-STMT-NUM
+     540   SQL-STMT-NUM
+     571   SQL-STMT-NUM
+     647   SQL-STMT-NUM
+     687   SQL-STMT-NUM
+     727   SQL-STMT-NUM
+     397   SQL-STMT-TYPE
+     413   SQL-STMT-TYPE
+     429   SQL-STMT-TYPE
+     445   SQL-STMT-TYPE
+     539   SQL-STMT-TYPE
+     570   SQL-STMT-TYPE
+     646   SQL-STMT-TYPE
+     686   SQL-STMT-TYPE
+     726   SQL-STMT-TYPE
+     373   SQL-TEMP
+     390   SQL-TIMESTAMP-1
+     406   SQL-TIMESTAMP-1
+     422   SQL-TIMESTAMP-1
+     438   SQL-TIMESTAMP-1
+     532   SQL-TIMESTAMP-1
+     563   SQL-TIMESTAMP-1
+     639   SQL-TIMESTAMP-1
+     679   SQL-TIMESTAMP-1
+     719   SQL-TIMESTAMP-1
+     391   SQL-TIMESTAMP-2
+     407   SQL-TIMESTAMP-2
+     423   SQL-TIMESTAMP-2
+     439   SQL-TIMESTAMP-2
+     533   SQL-TIMESTAMP-2
+     564   SQL-TIMESTAMP-2
+     640   SQL-TIMESTAMP-2
+     680   SQL-TIMESTAMP-2
+     720   SQL-TIMESTAMP-2
+     394   SQL-VPARMPTR
+     410   SQL-VPARMPTR
+     426   SQL-VPARMPTR
+     442   SQL-VPARMPTR . . . . . . . . .  792
+     536   SQL-VPARMPTR . . . . . . . . .  804
+     567   SQL-VPARMPTR . . . . . . . . .  810
+     643   SQL-VPARMPTR . . . . . . . . .  820
+     683   SQL-VPARMPTR . . . . . . . . .  826
+     723   SQL-VPARMPTR
+     263   SQLCA. . . . . . . . . . . . .  789 790 791 803 809 819 825 831 839
+     265   SQLCABC
+     264   SQLCAID
+     266   SQLCODE. . . . . . . . . . . .  850 862 911 917 952 958 982 988 1013 1020 1045 1051 1121
+     240   SQLD
+     236   SQLDA
+     238   SQLDABC
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    30
+ Defined   Cross-reference of data names   References
+ 
+     237   SQLDAID
+     248   SQLDATA
+     258   SQLDATALEN
+     259   SQLDATATYPE-NAME
+     261   SQLDATATYPE-NAMEC
+     260   SQLDATATYPE-NAMEL
+     271   SQLERRD
+     267   SQLERRM
+     269   SQLERRMC
+     268   SQLERRML
+     270   SQLERRP
+     282   SQLEXT
+     249   SQLIND
+     244   SQLLEN . . . . . . . . . . . .  245
+     255   SQLLONGLEN
+     239   SQLN . . . . . . . . . . . . .  241
+     250   SQLNAME
+     252   SQLNAMEC
+     251   SQLNAMEL
+     246   SQLPRECISION
+     247   SQLSCALE
+     286   SQLSTATE
+     243   SQLTYPE
+     241   SQLVAR
+     456   SQLVAR-BASE1
+     550   SQLVAR-BASE1
+     581   SQLVAR-BASE1
+     657   SQLVAR-BASE1
+     697   SQLVAR-BASE1
+     737   SQLVAR-BASE1
+     465   SQLVAR-BASE2
+     590   SQLVAR-BASE2
+     666   SQLVAR-BASE2
+     706   SQLVAR-BASE2
+     746   SQLVAR-BASE2
+     474   SQLVAR-BASE3
+     599   SQLVAR-BASE3
+     755   SQLVAR-BASE3
+     483   SQLVAR-BASE4
+     608   SQLVAR-BASE4
+     764   SQLVAR-BASE4
+     492   SQLVAR-BASE5
+     617   SQLVAR-BASE5
+     773   SQLVAR-BASE5
+     501   SQLVAR-BASE6
+     626   SQLVAR-BASE6
+     510   SQLVAR-BASE7
+     519   SQLVAR-BASE8
+     242   SQLVAR1. . . . . . . . . . . .  253
+     253   SQLVAR2
+     254   SQLVAR2-RESERVED-1 . . . . . .  255
+     257   SQLVAR2-RESERVED-2
+     273   SQLWARN
+     285   SQLWARNA
+     274   SQLWARN0
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    31
+ Defined   Cross-reference of data names   References
+ 
+     275   SQLWARN1
+     276   SQLWARN2
+     277   SQLWARN3
+     278   SQLWARN4
+     279   SQLWARN5
+     280   SQLWARN6
+     281   SQLWARN7
+     283   SQLWARN8
+     284   SQLWARN9
+     227   TRANS-ADD. . . . . . . . . . .  879
+     229   TRANS-CHG. . . . . . . . . . .  887
+     355   TRANS-DATA . . . . . . . . . .  838
+     356   TRANS-DATA-LEN
+     357   TRANS-DATA-TEXT. . . . . . . .  880 884 888 892 896
+     354   TRANS-DATE . . . . . . . . . .  837 1077
+     228   TRANS-DEL. . . . . . . . . . .  883
+     350   TRANS-NO . . . . . . . . . . .  835 906 916 942 957 965 987 995 1019 1027 1050 1075
+     231   TRANS-RET. . . . . . . . . . .  895
+     230   TRANS-SALE . . . . . . . . . .  891
+     352   TRANS-SALESPERSON-NO . . . . .  795 807 817 824 829 836 943 996 1028 1072 1076
+     351   TRANS-TYPE . . . . . . . . . .  835 1124
+     154   WS-ADD-CNT . . . . . . . . . .  M1094
+     182   WS-ADD-COUNTER . . . . . . . .  M912 1094
+     205   WS-BRANCH-KEY
+     206   WS-BRANCH-NO
+     164   WS-CHANGE-CNT. . . . . . . . .  M1096
+     186   WS-CHANGE-COUNTER. . . . . . .  M967 967 M983 1096
+     140   WS-COUNTER-HEADER-1. . . . . .  1100
+     145   WS-COUNTER-HEADER-2. . . . . .  1101
+     151   WS-COUNTER-HEADER-3. . . . . .  1102
+     156   WS-COUNTER-HEADER-4. . . . . .  1103
+     161   WS-COUNTER-HEADER-5. . . . . .  1104
+     166   WS-COUNTER-HEADER-6. . . . . .  1105
+     198   WS-DATE-DAY. . . . . . . . . .  1083
+     197   WS-DATE-MONTH. . . . . . . . .  1082
+     203   WS-DATE-TDAY
+     202   WS-DATE-TMONTH
+     201   WS-DATE-TYEAR
+     195   WS-DATE-VALUE. . . . . . . . .  M1081
+     196   WS-DATE-YEAR . . . . . . . . .  1084
+     159   WS-DELETE-CNT. . . . . . . . .  M1095
+     183   WS-DELETE-COUNTER. . . . . . .  M953 1095
+     207   WS-DEPT-NO
+      64   WS-DISCOUNT-PCT. . . . . . . .  999
+     174   WS-EDIT-FIELD. . . . . . . . .  829
+     215   WS-ER-PROBLEM. . . . . . . . .  M863 M918 M960 M990 M1022 M1053
+     213   WS-ER-TRN-NO . . . . . . . . .  M916 M957 M987 M1019 M1050
+     211   WS-ERROR-LINE. . . . . . . . .  864 919 961 991 1023 1054
+      93   WS-HEADING-LINE-1. . . . . . .  1089
+     109   WS-HEADING-LINE-2. . . . . . .  1090
+     115   WS-HEADING-LINE-3. . . . . . .  1091
+     104   WS-HL1-DAY . . . . . . . . . .  M1083
+     102   WS-HL1-MONTH . . . . . . . . .  M1082
+      96   WS-HL1-PAGENO. . . . . . . . .  M1088
+     106   WS-HL1-YEAR. . . . . . . . . .  M1084
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    32
+ Defined   Cross-reference of data names   References
+ 
+     170   WS-INVALID-CNT . . . . . . . .  M1098
+     187   WS-INVALID-COUNTER . . . . . .  M915 M956 M986 M1018 M1049 1098
+     224   WS-MORE-TRANS-ROWS . . . . . .  M1122
+     225   WS-NO-MORE-TRANS-ROWS. . . . .  854
+     189   WS-PAGE-NUMBER
+     217   WS-RETCODE . . . . . . . . . .  M862 M917 M958 M988 M1020 M1051
+      68   WS-RETURN-AMOUNT . . . . . . .  1030
+     149   WS-RETURN-CNT. . . . . . . . .  M1099
+     185   WS-RETURN-COUNTER. . . . . . .  M1046 1099
+     175   WS-RETURN-SALES. . . . . . . .  829 M1030 M1042 1042 1044
+     176   WS-RETURN-TRANS-AMOUNT . . . .  M1044 1047
+      83   WS-SALEMAST-EOF-SWITCH
+      63   WS-SALES-AMOUNT. . . . . . . .  M998 998 999 1001
+     143   WS-SALES-CNT . . . . . . . . .  M1097
+     184   WS-SALES-COUNTER . . . . . . .  M1014 1097
+     177   WS-SALES-TRANS-AMOUNT. . . . .  M1015 1016
+      84   WS-SALESMAST-EOF
+      85   WS-SALESMAST-NOT-EOF
+     132   WS-SALESPERSON-NUM . . . . . .  M1076
+      87   WS-SALESTRANS-EOF
+      86   WS-SALESTRANS-EOF-SWITCH
+      88   WS-SALESTRANS-NOT-EOF
+      82   WS-SWITCHES
+     223   WS-SWITCHES
+      74   WS-TRANS-BRANCH-NO . . . . . .  1070
+     138   WS-TRANS-CHG-DATA. . . . . . .  M913 M954 M984 M1016 M1047
+      76   WS-TRANS-COMM-RATE . . . . . .  1071
+     181   WS-TRANS-COUNTERS
+     134   WS-TRANS-DATE. . . . . . . . .  M1077
+      75   WS-TRANS-DEPT-NO . . . . . . .  1069
+      73   WS-TRANS-FIRST-NAME. . . . . .  1062
+     128   WS-TRANS-HEADER. . . . . . . .  1078
+      72   WS-TRANS-LAST-NAME . . . . . .  1061
+      71   WS-TRANS-MAINTENANCE . . . . .  M880 M884 M888
+     130   WS-TRANS-NUM . . . . . . . . .  M906 M942 M965 M995 M1027 M1075
+      67   WS-TRANS-RETURN. . . . . . . .  M896
+      62   WS-TRANS-SALE. . . . . . . . .  M892
+     136   WS-TRANS-TYPE. . . . . . . . .  M907 M944 M969 M997 M1029
+     226   WS-TRANS-TYPE-SWITCH . . . . .  M1124
+     200   WS-TRANSCAC-DATE
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    33
+Context usage is indicated by the letter preceding a procedure-name reference.
+These letters and their meanings are:
+    A = ALTER (procedure-name)
+    D = GO TO (procedure-name) DEPENDING ON
+    E = End of range of (PERFORM) through (procedure-name)
+    G = GO TO (procedure-name)
+    P = PERFORM (procedure-name)
+    T = (ALTER) TO PROCEED TO (procedure-name)
+    U = USE FOR DEBUGGING (procedure-name)
+ 
+ Defined   Cross-reference of procedures   References
+ 
+     843   A000-INITIALIZE
+     904   C100-PROCESS-ADD . . . . . . .  P881
+     876   C100-PROCESS-TRANSACTION . . .  P853
+     784   DSNSQL
+    1110   R000-READ-TRANSACTION-RECORD .  P877
+     840   SQL-INIT-END . . . . . . . . .  G786
+     787   SQL-INITIAL. . . . . . . . . .  P847 P858 P869 P937 P949 P979 P1010 P1039 P1118
+     785   SQL-SKIP
+    1060   U100-MOVE-TRANS-TO-SALESPERSON  P905 P966
+    1074   U200-PRINT-TRANSACTION-LINE. .  P882 P886 P890 P894 P898
+    1080   U300-GET-CURRENT-DATE. . . . .  P851
+    1086   W100-WRITE-HEADER. . . . . . .  P852
+     964   W200-UPDATE-SALESPERSON-ROW. .  P889
+    1093   W200-WRITE-COUNTS. . . . . . .  P855
+    1026   W210-UPDATE-RETURN . . . . . .  P897
+     994   W210-UPDATE-SALES. . . . . . .  P893
+     922   W210-WRITE-SALESPERSON-ROW . .  P910
+     941   W220-DELETE-SALESPERSON-ROW. .  P885
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    34
+ Defined   Cross-reference of programs     References
+ 
+EXTERNAL   DSNHADDR . . . . . . . . . . .  789 790 791 792 803 804 809 810 819 820 825 826 831 832 839
+EXTERNAL   DSNHADD2 . . . . . . . . . . .  794 806 812 822 828 834
+EXTERNAL   DSNHLI . . . . . . . . . . . .  848 859 870 938 950 980 1011 1040 1119
+       7   PCS3PRG1
+PP 5655-S71 IBM Enterprise COBOL for z/OS  4.2.0               PCS3PRG1  Date 08/20/2020  Time 21:16:19   Page    35
+ 
+         COPY/BASIS cross-reference of text-names, library names and dataset information
+ 
+ Text-name Library   File name                                    Concat   ISPF statistics
+ (Member)  (DDNAME)  (Dataset name)                               Level    Created         Changed
+ 
+ CCS3SLSW  SYSLIB    KC03G9C.COPY                                   0     2020/08/14   2020/08/17 17:13:27
+ 
+* Statistics for COBOL program PCS3PRG1:
+*    Source records = 1125
+*    Data Division statements = 531
+*    Procedure Division statements = 171
+End of compilation 1,  program PCS3PRG1,  no statements flagged.
+Return code 0
+z/OS V2 R3 BINDER     21:16:20 THURSDAY AUGUST 20, 2020
+BATCH EMULATOR  JOB(PCS3PRG1) STEP(LKED    ) PGM= IEWL
+IEW2278I B352 INVOCATION PARAMETERS - LIST,XREF
+ 
+ 
+                                       C R O S S - R E F E R E N C E  T A B L E
+                                       _________________________________________
+ 
+TEXT CLASS = B_TEXT
+ 
+---------------  R E F E R E N C E  --------------------------  T A R G E T  -------------------------------------------
+  CLASS                            ELEMENT       |                                            ELEMENT                  |
+  OFFSET SECT/PART(ABBREV)          OFFSET  TYPE | SYMBOL(ABBREV)   SECTION (ABBREV)           OFFSET CLASS NAME       |
+                                                 |                                                                     |
+      50 PCS3PRG1                       50 V-CON | IGZCBSO          IGZCBSO                         0 B_TEXT           |
+      BA PCS3PRG1                       BA V-CON | CEESTART         CEESTART                        0 B_TEXT           |
+      DA PCS3PRG1                       DA V-CON | CEESTART         CEESTART                        0 B_TEXT           |
+      DE PCS3PRG1                       DE V-CON | CEEBETBL         CEEBETBL                        0 B_TEXT           |
+     14C PCS3PRG1                      14C V-CON | DSNHADDR         DSNHADDR                        0 B_TEXT           |
+     150 PCS3PRG1                      150 V-CON | DSNHADD2         DSNHADD2                        0 B_TEXT           |
+     154 PCS3PRG1                      154 V-CON | DSNHLI           DSNELI                         10 B_TEXT           |
+     158 PCS3PRG1                      158 V-CON | CEELOCT          CEELOCT                         0 B_TEXT           |
+   1684C CEEBETBL                        4 V-CON | CEEBXITA         $UNRESOLVED(W)                                     |
+   16850 CEEBETBL                        8 V-CON | CEEBINT          CEEBINT                         0 B_TEXT           |
+   16854 CEEBETBL                        C V-CON | CEEBLLST         CEEBLLST                        0 B_TEXT           |
+   16858 CEEBETBL                       10 V-CON | CEEUOPT          $UNRESOLVED(W)                                     |
+   1685C CEEBETBL                       14 V-CON | CEEBTRM          CEEBTRM                         0 B_TEXT           |
+   16864 CEEBETBL                       1C V-CON | CEEBPUBT         CEEBPUBT                        0 B_TEXT           |
+   16868 CEEBETBL                       20 V-CON | IEWBLIT          $UNRESOLVED(W)                                     |
+   168CC CEESTART                       5C A-CON | CEEMAIN          $UNRESOLVED(W)                                     |
+   168DC CEESTART                       6C C-LEN |                  $NON-RELOCATABLE                  B_PRV            |
+   16908 CEESTART                       98 A-CON | CEEFMAIN         $UNRESOLVED(W)                                     |
+   16914 CEESTART                       A4 A-CON | CEEBETBL         CEEBETBL                        0 B_TEXT           |
+   16918 CEESTART                       A8 A-CON | CEEROOTA         $UNRESOLVED(W)                                     |
+   1691C CEESTART                       AC A-CON | CEEROOTD         $UNRESOLVED(W)                                     |
+   16E40 IGZCBSO                       520 V-CON | IGZEOPT          $UNRESOLVED(W)                                     |
+   16E44 IGZCBSO                       524 V-CON | IGZETUN          $UNRESOLVED(W)                                     |
+   16E48 IGZCBSO                       528 V-CON | CEEINT           CEEBPIRA                        0 B_TEXT           |
+   16E4C IGZCBSO                       52C V-CON | CEEARLU          CEEARLU                         0 B_TEXT           |
+   171B0 CEEBPIRA                      230 A-CON | CEEBPUBT         CEEBPUBT                        0 B_TEXT           |
+   173E4 CEEBTRM                        6C A-CON | CEEBPUBT         CEEBPUBT                        0 B_TEXT           |
+   17430 CEEBLLST                       10 A-CON | CEESG000         $UNRESOLVED(W)                                     |
+   17434 CEEBLLST                       14 A-CON | CEESG001         $UNRESOLVED(W)                                     |
+   17438 CEEBLLST                       18 A-CON | CEESG002         $UNRESOLVED(W)                                     |
+   1743C CEEBLLST                       1C A-CON | CEESG003         $UNRESOLVED(W)                                     |
+   17440 CEEBLLST                       20 A-CON | CEESG004         $UNRESOLVED(W)                                     |
+   17444 CEEBLLST                       24 A-CON | CEESG005         CEESG005                        0 B_TEXT           |
+   17448 CEEBLLST                       28 A-CON | CEESG006         $UNRESOLVED(W)                                     |
+   1744C CEEBLLST                       2C A-CON | CEESG007         $UNRESOLVED(W)                                     |
+   17450 CEEBLLST                       30 A-CON | CEESG008         $UNRESOLVED(W)                                     |
+   17454 CEEBLLST                       34 A-CON | CEESG009         $UNRESOLVED(W)                                     |
+   17458 CEEBLLST                       38 A-CON | CEESG010         $UNRESOLVED(W)                                     |
+   1745C CEEBLLST                       3C A-CON | CEESG011         $UNRESOLVED(W)                                     |
+   17460 CEEBLLST                       40 A-CON | CEESG012         $UNRESOLVED(W)                                     |
+   17464 CEEBLLST                       44 A-CON | CEESG013         $UNRESOLVED(W)                                     |
+   17468 CEEBLLST                       48 A-CON | CEESG014         $UNRESOLVED(W)                                     |
+   1746C CEEBLLST                       4C A-CON | CEESG015         $UNRESOLVED(W)                                     |
+   17470 CEEBLLST                       50 A-CON | CEESG016         $UNRESOLVED(W)                                     |
+                                       *** E N D  O F  C R O S S  R E F E R E N C E ***
+ 
+ 
+ 
+                                *** O P E R A T I O N   S U M M A R Y   R E P O R T ***
+ 
+PROCESSING OPTIONS:
+ 
+   ALIASES             NO
+   ALIGN2              NO
+   AMODE               UNSPECIFIED
+   CALL                YES
+   CASE                UPPER
+   COMPAT              UNSPECIFIED
+   COMPRESS            AUTO
+   DCBS                NO
+   DYNAM               NO
+   EXTATTR             UNSPECIFIED
+   EXITS:              NONE
+   FILL                NONE
+   GID                 UNSPECIFIED
+   HOBSET              NO
+   INFO                NO
+   LET                 04
+   LINECT              060
+   LIST                SUMMARY
+   LISTPRIV            NO
+   LONGPARM            NO
+   MAP                 NO
+   MAXBLK              032760
+   MODMAP              NO
+   MSGLEVEL            00
+   OVLY                NO
+   PRINT               YES
+   RES                 NO
+   REUSABILITY         UNSPECIFIED
+   RMODE               UNSPECIFIED
+   RMODEX              NO
+   SIGN                NO
+   STORENX             NOREPLACE
+   STRIPCL             NO
+   STRIPSEC            NO
+   SYMTRACE
+   TERM                NO
+   TRAP                ON
+   UID                 UNSPECIFIED
+   UPCASE              NO
+   WKSPACE             000000K,000000K
+   XCAL                NO
+   XREF                YES
+   ***END OF OPTIONS***
+ 
+ 
+ 
+ 
+SAVE OPERATION SUMMARY:
+ 
+   MEMBER NAME         PCS3PRG1
+   LOAD LIBRARY        KC03G9C.LOAD
+   PROGRAM TYPE        PROGRAM OBJECT(FORMAT 2)
+   VOLUME SERIAL       KCTR53
+   DISPOSITION         REPLACED
+   TIME OF SAVE        21.16.20  AUG 20, 2020
+ 
+ 
+SAVE MODULE ATTRIBUTES:
+ 
+   AC                  000
+   AMODE                31
+   COMPRESSION         NONE
+   DC                  NO
+   EDITABLE            YES
+   EXCEEDS 16MB        NO
+   EXECUTABLE          YES
+   LONGPARM            NO
+   MIGRATABLE          YES
+   OL                  NO
+   OVLY                NO
+   PACK,PRIME          NO,NO
+   PAGE ALIGN          NO
+   REFR                NO
+   RENT                NO
+   REUS                NO
+   RMODE               ANY
+   SCTR                NO
+   SIGN                NO
+   SSI
+   SYM GENERATED       NO
+   TEST                NO
+   XPLINK              NO
+   MODULE SIZE (HEX)   00017488
+   DASD SIZE (HEX)     0001E000
+ 
+ 
+ ENTRY POINT AND ALIAS SUMMARY:
+ 
+ NAME:            ENTRY TYPE AMODE C_OFFSET CLASS NAME        STATUS
+ 
+ PCS3PRG1          MAIN_EP      31 00000000 B_TEXT
+ 
+                         *** E N D   O F   O P E R A T I O N   S U M M A R Y   R E P O R T ***
+ 
+ 
+ 
+ 
+z/OS V2 R3 BINDER     21:16:20 THURSDAY AUGUST 20, 2020
+BATCH EMULATOR  JOB(PCS3PRG1) STEP(LKED    ) PGM= IEWL
+IEW2008I 0F03 PROCESSING COMPLETED.  RETURN CODE =  0.
+ 
+ 
+ 
+----------------------
+MESSAGE SUMMARY REPORT
+----------------------
+ TERMINAL MESSAGES      (SEVERITY = 16)
+ NONE
+ 
+ SEVERE MESSAGES        (SEVERITY = 12)
+ NONE
+ 
+ ERROR MESSAGES         (SEVERITY = 08)
+ NONE
+ 
+ WARNING MESSAGES       (SEVERITY = 04)
+ NONE
+ 
+ INFORMATIONAL MESSAGES (SEVERITY = 00)
+ 2008  2278
+ 
+ 
+ **** END OF MESSAGE SUMMARY REPORT ****
+ 
+READY
+ DSN SYSTEM(DBCG)
+DSN
+ BIND PLAN(PG9CR) MEMBER(PCS3PRG1)       ACT(REP) ISO(CS) ENCODING(EBCDIC)
+DSNT226I  -DBCG DSNTBAP1 BIND WARNING FOR PLAN PG9CR
+           THE MEMBER OPTION IS DEPRECATED AND
+           SUPPORT WILL BE REMOVED IN THE FUTURE
+DSNT254I  -DBCG DSNTBCM2 BIND OPTIONS FOR
+           PACKAGE = DALLASC.DSN_DEFAULT_COLLID_PG9CR.PCS3PRG1.()
+           ACTION        REPLACE
+           OWNER         KC03G9C
+           QUALIFIER     KC03G9C
+           VALIDATE      RUN
+           EXPLAIN       NO
+           ISOLATION     CS
+           RELEASE       COMMIT
+           COPY
+           APREUSE
+           APCOMPARE
+           APRETAINDUP
+           BUSTIMESENSITIVE YES
+           SYSTIMESENSITIVE YES
+           ARCHIVESENSITIVE YES
+           APPLCOMPAT V12R1M502
+           DESCSTAT YES
+           APREUSESOURCE
+DSNT255I  -DBCG DSNTBCM2 BIND OPTIONS FOR
+           PACKAGE = DALLASC.DSN_DEFAULT_COLLID_PG9CR.PCS3PRG1.()
+           SQLERROR      NOPACKAGE
+           CURRENTDATA   NO
+           DEGREE        1
+           DYNAMICRULES  RUN
+           DEFER
+           NOREOPT       VARS
+           KEEPDYNAMIC   NO
+           IMMEDWRITE    NO
+           DBPROTOCOL    DRDA
+           OPTHINT
+           ENCODING      EBCDIC(01047)
+           PLANMGMT      OFF
+           PLANMGMTSCOPE STATIC
+           CONCURRENTACCESSRESOLUTION
+           EXTENDEDINDICATOR
+           PATH
+DSNT275I  -DBCG DSNTBCM2 BIND OPTIONS FOR
+           PACKAGE = DALLASC.DSN_DEFAULT_COLLID_PG9CR.PCS3PRG1.()
+           QUERYACCELERATION
+           GETACCELARCHIVE
+           ACCELERATOR
+           CONCENTRATESTMT
+DSNT203I  -DBCG BIND WARNING FOR PLAN PG9CR
+           DBRMS ARE CONVERTED INTO PACKAGES BEFORE
+           BIND PLAN PG9CR
+DSNT252I  -DBCG DSNTBCM1 BIND OPTIONS FOR PLAN PG9CR
+           ACTION        REPLACE
+           OWNER         KC03G9C
+           VALIDATE      RUN
+           ISOLATION     CS
+           ACQUIRE       USE
+           RELEASE       COMMIT
+           EXPLAIN       NO
+           DYNAMICRULES  RUN
+           PROGAUTH      DISABLE
+DSNT253I  -DBCG DSNTBCM1 BIND OPTIONS FOR PLAN PG9CR
+           NODEFER       PREPARE
+           CACHESIZE     3072
+           QUALIFIER     KC03G9C
+           CURRENTSERVER
+           CURRENTDATA   NO
+           DEGREE        1
+           SQLRULES      DB2
+           DISCONNECT    EXPLICIT
+           NOREOPT       VARS
+           KEEPDYNAMIC   NO
+           IMMEDWRITE    NO
+           DBPROTOCOL    DRDA
+           OPTHINT
+           ENCODING      EBCDIC(01047)
+           CONCURRENTACCESSRESOLUTION
+           PATH
+DSNT200I  -DBCG  BIND FOR PLAN PG9CR    SUCCESSFUL
+DSN
+ END
+READY
+END
+READY
+ DSN SYSTEM(DBCG)
+DSN
+ RUN PROGRAM(PCS3PRG1) PLAN(PG9CR) LIB('KC03G9C.LOAD')
+DSN
+ END
+READY
+END
+ PAGE   1                         ABC CORPORATION                         08/20/2020
+                              SALES TRANSACTION LOG
+TRANS NO  SALESPERSON     TRANS DATE       TYPE       AMOUNT
+ 00001       19304         2013-11-01       SALES      $4,974.96
+ 00002       92493         2013-11-01       SALES      $6,402.10
+ 00003       10559         2013-11-03       SALES      $7,220.33
+ 00004       16825         2013-11-03       DELETE
+ 00005       22643         2013-11-03       RETURN     $9,265.42CR
+ 00006       86948         2013-11-04       SALES        $171.02
+ 00007       26913         2013-11-04       SALES      $1,947.46
+ 00008       84932         2013-11-05       SALES      $2,840.23
+ 00009       27206         2013-11-05       SALES      $3,634.90
+ 00010       13458         2013-11-05       RETURN     $5,621.87CR
+ 00011       19294         2013-11-05       SALES      $4,422.50
+ 00012       17402         2013-11-05       SALES      $5,260.94
+ 00013       44931         2013-11-05       DELETE
+ 00014       PROBLEM DOING SALES, STATUS IS +00100
+ 00014       16825         2013-11-06       SALES
+ 00015       46827         2013-11-12       ADD
+ 00016       26813         2013-11-06       SALES      $9,668.19
+ 00017       26702         2013-11-07       RETURN     $1,878.10CR
+ 00018       26881         2013-11-07       SALES      $2,733.31
+ 00019       54931         2013-11-07       SALES      $3,506.43
+ 00020       26881         2013-11-07       SALES      $4,411.83
+ 00021       94927         2013-11-08       SALES      $5,250.38
+ 00022       84931         2013-11-12       SALES      $5,397.00
+ 00023       PROBLEM DOING SALES, STATUS IS +00100
+ 00023       44931         2013-11-12       SALES      $5,397.00
+ 00024       94927         2013-11-12       RETURN     $7,244.54CR
+ 00025       PROBLEM DOING SALES, STATUS IS +00100
+ 00025       44931         2013-11-18       SALES      $7,244.54CR
+ 00026       PROBLEM DOING SALES, STATUS IS +00100
+ 00026       44931         2013-11-16       SALES      $7,244.54CR
+ 00027       19644         2013-11-06       ADD
+ 00028       19294         2013-11-18       SALES      $2,634.34
+ 00029       17402         2013-11-18       SALES      $5,453.21
+ 00030       26702         2013-11-18       SALES      $3,454.07
+ 00031       10559         2013-11-18       CHANGE
+ 00032       17402         2013-11-18       CHANGE
+ 00033       19538         2013-11-26       RETURN     $6,334.54CR
+ 00034       10507         2013-11-26       SALES      $8,187.44
+ 00035       96948         2013-11-28       SALES      $7,910.77
+ 00035       96948         2013-11-28       SALES      $7,910.77
+# OF SALES TRANS  021
+# OF RETURN TRANS 005
+# OF ADD TRANS  002
+# OF DELETE TRANS 002
+# OF CHANGE TRANS 004
+# OF INVALID TRANS  004

@@ -1,0 +1,1336 @@
+                   J E S 2  J O B  L O G  --  S Y S T E M  2 9 6 4  --  N O D E  S V S C J E S 2
+ 
+16.30.55 JOB06384 ---- THURSDAY,  16 JUL 2020 ----
+16.30.55 JOB06384  IRR010I  USERID KC03G9C  IS ASSIGNED TO THIS JOB.
+16.30.56 JOB06384  IEF677I WARNING MESSAGE(S) FOR JOB JCS1CL   ISSUED
+16.30.57 JOB06384  ICH70001I KC03G9C  LAST ACCESS AT 16:28:49 ON THURSDAY, JULY 16, 2020
+16.30.57 JOB06384  $HASP373 JCS1CL   STARTED - INIT 2    - CLASS A        - SYS 2964
+16.31.03 JOB06384  $HASP395 JCS1CL   ENDED - RC=0000
+------ JES2 JOB STATISTICS ------
+  16 JUL 2020 JOB EXECUTION DATE
+           21 CARDS READ
+        1,343 SYSOUT PRINT RECORDS
+            0 SYSOUT PUNCH RECORDS
+           98 SYSOUT SPOOL KBYTES
+         0.12 MINUTES EXECUTION TIME
+        1 //JCS1CL JOB JCS1CL,NOTIFY=&SYSUID                                      JOB06384
+          //**************************************************
+          //* JCL TO COMPILE COBOL SOURCE CODE AND LINK MODULE
+          //**************************************************
+          //*PROCLIB JCLLIB ORDER=ZOS.PUBLIC.JCL
+          //**************************************************
+          //* ADDING THE PARM COMPILE SWITCH
+          //* ADDING THE COPY BOOK IN PDS
+          //**************************************************
+          IEFC653I SUBSTITUTION JCL - JCS1CL,NOTIFY=KC03G9C
+        2 //S1 EXEC IGYWCL,PARM.COBOL='TEST,XREF'
+        3 XXIGYWCL PROC  LNGPRFX='IGY620',                                        00010000
+          XX             LIBPRFX='CEE',                                           00020000
+          XX             PGMLIB='&&GOSET',GOPGM=GO                                00030000
+          XX*                                                                     00040000
+          XX********************************************************************* 00050000
+          XX*                                                                   * 00060000
+          XX*  Enterprise COBOL for z/OS                                        * 00070000
+          XX*               Version 5 Release 2 Modification 0                  * 00080000
+          XX*                                                                   * 00090000
+          XX*  LICENSED MATERIALS - PROPERTY OF IBM.                            * 00100000
+          XX*                                                                   * 00110000
+          XX*  5655-W32 COPYRIGHT IBM CORP. 1983, 2015                          * 00120000
+          XX*  ALL RIGHTS RESERVED                                              * 00130000
+          XX*                                                                   * 00140000
+          XX*  US GOVERNMENT USERS RESTRICTED RIGHTS - USE,                     * 00150000
+          XX*  DUPLICATION OR DISCLOSURE RESTRICTED BY GSA                      * 00160000
+          XX*  ADP SCHEDULE CONTRACT WITH IBM CORP.                             * 00170000
+          XX*                                                                   * 00180000
+          XX********************************************************************* 00190000
+          XX*                                                                     00200000
+          XX*  COMPILE AND LINK EDIT A COBOL PROGRAM                              00210000
+          XX*                                                                     00220000
+          XX*  PARAMETER  DEFAULT VALUE    USAGE                                  00230000
+          XX*   LNGPRFX   IGY.V5R2M0       PREFIX FOR LANGUAGE DATA SET NAMES     00240000
+          XX*   LIBPRFX   CEE              PREFIX FOR LIBRARY DATA SET NAMES      00250000
+          XX*   PGMLIB    &&GOSET          DATA SET NAME FOR LOAD MODULE          00260000
+          XX*   GOPGM     GO               MEMBER NAME FOR LOAD MODULE            00270000
+          XX*                                                                     00280000
+          XX*  CALLER MUST SUPPLY //COBOL.SYSIN DD ...                            00290000
+          XX*                                                                     00300000
+          XX*  CALLER MUST ALSO SUPPLY //COBOL.SYSLIB DD ... for COPY statements  00310000
+          XX*                                                                     00320000
+        4 XXCOBOL  EXEC PGM=IGYCRCTL,REGION=0M                                    00330000
+        5 XXSTEPLIB  DD  DSNAME=&LNGPRFX..SIGYCOMP,DISP=SHR                       00340000
+          IEFC653I SUBSTITUTION JCL - DSNAME=IGY620.SIGYCOMP,DISP=SHR
+        6 XX         DD  DSNAME=&LIBPRFX..SCEERUN,DISP=SHR                        00350000
+          IEFC653I SUBSTITUTION JCL - DSNAME=CEE.SCEERUN,DISP=SHR
+        7 XX         DD  DSNAME=&LIBPRFX..SCEERUN2,DISP=SHR                       00360000
+          IEFC653I SUBSTITUTION JCL - DSNAME=CEE.SCEERUN2,DISP=SHR
+        8 XXSYSPRINT DD  SYSOUT=*                                                 00370000
+        9 XXSYSLIN   DD  DSNAME=&&LOADSET,UNIT=SYSALLDA,                          00380000
+          XX             DISP=(MOD,PASS),SPACE=(CYL,(1,1))                        00390000
+       10 XXSYSUT1   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00400000
+       11 XXSYSUT2   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00410000
+       12 XXSYSUT3   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00420000
+       13 XXSYSUT4   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00430000
+       14 XXSYSUT5   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00440000
+       15 XXSYSUT6   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00450000
+       16 XXSYSUT7   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00460000
+       17 XXSYSUT8   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00470000
+       18 XXSYSUT9   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00480000
+       19 XXSYSUT10  DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00490000
+       20 XXSYSUT11  DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00500000
+       21 XXSYSUT12  DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00510000
+       22 XXSYSUT13  DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00520000
+       23 XXSYSUT14  DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00530000
+       24 XXSYSUT15  DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00540000
+       25 XXSYSMDECK DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00550000
+       26 //COBOL.SYSLIB DD DSN=&SYSUID..COPY(CCS1SLP),DISP=SHR
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.COPY(CCS1SLP),DISP=SHR
+       27 //COBOL.SYSIN DD DSN=&SYSUID..COBOL(PCS1PRG1),DISP=SHR
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.COBOL(PCS1PRG1),DISP=SHR
+       28 XXLKED   EXEC PGM=IEWBLINK,COND=(8,LT,COBOL),REGION=0M                  00560000
+       29 XXSYSLIB   DD  DSNAME=&LIBPRFX..SCEELKED,DISP=SHR                       00570000
+          IEFC653I SUBSTITUTION JCL - DSNAME=CEE.SCEELKED,DISP=SHR
+       30 XX         DD  DSNAME=&LIBPRFX..SCEELKEX,DISP=SHR                       00580000
+          IEFC653I SUBSTITUTION JCL - DSNAME=CEE.SCEELKEX,DISP=SHR
+       31 XXSYSPRINT DD  SYSOUT=*                                                 00590000
+       32 XXSYSLIN   DD  DSNAME=&&LOADSET,DISP=(OLD,DELETE)                       00600000
+       33 XX         DD  DDNAME=SYSIN                                             00610000
+       34 //LKED.SYSLMOD DD DSN=&SYSUID..LOAD(PCS1PRG1),DISP=SHR
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.LOAD(PCS1PRG1),DISP=SHR
+          X/SYSLMOD  DD  DSNAME=&PGMLIB(&GOPGM),                                  00620000
+          X/             SPACE=(CYL,(1,1,1)),                                     00630000
+          X/             UNIT=SYSALLDA,DISP=(MOD,PASS),DSNTYPE=LIBRARY            00640000
+          IEFC653I SUBSTITUTION JCL - DSNAME=&&GOSET(GO),SPACE=(CYL,(1,1,1)),UNIT=SYSALLDA,DISP=(MOD,PASS),
+          DSNTYPE=LIBRARY
+       35 XXSYSUT1   DD  UNIT=SYSALLDA,SPACE=(CYL,(1,1))                          00650000
+          //*************************************
+          //* JCL TO EXECUTE COBOL PROGRAM MODULE
+          //*************************************
+       36 //EXECUTE EXEC PGM=PCS1PRG1
+       37 //STEPLIB DD DSN=&SYSUID..LOAD,DISP=SHR
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.LOAD,DISP=SHR
+       38 //PRNT DD SYSOUT=*
+       39 //SLINPUT DD DSN=KC03G9C.SLSPMAST,DISP=SHR
+       40 //SYSIN     DD *               GENERATED STATEMENT
+ STMT NO. MESSAGE
+        2 IEFC001I PROCEDURE IGYWCL WAS EXPANDED USING SYSTEM LIBRARY VENDOR.PROCLIB
+       36 IEF686I DDNAME REFERRED TO ON DDNAME KEYWORD IN PRIOR STEP WAS NOT RESOLVED
+ICH70001I KC03G9C  LAST ACCESS AT 16:28:49 ON THURSDAY, JULY 16, 2020
+IEFA111I JCS1CL IS USING THE FOLLOWING JOB RELATED SETTINGS:
+         SWA=ABOVE,TIOT SIZE=32K,DSENQSHR=DISALLOW,GDGBIAS=JOB
+IEF236I ALLOC. FOR JCS1CL COBOL S1
+IEF237I 1A1B ALLOCATED TO STEPLIB
+IEF237I 1001 ALLOCATED TO
+IEF237I 1001 ALLOCATED TO
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IGD101I SMS ALLOCATED TO DDNAME (SYSLIN  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.LOADSET.H01   )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT1  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130719      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT2  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130720      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT3  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130721      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT4  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130722      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT5  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130723      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT6  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130724      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT7  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130725      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT8  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130726      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT9  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130727      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT10 )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130728      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT11 )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130729      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT12 )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130730      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT13 )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130731      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT14 )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130732      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT15 )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130733      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SYSMDECK)
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130734      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD103I SMS ALLOCATED TO DDNAME SYSLIB
+IGD103I SMS ALLOCATED TO DDNAME SYSIN
+IEF142I JCS1CL COBOL S1 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   IGY620.SIGYCOMP                              KEPT
+IEF285I   VOL SER NOS= VTIGYK.
+IEF285I   CEE.SCEERUN                                  KEPT
+IEF285I   VOL SER NOS= VTMVSC.
+IEF285I   CEE.SCEERUN2                                 KEPT
+IEF285I   VOL SER NOS= VTMVSC.
+IEF285I   KC03G9C.JCS1CL.JOB06384.D0000102.?           SYSOUT
+IGD106I SYS20198.T163056.RA000.JCS1CL.LOADSET.H01    PASSED,    DDNAME=SYSLIN
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130719       DELETED,   DDNAME=SYSUT1
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130720       DELETED,   DDNAME=SYSUT2
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130721       DELETED,   DDNAME=SYSUT3
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130722       DELETED,   DDNAME=SYSUT4
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130723       DELETED,   DDNAME=SYSUT5
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130724       DELETED,   DDNAME=SYSUT6
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130725       DELETED,   DDNAME=SYSUT7
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130726       DELETED,   DDNAME=SYSUT8
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130727       DELETED,   DDNAME=SYSUT9
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130728       DELETED,   DDNAME=SYSUT10
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130729       DELETED,   DDNAME=SYSUT11
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130730       DELETED,   DDNAME=SYSUT12
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130731       DELETED,   DDNAME=SYSUT13
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130732       DELETED,   DDNAME=SYSUT14
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130733       DELETED,   DDNAME=SYSUT15
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130734       DELETED,   DDNAME=SYSMDECK
+IGD104I KC03G9C.COPY                                 RETAINED,  DDNAME=SYSLIB
+IGD104I KC03G9C.COBOL                                RETAINED,  DDNAME=SYSIN
+IEF373I STEP/COBOL   /START 2020198.1630
+IEF032I STEP/COBOL   /STOP  2020198.1631
+        CPU:     0 HR  00 MIN  00.08 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:   564K  SYS:  4272K  EXT:   146104K  SYS:    16976K
+        ATB- REAL:                 12340K  SLOTS:                     0K
+             VIRT- ALLOC:     533M SHRD:       0M
+IEF236I ALLOC. FOR JCS1CL LKED S1
+IEF237I 1001 ALLOCATED TO SYSLIB
+IEF237I 1001 ALLOCATED TO
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IGD103I SMS ALLOCATED TO DDNAME SYSLIN
+IEF237I DMY  ALLOCATED TO
+IGD103I SMS ALLOCATED TO DDNAME SYSLMOD
+IGD101I SMS ALLOCATED TO DDNAME (SYSUT1  )
+        DSN (SYS20198.T163056.RA000.JCS1CL.R0130735      )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IEF142I JCS1CL LKED S1 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   CEE.SCEELKED                                 KEPT
+IEF285I   VOL SER NOS= VTMVSC.
+IEF285I   CEE.SCEELKEX                                 KEPT
+IEF285I   VOL SER NOS= VTMVSC.
+IEF285I   KC03G9C.JCS1CL.JOB06384.D0000103.?           SYSOUT
+IGD105I SYS20198.T163056.RA000.JCS1CL.LOADSET.H01    DELETED,   DDNAME=SYSLIN
+IGD104I KC03G9C.LOAD                                 RETAINED,  DDNAME=SYSLMOD
+IGD105I SYS20198.T163056.RA000.JCS1CL.R0130735       DELETED,   DDNAME=SYSUT1
+IEF373I STEP/LKED    /START 2020198.1631
+IEF032I STEP/LKED    /STOP  2020198.1631
+        CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:    88K  SYS:   252K  EXT:     1768K  SYS:    12624K
+        ATB- REAL:                  4140K  SLOTS:                     0K
+             VIRT- ALLOC:      15M SHRD:       0M
+IEF236I ALLOC. FOR JCS1CL EXECUTE
+IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+IEF237I JES2 ALLOCATED TO PRNT
+IGD103I SMS ALLOCATED TO DDNAME SLINPUT
+IEF237I JES2 ALLOCATED TO SYSIN
+IEF142I JCS1CL EXECUTE - STEP WAS EXECUTED - COND CODE 0000
+IGD104I KC03G9C.LOAD                                 RETAINED,  DDNAME=STEPLIB
+IEF285I   KC03G9C.JCS1CL.JOB06384.D0000104.?           SYSOUT
+IGD104I KC03G9C.SLSPMAST                             RETAINED,  DDNAME=SLINPUT
+IEF285I   KC03G9C.JCS1CL.JOB06384.D0000101.?           SYSIN
+IEF373I STEP/EXECUTE /START 2020198.1631
+IEF032I STEP/EXECUTE /STOP  2020198.1631
+        CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:    92K  SYS:   280K  EXT:     2728K  SYS:    12632K
+        ATB- REAL:                  4140K  SLOTS:                     0K
+             VIRT- ALLOC:      15M SHRD:       0M
+IEF375I  JOB/JCS1CL  /START 2020198.1630
+IEF033I  JOB/JCS1CL  /STOP  2020198.1631
+        CPU:     0 HR  00 MIN  00.09 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+ 
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107                 Date 07/16/2020  Time 16:31:00   Page     1
+Invocation parameters:
+ TEST,XREF
+Options in effect:
+ NOADATA
+   ADV
+   AFP(NOVOLATILE)
+   QUOTE
+   ARCH(7)
+   ARITH(COMPAT)
+ NOAWO
+ NOBLOCK0
+   BUFSIZE(4096)
+ NOCICS
+   CODEPAGE(1140)
+ NOCOMPILE(S)
+ NOCOPYLOC
+ NOCOPYRIGHT
+ NOCURRENCY
+   DATA(31)
+   DBCS
+ NODECK
+ NODEFINE
+ NODIAGTRUNC
+   DISPSIGN(COMPAT)
+ NODLL
+ NODUMP
+ NODYNAM
+ NOEXIT
+ NOEXPORTALL
+ NOFASTSRT
+   FLAG(I,I)
+ NOFLAGSTD
+   HGPR(PRESERVE)
+ NOINITCHECK
+   INLINE
+   INTDATE(ANSI)
+   LANGUAGE(EN)
+   LINECOUNT(60)
+ NOLIST
+ NOMAP
+   MAXPCF(100000)
+ NOMDECK
+ NONAME
+   NSYMBOL(NATIONAL)
+ NONUMBER
+ NONUMCHECK
+   NUMPROC(NOPFD)
+   OBJECT
+ NOOFFSET
+   OPTIMIZE(0)
+   OUTDD(SYSOUT)
+ NOPARMCHECK
+   PGMNAME(COMPAT)
+   QUALIFY(COMPAT)
+   RENT
+   RMODE(AUTO)
+ NORULES
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107                 Date 07/16/2020  Time 16:31:00   Page     2
+ NOSERVICE
+   SEQUENCE
+   SOURCE
+   SPACE(1)
+ NOSQL
+   SQLCCSID
+ NOSQLIMS
+ NOSSRANGE
+ NOSTGOPT
+   SUPPRESS
+ NOTERM
+   TEST(NOEJPD,DWARF,SOURCE,NOSEPARATE)
+ NOTHREAD
+   TRUNC(STD)
+ NOVBREF
+   VLR(STANDARD)
+   VSAMOPENFS(COMPAT)
+ NOWORD
+   XMLPARSE(XMLSS)
+   XREF(FULL)
+   ZONEDATA(PFD)
+   ZWB
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page     3
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+/* PCS1PRG1
+  000001               *************************************************************
+  000002               *  The CASE STUDY 1 for the course. A simple I/O program    *
+  000003               *  that reads some data from an input file and writes a     *
+  000004               *  simple report file.                                      *
+  000005               *************************************************************
+  000006                IDENTIFICATION DIVISION.
+  000007                PROGRAM-ID.  PCS1PRG1.
+  000008                AUTHOR. Sonia Friesen.
+  000009
+  000010               *************************************************************
+  000011               *                       FANSHAWE COLLEGE                    *
+  000012               *                                                           *
+  000013               *                  COBOL Z/OS PROGRAM DESCRIPTION           *
+  000014               *************************************************************
+  000015               * PROGRAM DESCRIPTION:                                      *
+  000016               *    A program where it takes a salesperons sales and       *
+  000017               *    summerizes each branch totals and the company total    *
+  000018               *                                                           *
+  000019               * INPUT DD  NAME     FILE IDENTIFIER     FILE DESCRIPTION   *
+  000020               * --------------     ---------------     ----------------   *
+  000021               * SLSPMAST           SALESMAST           File containing    *
+  000022               *                                        salesperson info   *
+  000023               *                                                           *
+  000024               * OUTPUT DD  NAME    FILE IDENTIFIER     FILE DESCRITION    *
+  000025               * ---------------    ---------------     ---------------    *
+  000026               * SALESRPT           PRNT                Prints a summary   *
+  000027               *                                        informaiton for    *
+  000028               *                                        each branch        *
+  000029                                                                           *
+  000030               * COPYBOOKS          DESCRIPTION                            *
+  000031               * ---------          -----------                            *
+  000032               * CCS1SLP            Contains the salesperson information   *
+  000033               *                    for program input                      *
+  000034               *************************************************************
+  000035               *************************************************************
+  000036               *                 C H A N G E   L O G                       *
+  000037               *************************************************************
+  000038               *                                                           *
+  000039               * VER. NO.  CHANGED BY   IMPLEMENTATION DATE                *
+  000040               * --------  ----------   -------------------                *
+  000041               *   1.0     Sonia Friesen    2020-07-16, 2:30pm             *
+  000042               * DESCRIPTION OF CHANGE:                                    *
+  000043               * ----------------------                                    *
+  000044               *  Cacluate highest net sales and 3 star commisions         *
+  000045               *************************************************************
+  000046                ENVIRONMENT DIVISION.
+  000047                CONFIGURATION SECTION.
+  000048                INPUT-OUTPUT SECTION.
+  000049                FILE-CONTROL.
+  000050                     SELECT  SALESMAST ASSIGN TO SLINPUT                                  57
+  000051                     FILE STATUS IS WS-IN-STATUS.                                         312
+  000052
+  000053                     SELECT SALESRPT ASSIGN TO PRNT.                                      70
+  000054
+  000055                DATA DIVISION.
+  000056                FILE SECTION.
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page     4
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000057                FD  SALESMAST
+  000058                    RECORDING MODE IS F.
+  000059                    COPY CCS1SLP.
+  000060C                01  SALESPERSON-MASTER.
+  000061C                   05  SALESPERSON-NO                   PIC 9(5).
+  000062C                   05  SALESPERSON-LAST-NAME            PIC X(15).
+  000063C                   05  SALESPERSON-FIRST-NAME           PIC X(10).
+  000064C                   05  SALESPERSON-GROSS-SALES          PIC 9(5)V99.
+  000065C                   05  SALESPERSON-RETURN-SALES         PIC 9(4)V99.
+  000066C                   05  SALESPERSON-BRANCH-NO            PIC 9(3).
+  000067C                   05  SALESPERSON-COMM-RATE            PIC V9999.
+  000068                01  INPUT-REC                  PIC X(50).
+  000069
+  000070                FD  SALESRPT
+  000071                    RECORDING MODE IS F.
+  000072                01  PRNT-REC                   PIC X(125).
+  000073                WORKING-STORAGE SECTION.
+  000074
+  000075               ***************************************************************
+  000076               *                         WS-SWITCHES                         *
+  000077               ***************************************************************
+  000078                01 WS-SWITCHES.
+  000079                    05 WS-SALEMAST-EOF-SWITCH   PIC X         VALUE "N".
+  000080                       88 WS-SALESMAST-EOF                    VALUE "Y".
+  000081                       88 WS-SALESMAST-NOT-EOF                VALUE "N".
+  000082
+  000083               ***************************************************************
+  000084               *                     LAYOUT FOR HEADERS 1-9                  *
+  000085               ***************************************************************
+  000086                01 WS-HEADING-LINE-1.
+  000087                    05 FILLER                   PIC X(1)      VALUE SPACES.               IMP
+  000088                    05 FILLER                   PIC X(6)      VALUE "PAGE  ".
+  000089                    05 WS-HL1-PAGENO            PIC Z9.
+  000090                    05 FILLER                   PIC X(29)     VALUE SPACES.               IMP
+  000091                    05 FILLER                   PIC X(4)      VALUE "ABC ".
+  000092                    05 FILLER                   PIC X(4)      VALUE "CORP".
+  000093                    05 FILLER                   PIC X(7)      VALUE "ORATION".
+  000094                    05 FILLER                   PIC X(25)     VALUE SPACES.               IMP
+  000095                    05 WS-HL1-MONTH             PIC 9(2).
+  000096                    05 FILLER                   PIC X(1)      VALUE "/".
+  000097                    05 WS-HL1-DAY               PIC 9(2).
+  000098                    05 FILLER                   PIC X(1)      VALUE "/".
+  000099                    05 WS-HL1-YEAR              PIC 9(4).
+  000100                    05 FILLER                   PIC X         VALUE SPACES.               IMP
+  000101
+  000102                01  WS-HEADING-LINE-2.
+  000103                    05  FILLER                  PIC X(39)    VALUE SPACES.                IMP
+  000104                    05  FILLER                  PIC X(5)     VALUE "SALES".
+  000105                    05  FILLER                  PIC X(7)     VALUE "PERSON ".
+  000106                    05  FILLER                  PIC X(3)     VALUE "BY ".
+  000107                    05  FILLER                  PIC X(6)     VALUE "BRANCH".
+  000108
+  000109                01  WS-HEADING-LINE-3.
+  000110                    05  FILLER                  PIC X(8)     VALUE "BRANCH: ".
+  000111                    05  WS-BRANCH-NUM           PIC 9(3).
+  000112
+  000113                01  WS-HEADING-LINE-4.
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page     5
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000114                    05  FILLER                  PIC X(5)     VALUE "LAST ".
+  000115                    05  FILLER                  PIC X(4)     VALUE "NAME".
+  000116                    05  FILLER                  PIC X(6)     VALUE SPACES.                IMP
+  000117                    05  FILLER                  PIC X(6)     VALUE "FIRST ".
+  000118                    05  FILLER                  PIC X(4)     VALUE "NAME".
+  000119                    05  FILLER                  PIC X(6)     VALUE SPACES.                IMP
+  000120                    05  FILLER                  PIC X(6)     VALUE "GROSS ".
+  000121                    05  FILLER                  PIC X(5)     VALUE "SALES".
+  000122                    05  FILLER                  PIC X(8)     VALUE SPACES.                IMP
+  000123                    05  FILLER                  PIC X(7)     VALUE "RETURNS".
+  000124                    05  FILLER                  PIC X(7)     VALUE SPACES.                IMP
+  000125                    05  FILLER                  PIC X(4)     VALUE "NET ".
+  000126                    05  FILLER                  PIC X(5)     VALUE "SALES".
+  000127                    05  FILLER                  PIC X(3)     VALUE SPACES.                IMP
+  000128                    05  FILLER                  PIC X(5)     VALUE "COMMI".
+  000129                    05  FILLER                  PIC X(6)     VALUE "ISSION".
+  000130                    05  FILLER                  PIC X(4)     VALUE SPACES.                IMP
+  000131                    05  FILLER                  PIC X(6)     VALUE "RATING".
+  000132
+  000133                01  WS-DETAIL-LINE-5.
+  000134                    05  WS-SALESPERSON-LNAME    PIC X(15).
+  000135                    05  WS-SALESPERSON-FNAME    PIC X(10).
+  000136                    05  FILLER                  PIC X(7)      VALUE SPACES.               IMP
+  000137                    05  WS-SALESPERSON-GRS-SLS  PIC $$$,$$$.99.
+  000138                    05  FILLER                  PIC X(6)      VALUE SPACES.               IMP
+  000139                    05  WS-SALESPERSON-RTRN-SLS PIC $$,$$$.99.
+  000140                    05  FILLER                  PIC X(5)      VALUE SPACES.               IMP
+  000141                    05  WS-NET-CALC             PIC $$$$,$$$.99.
+  000142                    05  FILLER                  PIC X(5)      VALUE SPACES.               IMP
+  000143                    05  WS-COMM-EARNED-ST       PIC $$,$$$.99.
+  000144                    05  FILLER                  PIC X(5)      VALUE SPACES.               IMP
+  000145                    05  WS-SALESPERSON-RATE-ST  PIC X(5).
+  000146
+  000147                01  WS-BRANCH-TOTAL-6.
+  000148                    05  FILLER                  PIC X(6)      VALUE "TOTAL ".
+  000149                    05  FILLER                  PIC X(4)      VALUE "FOR ".
+  000150                    05  FILLER                  PIC X(8)      VALUE "BRANCH: ".
+  000151                    05  WS-SALESPERSON-BNUM     PIC 9(3).
+  000152                    05  FILLER                  PIC X(8)      VALUE SPACES.               IMP
+  000153                    05  WS-BRANCH-GROSS-TTL     PIC $$,$$$,$$$.99.
+  000154                    05  FILLER                  PIC X(5)      VALUE SPACES.               IMP
+  000155                    05  WS-BRANCH-RETURN-TTL    PIC $$$,$$$.99.
+  000156                    05  FILLER                  PIC X(3)      VALUE SPACES.               IMP
+  000157                    05  WS-BRANCH-NET-TTL       PIC $$,$$$,$$$.99.
+  000158                    05  FILLER                  PIC X(4)      VALUE SPACES.               IMP
+  000159                    05  WS-BRANCH-COMMISS-TTL   PIC $$$,$$$.99.
+  000160
+  000161                01  WS-SINGLE-LINES-7.
+  000162                    05  FILLER                  PIC X(30)     VALUE SPACES.               IMP
+  000163                    05  FILLER                  PIC X(6)      VALUE "------".
+  000164                    05  FILLER                  PIC X(6)      VALUE "------".
+  000165                    05  FILLER                  PIC X(5)      VALUE SPACES.               IMP
+  000166                    05  FILLER                  PIC X(6)      VALUE "------".
+  000167                    05  FILLER                  PIC X(6)      VALUE "------".
+  000168                    05  FILLER                  PIC X(4)      VALUE SPACES.               IMP
+  000169                    05  FILLER                  PIC X(6)      VALUE "------".
+  000170                    05  FILLER                  PIC X(6)      VALUE "------".
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page     6
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000171                    05  FILLER                  PIC X(4)      VALUE SPACES.               IMP
+  000172                    05  FILLER                  PIC X(6)      VALUE "------".
+  000173                    05  FILLER                  PIC X(6)      VALUE "------".
+  000174
+  000175                01  WS-GRAND-TOTALS-8.
+  000176                    05  FILLER                  PIC X(8)      VALUE "COMPANY ".
+  000177                    05  FILLER                  PIC X(6)      VALUE "TOTALS".
+  000178                    05  FILLER                  PIC X(15)     VALUE SPACES.               IMP
+  000179                    05  WS-GRAND-TOTAL-SALES    PIC $$,$$$,$$$.99.
+  000180                    05  FILLER                  PIC X(5)      VALUE SPACES.               IMP
+  000181                    05  WS-TOTAL-RETURN         PIC $$$,$$$.99.
+  000182                    05  FILLER                  PIC X(3)      VALUE SPACES.               IMP
+  000183                    05  WS-TOTAL-NET            PIC $$,$$$,$$$.99.
+  000184                    05  FILLER                  PIC X(3)      VALUE SPACES.               IMP
+  000185                    05  WS-TOTAL-COMMISSION     PIC $$$$,$$$.99.
+  000186
+  000187                01  WS-DOUBLE-LINES-9.
+  000188                    05  FILLER                  PIC X(28)     VALUE SPACES.               IMP
+  000189                    05  FILLER                  PIC X(7)      VALUE "=======".
+  000190                    05  FILLER                  PIC X(7)      VALUE "=======".
+  000191                    05  FILLER                  PIC X(5)      VALUE SPACES.               IMP
+  000192                    05  FILLER                  PIC X(5)      VALUE "=====".
+  000193                    05  FILLER                  PIC X(5)      VALUE "=====".
+  000194                    05  FILLER                  PIC X(2)      VALUE SPACES.               IMP
+  000195                    05  FILLER                  PIC X(7)      VALUE "=======".
+  000196                    05  FILLER                  PIC X(7)      VALUE "=======".
+  000197                    05  FILLER                  PIC X(3)      VALUE SPACES.               IMP
+  000198                    05  FILLER                  PIC X(5)      VALUE "=====".
+  000199                    05  FILLER                  PIC X(6)      VALUE "======".
+  000200               ***************************************************************
+  000201               *                       RATING FIELD                          *
+  000202               ***************************************************************
+  000203                01 WS-RATING-VALUES.
+  000204
+  000205                    05  FILLER                  PIC X(4)      VALUE X"0000000C".
+  000206                    05  FILLER                  PIC X(4)      VALUE X"1999999C".
+  000207                    05  FILLER                  PIC X(5)      VALUE "    *".
+  000208                    05  FILLER                  PIC X(4)      VALUE X"2000000C".
+  000209                    05  FILLER                  PIC X(4)      VALUE X"3999999C".
+  000210                    05  FILLER                  PIC X(5)      VALUE "   **".
+  000211                    05  FILLER                  PIC X(4)      VALUE X"4000000C".
+  000212                    05  FILLER                  PIC X(4)      VALUE X"5999999C".
+  000213                    05  FILLER                  PIC X(5)      VALUE "  ***".
+  000214                    05  FILLER                  PIC X(4)      VALUE X"6000000C".
+  000215                    05  FILLER                  PIC X(4)      VALUE X"7999999C".
+  000216                    05  FILLER                  PIC X(5)      VALUE " ****".
+  000217                    05  FILLER                  PIC X(4)      VALUE X"8000000C".
+  000218                    05  FILLER                  PIC X(4)      VALUE X"9999999C".
+  000219                    05  FILLER                  PIC X(5)      VALUE "*****".
+  000220
+  000221                01 WS-RATING-TABLE REDEFINES WS-RATING-VALUES.                            203
+  000222                    05 WS-RATING-GROUP OCCURS 5 TIMES.
+  000223                       10 WS-SALES-RANGE-MIN-VALUE PIC 9(5)V99 COMP-3.
+  000224                       10 WS-SALES-RANGE-MAX-VALUE PIC 9(5)V99 COMP-3.
+  000225                       10 WS-STAR-RATING           PIC X(5).
+  000226
+  000227               ***************************************************************
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page     7
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000228               *                       CALCULATIONS  FIELDS                  *
+  000229               ***************************************************************
+  000230                 01 WS-PAGE-NUMBER.
+  000231                    05 PG-COUNTER               PIC S9(3)      VALUE ZERO.                IMP
+  000232
+  000233                 01 WS-CALC-FIELDS.
+  000234                    05 WS-BRANCH-GROSS          PIC S9(7)V99 COMP-3  VALUE ZERO.          IMP
+  000235                    05 WS-BRANCH-RETURNS        PIC S9(5)V99 COMP-3  VALUE ZERO.          IMP
+  000236                    05 WS-BRANCH-COMMISS        PIC S9(7)V99 COMP-3  VALUE ZERO.          IMP
+  000237                    05 WS-BRANCH-NET            PIC S9(7)V99 COMP-3  VALUE ZERO.          IMP
+  000238                    05 WS-COMP-GROSS            PIC S9(8)V99 COMP-3  VALUE ZERO.          IMP
+  000239                    05 WS-COMP-RETURN           PIC S9(6)V99 COMP-3  VALUE ZERO.          IMP
+  000240                    05 WS-COMP-NET              PIC S9(8)V99 COMP-3  VALUE ZERO.          IMP
+  000241                    05 WS-COMP-COMMISS          PIC S9(8)V99 COMP-3  VALUE ZERO.          IMP
+  000242                    05 WS-GROSS-SALES           PIC S9(5)V99 COMP-3  VALUE ZERO.          IMP
+  000243                    05 WS-NET-SALES             PIC S9(7)V99 COMP-3  VALUE ZERO.          IMP
+  000244                    05 WS-COMMISSION-EARNED     PIC S9(7)V99 COMP-3  VALUE ZERO.          IMP
+  000245                    05 WS-CURRENT-BRANCH-NO     PIC 9(3)     COMP-3  VALUE ZERO.          IMP
+  000246                    05 WS-SALESPERSON-COUNT     PIC 9(2)     COMP-3  VALUE ZERO.          IMP
+  000247                    05 WS-RATING-SUB            PIC 9(2)     COMP.
+  000248                    05 WS-CUR-NET               PIC S9(7)V99 COMP-3  VALUE ZERO.          IMP
+  000249                    05 WS-PREV-NET              PIC S9(7)V99 COMP-3  VALUE ZERO.          IMP
+  000250                    05 WS-COM-HIGHEST           PIC S9(7)V99 COMP-3  VALUE ZERO.          IMP
+  000251
+  000252               **************************************************************
+  000253               *                         DATE FIELD                         *
+  000254               **************************************************************
+  000255                01 WS-DATE-VALUE.
+  000256                    05 WS-DATE-YEAR             PIC X(4)       VALUE SPACES.              IMP
+  000257                    05 WS-DATE-MONTH            PIC XX.
+  000258                    05 WS-DATE-DAY              PIC XX.
+  000259
+  000260               ***************************************************************
+  000261               *                   5% ADDITION WORKING STORAGE               *
+  000262               ***************************************************************
+  000263                01 WS-HIGHEST-NET-SALES-DATE.
+  000264                    05 FILLER                PIC X(13)    VALUE 'AS OF CURRENT'.
+  000265                    05 FILLER                PIC X(10)    VALUE ' DATE OF: '.
+  000266                    05 WS-CD-YEAR            PIC 9(4)     VALUE ZERO.                     IMP
+  000267                     05 FILLER               PIC X(1)     VALUE "/".
+  000268                    05 WS-CD-MONTH           PIC 9(2).
+  000269                    05 FILLER                PIC X(1)     VALUE "/".
+  000270                    05 WS-CD-DAY             PIC 9(2).
+  000271                    05 FILLER                PIC X        VALUE SPACES.                   IMP
+  000272
+  000273                01 WS-SLP-HIGH-NET.
+  000274                    05 FILLER                PIC X(14)    VALUE 'THE SALES REP '.
+  000275                    05 FILLER                PIC X(9)     VALUE 'WITH THE '.
+  000276                    05 FILLER                PIC X(12)    VALUE 'HIGHEST Net '.
+  000277                    05 FILLER                PIC X(9)     VALUE 'Sales IS '.
+  000278                    05 WS-H-LASTNAME         PIC X(10)    VALUE SPACES.                   IMP
+  000279                    05 FILLER                PIC X(2)     VALUE ', '.
+  000280                    05 WS-H-FIRSTNAME        PIC X(10)    VALUE SPACES.                   IMP
+  000281
+  000282                01 WS-NET-SALE-VALUE.
+  000283                    05 FILLER                PIC X(9)     VALUE 'WITH Net '.
+  000284                    05 FILLER                PIC X(10)    VALUE 'Sales OF: '.
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page     8
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000285                    05 WS-HIGH-SALES         PIC $$,$$$,$$$.99.
+  000286
+  000287                01 WS-STAR-RATE-HIGHEST.
+  000288                    05 FILLER                PIC X(14)    VALUE 'Of the 3 star '.
+  000289                    05 FILLER                PIC X(11)    VALUE '(***) Sales'.
+  000290                    05 FILLER                PIC X(12)    VALUE 'person. The '.
+  000291                    05 FILLER                PIC X(12)    VALUE 'Salesperson '.
+  000292                    05 FILLER                PIC X(13)    VALUE 'with the High'.
+  000293                    05 FILLER                PIC X(14)    VALUE 'est Commission'.
+  000294                    05 FILLER                PIC X(11)    VALUE ' Earned is '.
+  000295                    05 WS-S-LASTNAME         PIC X(10)    VALUE SPACES.                   IMP
+  000296                    05 FILLER                PIC X(2)     VALUE ', '.
+  000297                    05 WS-S-FIRSTNAME        PIC X(10)    VALUE SPACES.                   IMP
+  000298
+  000299                01 WS_COMMIS_STAR.
+  000300                    05 FILLER                PIC X(11)    VALUE 'With Commis'.
+  000301                    05 FILLER                PIC X(14)    VALUE 'sion Earned Of'.
+  000302                    05 WS-H-COMM             PIC $$$$,$$$.99.
+  000303                    05 FILLER                PIC X(13)    VALUE ' using a comm'.
+  000304                    05 FILLER                PIC X(12)    VALUE 'ission Rate '.
+  000305                    05 FILLER                PIC X(4)     VALUE 'Of: '.
+  000306                    05 WS-R-COMM             PIC V9999    VALUE ZERO.                     IMP
+  000307               **************************************************************
+  000308               *                 END OF FILE (EOF) SWITCHES                 *
+  000309               *            0 = NOT AT EOF          1 = AT EOF              *
+  000310               **************************************************************
+  000311                    03  EOF-I                   PIC 9          VALUE 0.
+  000312                    03  WS-IN-STATUS            PIC XX         VALUE SPACES.              IMP
+  000313
+  000314               **************************************************************
+  000315               *               START OF PROCEDURE DIVISION                  *
+  000316               **************************************************************
+  000317                PROCEDURE DIVISION.
+  000318                A000-MAINLINE.
+  000319                    OPEN INPUT SALESMAST                                                  57
+  000320                         OUTPUT SALESRPT.                                                 70
+  000321                    IF WS-IN-STATUS NOT EQUAL "00"                                        312
+  000322      1                  THEN DISPLAY "FILE ERROR, IN-STATUS = ", WS-IN-STATUS            312
+  000323      1                  DISPLAY "CHECK JCL AND COBOL FILE DEFINITIONS MATCH"
+  000324                    ELSE
+  000325      1                 PERFORM B000-INITIALIZE                                           335
+  000326      1                 PERFORM C000-PROCESSING                                           337
+  000327      1                 PERFORM W800-CURRENT-DATE                                         393
+  000328      1                 PERFORM W900-SLSP-HIGHEST-NET                                     400
+  000329      1                 PERFORM W1000-THREE-STAR-HIGH                                     404
+  000330      1                 CLOSE SALESMAST                                                   57
+  000331      1                       SALESRPT                                                    70
+  000332                    END-IF.
+  000333                    STOP RUN.
+  000334
+  000335                B000-INITIALIZE.
+  000336                    PERFORM U100-GET-CURRENT-DATE.                                        465
+  000337                C000-PROCESSING.
+  000338                    PERFORM 1600-REPORT-LOOP UNTIL WS-SALESMAST-EOF.                      411 80
+  000339
+  000340               **************************************************************
+  000341               *                     PRINT DATA AREA                        *
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page     9
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000342               **************************************************************
+  000343                W100-PRINT-HEADERS.
+  000344                    COMPUTE PG-COUNTER = PG-COUNTER + 1                                   231 231
+  000345                    MOVE PG-COUNTER TO WS-HL1-PAGENO                                      231 89
+  000346                    WRITE PRNT-REC FROM WS-HEADING-LINE-1.                                72 86
+  000347                    WRITE PRNT-REC FROM WS-HEADING-LINE-2.                                72 102
+  000348                    MOVE SALESPERSON-BRANCH-NO TO WS-BRANCH-NUM                           66 111
+  000349                    MOVE SALESPERSON-BRANCH-NO TO WS-SALESPERSON-BNUM                     66 151
+  000350                    WRITE PRNT-REC FROM WS-HEADING-LINE-3.                                72 109
+  000351                    WRITE PRNT-REC FROM WS-HEADING-LINE-4.                                72 113
+  000352
+  000353                W200-PRINT-SALESPERSON.
+  000354                    MOVE SALESPERSON-LAST-NAME TO  WS-SALESPERSON-LNAME                   62 134
+  000355                    MOVE SALESPERSON-FIRST-NAME TO WS-SALESPERSON-FNAME                   63 135
+  000356                    MOVE SALESPERSON-GROSS-SALES TO WS-SALESPERSON-GRS-SLS                64 137
+  000357                    MOVE SALESPERSON-RETURN-SALES TO WS-SALESPERSON-RTRN-SLS              65 139
+  000358                    MOVE WS-NET-SALES TO  WS-NET-CALC                                     243 141
+  000359                    MOVE WS-COMMISSION-EARNED TO WS-COMM-EARNED-ST                        244 143
+  000360                    WRITE PRNT-REC FROM  WS-DETAIL-LINE-5                                 72 133
+  000361                         AFTER ADVANCING 1 LINE.
+  000362               **************************************************************
+  000363               *                     MOVE DATA AREA                         *
+  000364               **************************************************************
+  000365                1400-ZERO-DATA.
+  000366                    MOVE 0 TO WS-NET-SALES, WS-COMMISSION-EARNED, WS-BRANCH-GROSS         243 244 234
+  000367                    , WS-BRANCH-NET, WS-BRANCH-COMMISS, WS-BRANCH-RETURNS                 237 236 235
+  000368                    MOVE 0 TO WS-COMP-GROSS, WS-COMP-RETURN, WS-COMP-NET,                 238 239 240
+  000369                    WS-COMP-COMMISS.                                                      241
+  000370
+  000371                W300-MOVE-BRANCH.
+  000372                    MOVE WS-BRANCH-GROSS TO WS-BRANCH-GROSS-TTL                           234 153
+  000373                    MOVE WS-BRANCH-RETURNS TO WS-BRANCH-RETURN-TTL                        235 155
+  000374                    MOVE WS-BRANCH-NET TO WS-BRANCH-NET-TTL                               237 157
+  000375                    MOVE WS-BRANCH-COMMISS TO WS-BRANCH-COMMISS-TTL.                      236 159
+  000376
+  000377                W400-WRITE-BRANCH.
+  000378                    WRITE PRNT-REC FROM WS-BRANCH-TOTAL-6.                                72 147
+  000379
+  000380                W500-PRINT-COMP-TOTALS.
+  000381                    MOVE WS-COMP-GROSS TO WS-GRAND-TOTAL-SALES                            238 179
+  000382                    MOVE WS-COMP-RETURN TO WS-TOTAL-RETURN                                239 181
+  000383                    MOVE WS-COMP-NET TO WS-TOTAL-NET                                      240 183
+  000384                    MOVE WS-COMP-COMMISS TO WS-TOTAL-COMMISSION.                          241 185
+  000385                    WRITE PRNT-REC FROM WS-GRAND-TOTALS-8                                 72 175
+  000386                         AFTER ADVANCING 1 LINE.
+  000387
+  000388                W600-SINGLE-LINES.
+  000389                    WRITE PRNT-REC FROM WS-SINGLE-LINES-7.                                72 161
+  000390
+  000391                W700-DOUBLE-LINES.
+  000392                    WRITE PRNT-REC FROM WS-DOUBLE-LINES-9.                                72 187
+  000393                W800-CURRENT-DATE.
+  000394                    PERFORM U100-GET-CURRENT-DATE.                                        465
+  000395                    MOVE WS-HL1-YEAR TO WS-CD-YEAR                                        99 266
+  000396                    MOVE WS-HL1-MONTH TO WS-CD-MONTH                                      95 268
+  000397                    MOVE WS-HL1-DAY TO WS-CD-DAY                                          97 270
+  000398                    WRITE PRNT-REC FROM WS-HIGHEST-NET-SALES-DATE                         72 263
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page    10
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000399                         AFTER ADVANCING 1 LINE.
+  000400                W900-SLSP-HIGHEST-NET.
+  000401                    WRITE PRNT-REC FROM WS-SLP-HIGH-NET                                   72 273
+  000402                    WRITE PRNT-REC FROM WS-NET-SALE-VALUE                                 72 282
+  000403                         AFTER ADVANCING 1 LINE.
+  000404                W1000-THREE-STAR-HIGH.
+  000405                    WRITE PRNT-REC FROM WS-STAR-RATE-HIGHEST                              72 287
+  000406                    WRITE PRNT-REC FROM WS_COMMIS_STAR                                    72 299
+  000407                         AFTER ADVANCING 1 LINE.
+  000408               **************************************************************
+  000409               *                       LOOP AREA                            *
+  000410               **************************************************************
+  000411                1600-REPORT-LOOP.
+  000412                    PERFORM R200-READ-FILE.                                               535
+  000413                         IF WS-SALEMAST-EOF-SWITCH = 'N' THEN                             79
+  000414      1                   COMPUTE WS-SALESPERSON-COUNT = WS-SALESPERSON-COUNT             246 246
+  000415      1                      + 1
+  000416      1                      END-COMPUTE
+  000417      1                      IF WS-SALESPERSON-COUNT = 1 THEN                             246
+  000418      2                          MOVE SALESPERSON-BRANCH-NO TO                            66
+  000419      2                              WS-CURRENT-BRANCH-NO                                 245
+  000420      2                           PERFORM W100-PRINT-HEADERS                              343
+  000421      2                           PERFORM U200-CALCULATE-SALESPERSON                      471
+  000422      2                           PERFORM U300-CALCULATE-BRANCH                           503
+  000423      2                           PERFORM U400-CALCULATE-COMPANY                          516
+  000424      2                           PERFORM W200-PRINT-SALESPERSON                          353
+  000425      1                      ELSE
+  000426      2                          IF WS-CURRENT-BRANCH-NO NOT EQUAL                        245
+  000427      2                              SALESPERSON-BRANCH-NO                                66
+  000428      3                              PERFORM U500-BREAK-CONTROL                           449
+  000429      3                              PERFORM U400-CALCULATE-COMPANY                       516
+  000430      2                          ELSE
+  000431      3                              PERFORM U200-CALCULATE-SALESPERSON                   471
+  000432      3                              PERFORM W200-PRINT-SALESPERSON                       353
+  000433      3                              PERFORM U300-CALCULATE-BRANCH                        503
+  000434      3                              PERFORM U400-CALCULATE-COMPANY                       516
+  000435      2                         END-IF
+  000436      1                     END-IF
+  000437
+  000438                         ELSE
+  000439      1                      PERFORM U400-CALCULATE-COMPANY                               516
+  000440      1                      PERFORM W300-MOVE-BRANCH                                     371
+  000441      1                      PERFORM W400-WRITE-BRANCH                                    377
+  000442      1                      PERFORM W600-SINGLE-LINES                                    388
+  000443      1                      PERFORM W500-PRINT-COMP-TOTALS                               380
+  000444      1                      PERFORM W700-DOUBLE-LINES                                    391
+  000445                       END-IF.
+  000446               **************************************************************
+  000447               *                     BREAK CONTROL                          *
+  000448               **************************************************************
+  000449                U500-BREAK-CONTROL.
+  000450                    PERFORM U400-CALCULATE-COMPANY                                        516
+  000451                    PERFORM W300-MOVE-BRANCH                                              371
+  000452                    PERFORM W400-WRITE-BRANCH                                             377
+  000453                    PERFORM W600-SINGLE-LINES                                             388
+  000454                    PERFORM W100-PRINT-HEADERS                                            343
+  000455                    PERFORM 1400-ZERO-DATA                                                365
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page    11
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000456                    MOVE SALESPERSON-BRANCH-NO TO WS-CURRENT-BRANCH-NO                    66 245
+  000457                    PERFORM U200-CALCULATE-SALESPERSON                                    471
+  000458                    PERFORM W200-PRINT-SALESPERSON                                        353
+  000459                    PERFORM U300-CALCULATE-BRANCH                                         503
+  000460                    PERFORM U400-CALCULATE-COMPANY.                                       516
+  000461
+  000462               **************************************************************
+  000463               *                    CALCULATIONS AREA                       *
+  000464               **************************************************************
+  000465                U100-GET-CURRENT-DATE.
+  000466                    ACCEPT WS-DATE-VALUE FROM DATE YYYYMMDD                               255 255
+  000467                    MOVE WS-DATE-MONTH TO WS-HL1-MONTH                                    257 95
+  000468                    MOVE WS-DATE-DAY TO WS-HL1-DAY                                        258 97
+  000469                    MOVE WS-DATE-YEAR TO WS-HL1-YEAR.                                     256 99
+  000470
+  000471                U200-CALCULATE-SALESPERSON.
+  000472                    COMPUTE WS-NET-SALES ROUNDED = SALESPERSON-GROSS-SALES -              243 64
+  000473                         SALESPERSON-RETURN-SALES                                         65
+  000474                    END-COMPUTE
+  000475                    MOVE WS-NET-SALES TO WS-CUR-NET                                       243 248
+  000476                    COMPUTE WS-COMMISSION-EARNED ROUNDED = WS-NET-SALES *                 244 243
+  000477                         SALESPERSON-COMM-RATE                                            67
+  000478                    END-COMPUTE
+  000479
+  000480                    IF WS-CUR-NET >= WS-PREV-NET                                          248 249
+  000481      1                 MOVE WS-CUR-NET TO WS-HIGH-SALES                                  248 285
+  000482      1                 MOVE SALESPERSON-LAST-NAME TO WS-H-LASTNAME                       62 278
+  000483      1                 MOVE SALESPERSON-FIRST-NAME TO WS-H-FIRSTNAME                     63 280
+  000484      1                 MOVE WS-CUR-NET TO WS-PREV-NET                                    248 249
+  000485                    END-IF
+  000486                    PERFORM WITH TEST AFTER
+  000487                         VARYING WS-RATING-SUB FROM 1 BY 1 UNTIL                          247
+  000488                         WS-NET-SALES > WS-SALES-RANGE-MIN-VALUE (WS-RATING-SUB)          243 223 247
+  000489                         AND
+  000490                         WS-NET-SALES < WS-SALES-RANGE-MAX-VALUE (WS-RATING-SUB)          243 224 247
+  000491      1                  MOVE WS-STAR-RATING (WS-RATING-SUB) TO                           225 247
+  000492      1                      WS-SALESPERSON-RATE-ST                                       145
+  000493                    END-PERFORM
+  000494                    IF WS-SALESPERSON-RATE-ST = "  ***"                                   145
+  000495      1                  IF WS-COMMISSION-EARNED >= WS-COM-HIGHEST                        244 250
+  000496      2                      MOVE SALESPERSON-LAST-NAME TO WS-S-LASTNAME                  62 295
+  000497      2                      MOVE SALESPERSON-FIRST-NAME TO WS-S-FIRSTNAME                63 297
+  000498      2                      MOVE WS-COMMISSION-EARNED TO WS-H-COMM                       244 302
+  000499      2                      MOVE SALESPERSON-COMM-RATE TO WS-R-COMM                      67 306
+  000500      1                  END-IF
+  000501                    END-IF.
+  000502
+  000503                U300-CALCULATE-BRANCH.
+  000504                    COMPUTE WS-BRANCH-GROSS ROUNDED = WS-BRANCH-GROSS +                   234 234
+  000505                         SALESPERSON-GROSS-SALES                                          64
+  000506                    END-COMPUTE
+  000507                    COMPUTE WS-BRANCH-RETURNS ROUNDED = WS-BRANCH-RETURNS +               235 235
+  000508                         SALESPERSON-RETURN-SALES                                         65
+  000509                    END-COMPUTE
+  000510                    COMPUTE WS-BRANCH-NET ROUNDED = WS-BRANCH-NET + WS-NET-SALES          237 237 243
+  000511                    END-COMPUTE
+  000512                    COMPUTE WS-BRANCH-COMMISS ROUNDED = WS-BRANCH-COMMISS +               236 236
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page    12
+  LineID  PL SL  ----+-*A-1-B--+----2----+----3----+----4----+----5----+----6----+----7-|--+----8 Map and Cross Reference
+  000513                         WS-COMMISSION-EARNED                                             244
+  000514                    END-COMPUTE.
+  000515
+  000516                U400-CALCULATE-COMPANY.
+  000517                    COMPUTE WS-COMP-GROSS ROUNDED = WS-COMP-GROSS                         238 238
+  000518                         + WS-BRANCH-GROSS                                                234
+  000519                    END-COMPUTE
+  000520                    COMPUTE WS-COMP-RETURN ROUNDED = WS-COMP-RETURN                       239 239
+  000521                         + WS-BRANCH-RETURNS                                              235
+  000522                    END-COMPUTE
+  000523                    COMPUTE WS-COMP-NET ROUNDED = WS-COMP-NET                             240 240
+  000524                         + WS-BRANCH-NET                                                  237
+  000525                    END-COMPUTE
+  000526                    COMPUTE WS-COMP-COMMISS ROUNDED = WS-COMP-COMMISS                     241 241
+  000527                         + WS-BRANCH-COMMISS                                              236
+  000528                    END-COMPUTE.
+  000529
+  000530
+  000531
+  000532               **************************************************************
+  000533               *                    READS THE INPUT FILE                    *
+  000534               **************************************************************
+  000535                 R200-READ-FILE.
+  000536                    READ SALESMAST                                                        57
+  000537      1                  AT END MOVE 'Y' TO
+  000538      1                  WS-SALEMAST-EOF-SWITCH.                                          79
+  000539
+*/ PCS1PRG1
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page    13
+An "M" preceding a data-name reference indicates that the data-name is modified by this reference.
+ 
+ Defined   Cross-reference of data names   References
+ 
+     311   EOF-I
+      68   INPUT-REC
+     231   PG-COUNTER . . . . . . . . . .  M344 344 345
+      72   PRNT-REC . . . . . . . . . . .  M346 M347 M350 M351 M360 M378 M385 M389 M392 M398 M401 M402 M405 M406
+      57   SALESMAST. . . . . . . . . . .  50 319 330 536
+      66   SALESPERSON-BRANCH-NO. . . . .  348 349 418 427 456
+      67   SALESPERSON-COMM-RATE. . . . .  477 499
+      63   SALESPERSON-FIRST-NAME . . . .  355 483 497
+      64   SALESPERSON-GROSS-SALES. . . .  356 472 505
+      62   SALESPERSON-LAST-NAME. . . . .  354 482 496
+      60   SALESPERSON-MASTER
+      61   SALESPERSON-NO
+      65   SALESPERSON-RETURN-SALES . . .  357 473 508
+      70   SALESRPT . . . . . . . . . . .  53 320 331
+     236   WS-BRANCH-COMMISS. . . . . . .  M367 375 M512 512 527
+     159   WS-BRANCH-COMMISS-TTL. . . . .  M375
+     234   WS-BRANCH-GROSS. . . . . . . .  M366 372 M504 504 518
+     153   WS-BRANCH-GROSS-TTL. . . . . .  M372
+     237   WS-BRANCH-NET. . . . . . . . .  M367 374 M510 510 524
+     157   WS-BRANCH-NET-TTL. . . . . . .  M374
+     111   WS-BRANCH-NUM. . . . . . . . .  M348
+     155   WS-BRANCH-RETURN-TTL . . . . .  M373
+     235   WS-BRANCH-RETURNS. . . . . . .  M367 373 M507 507 521
+     147   WS-BRANCH-TOTAL-6. . . . . . .  378
+     233   WS-CALC-FIELDS
+     270   WS-CD-DAY. . . . . . . . . . .  M397
+     268   WS-CD-MONTH. . . . . . . . . .  M396
+     266   WS-CD-YEAR . . . . . . . . . .  M395
+     250   WS-COM-HIGHEST . . . . . . . .  495
+     143   WS-COMM-EARNED-ST. . . . . . .  M359
+     244   WS-COMMISSION-EARNED . . . . .  359 M366 M476 495 498 513
+     241   WS-COMP-COMMISS. . . . . . . .  M369 384 M526 526
+     238   WS-COMP-GROSS. . . . . . . . .  M368 381 M517 517
+     240   WS-COMP-NET. . . . . . . . . .  M368 383 M523 523
+     239   WS-COMP-RETURN . . . . . . . .  M368 382 M520 520
+     248   WS-CUR-NET . . . . . . . . . .  M475 480 481 484
+     245   WS-CURRENT-BRANCH-NO . . . . .  M419 426 M456
+     258   WS-DATE-DAY. . . . . . . . . .  468
+     257   WS-DATE-MONTH. . . . . . . . .  467
+     255   WS-DATE-VALUE. . . . . . . . .  M466 466
+     256   WS-DATE-YEAR . . . . . . . . .  469
+     133   WS-DETAIL-LINE-5 . . . . . . .  360
+     187   WS-DOUBLE-LINES-9. . . . . . .  392
+     179   WS-GRAND-TOTAL-SALES . . . . .  M381
+     175   WS-GRAND-TOTALS-8. . . . . . .  385
+     242   WS-GROSS-SALES
+     302   WS-H-COMM. . . . . . . . . . .  M498
+     280   WS-H-FIRSTNAME . . . . . . . .  M483
+     278   WS-H-LASTNAME. . . . . . . . .  M482
+      86   WS-HEADING-LINE-1. . . . . . .  346
+     102   WS-HEADING-LINE-2. . . . . . .  347
+     109   WS-HEADING-LINE-3. . . . . . .  350
+     113   WS-HEADING-LINE-4. . . . . . .  351
+     285   WS-HIGH-SALES. . . . . . . . .  M481
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page    14
+ Defined   Cross-reference of data names   References
+ 
+     263   WS-HIGHEST-NET-SALES-DATE. . .  398
+      97   WS-HL1-DAY . . . . . . . . . .  397 M468
+      95   WS-HL1-MONTH . . . . . . . . .  396 M467
+      89   WS-HL1-PAGENO. . . . . . . . .  M345
+      99   WS-HL1-YEAR. . . . . . . . . .  395 M469
+     312   WS-IN-STATUS . . . . . . . . .  51 321 322
+     141   WS-NET-CALC. . . . . . . . . .  M358
+     282   WS-NET-SALE-VALUE. . . . . . .  402
+     243   WS-NET-SALES . . . . . . . . .  358 M366 M472 475 476 488 490 510
+     230   WS-PAGE-NUMBER
+     249   WS-PREV-NET. . . . . . . . . .  480 M484
+     306   WS-R-COMM. . . . . . . . . . .  M499
+     222   WS-RATING-GROUP
+     247   WS-RATING-SUB. . . . . . . . .  M487 488 490 491
+     221   WS-RATING-TABLE
+     203   WS-RATING-VALUES . . . . . . .  221
+     297   WS-S-FIRSTNAME . . . . . . . .  M497
+     295   WS-S-LASTNAME. . . . . . . . .  M496
+      79   WS-SALEMAST-EOF-SWITCH . . . .  413 M538
+     224   WS-SALES-RANGE-MAX-VALUE . . .  490
+     223   WS-SALES-RANGE-MIN-VALUE . . .  488
+      80   WS-SALESMAST-EOF . . . . . . .  338
+      81   WS-SALESMAST-NOT-EOF
+     151   WS-SALESPERSON-BNUM. . . . . .  M349
+     246   WS-SALESPERSON-COUNT . . . . .  M414 414 417
+     135   WS-SALESPERSON-FNAME . . . . .  M355
+     137   WS-SALESPERSON-GRS-SLS . . . .  M356
+     134   WS-SALESPERSON-LNAME . . . . .  M354
+     145   WS-SALESPERSON-RATE-ST . . . .  M492 494
+     139   WS-SALESPERSON-RTRN-SLS. . . .  M357
+     161   WS-SINGLE-LINES-7. . . . . . .  389
+     273   WS-SLP-HIGH-NET. . . . . . . .  401
+     287   WS-STAR-RATE-HIGHEST . . . . .  405
+     225   WS-STAR-RATING . . . . . . . .  491
+      78   WS-SWITCHES
+     185   WS-TOTAL-COMMISSION. . . . . .  M384
+     183   WS-TOTAL-NET . . . . . . . . .  M383
+     181   WS-TOTAL-RETURN. . . . . . . .  M382
+     299   WS_COMMIS_STAR . . . . . . . .  406
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page    15
+Context usage is indicated by the letter preceding a procedure-name reference.
+These letters and their meanings are:
+    A = ALTER (procedure-name)
+    D = GO TO (procedure-name) DEPENDING ON
+    E = End of range of (PERFORM) through (procedure-name)
+    G = GO TO (procedure-name)
+    P = PERFORM (procedure-name)
+    T = (ALTER) TO PROCEED TO (procedure-name)
+    U = USE FOR DEBUGGING (procedure-name)
+ 
+ Defined   Cross-reference of procedures   References
+ 
+     318   A000-MAINLINE
+     335   B000-INITIALIZE. . . . . . . .  P325
+     337   C000-PROCESSING. . . . . . . .  P326
+     535   R200-READ-FILE . . . . . . . .  P412
+     465   U100-GET-CURRENT-DATE. . . . .  P336 P394
+     471   U200-CALCULATE-SALESPERSON . .  P421 P431 P457
+     503   U300-CALCULATE-BRANCH. . . . .  P422 P433 P459
+     516   U400-CALCULATE-COMPANY . . . .  P423 P429 P434 P439 P450 P460
+     449   U500-BREAK-CONTROL . . . . . .  P428
+     343   W100-PRINT-HEADERS . . . . . .  P420 P454
+     404   W1000-THREE-STAR-HIGH. . . . .  P329
+     353   W200-PRINT-SALESPERSON . . . .  P424 P432 P458
+     371   W300-MOVE-BRANCH . . . . . . .  P440 P451
+     377   W400-WRITE-BRANCH. . . . . . .  P441 P452
+     380   W500-PRINT-COMP-TOTALS . . . .  P443
+     388   W600-SINGLE-LINES. . . . . . .  P442 P453
+     391   W700-DOUBLE-LINES. . . . . . .  P444
+     393   W800-CURRENT-DATE. . . . . . .  P327
+     400   W900-SLSP-HIGHEST-NET. . . . .  P328
+     365   1400-ZERO-DATA . . . . . . . .  P455
+     411   1600-REPORT-LOOP . . . . . . .  P338
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page    16
+ Defined   Cross-reference of programs     References
+ 
+       7   PCS1PRG1
+PP 5655-EC6 IBM Enterprise COBOL for z/OS  6.2.0 P190107       PCS1PRG1  Date 07/16/2020  Time 16:31:00   Page    17
+ 
+         COPY/BASIS cross-reference of text-names, library names and dataset information
+ 
+ Text-name Library   File name                                    Concat   ISPF statistics
+ (Member)  (DDNAME)  (Dataset name)                               Level    Created         Changed
+ 
+ CCS1SLP   SYSLIB    KC03G9C.COPY                                   0     2020/07/09   2020/07/09 18:12:22
+ 
+* Statistics for COBOL program PCS1PRG1:
+*    Source records = 539
+*    Data Division statements = 91
+*    Procedure Division statements = 115
+*    Generated COBOL statements = 0
+*    Program complexity factor = 123
+End of compilation 1,  program PCS1PRG1,  no statements flagged.
+Return code 0
+z/OS V2 R3 BINDER     16:31:03 THURSDAY JULY 16, 2020
+BATCH EMULATOR  JOB(JCS1CL  ) STEP(S1      ) PGM= IEWBLINK  PROCEDURE(LKED    )
+ 
+ 
+ 
+                                *** O P E R A T I O N   S U M M A R Y   R E P O R T ***
+ 
+PROCESSING OPTIONS:
+ 
+   ALIASES             NO
+   ALIGN2              NO
+   AMODE               UNSPECIFIED
+   CALL                YES
+   CASE                UPPER
+   COMPAT              UNSPECIFIED
+   COMPRESS            AUTO
+   DCBS                NO
+   DYNAM               NO
+   EXTATTR             UNSPECIFIED
+   EXITS:              NONE
+   FILL                NONE
+   GID                 UNSPECIFIED
+   HOBSET              NO
+   INFO                NO
+   LET                 04
+   LINECT              060
+   LIST                SUMMARY
+   LISTPRIV            NO
+   LONGPARM            NO
+   MAP                 NO
+   MAXBLK              032760
+   MODMAP              NO
+   MSGLEVEL            00
+   OVLY                NO
+   PRINT               YES
+   RES                 NO
+   REUSABILITY         UNSPECIFIED
+   RMODE               UNSPECIFIED
+   RMODEX              NO
+   SIGN                NO
+   STORENX             NOREPLACE
+   STRIPCL             NO
+   STRIPSEC            NO
+   SYMTRACE
+   TERM                NO
+   TRAP                ON
+   UID                 UNSPECIFIED
+   UPCASE              NO
+   WKSPACE             000000K,000000K
+   XCAL                NO
+   XREF                NO
+   ***END OF OPTIONS***
+ 
+ 
+ 
+ 
+SAVE OPERATION SUMMARY:
+ 
+   MEMBER NAME         PCS1PRG1
+   LOAD LIBRARY        KC03G9C.LOAD
+   PROGRAM TYPE        PROGRAM OBJECT(FORMAT 3)
+   VOLUME SERIAL       KCTR53
+   DISPOSITION         REPLACED
+   TIME OF SAVE        16.31.03  JUL 16, 2020
+ 
+ 
+SAVE MODULE ATTRIBUTES:
+ 
+   AC                  000
+   AMODE                31
+   COMPRESSION         NONE
+   DC                  NO
+   EDITABLE            YES
+   EXCEEDS 16MB        NO
+   EXECUTABLE          YES
+   LONGPARM            NO
+   MIGRATABLE          NO
+   OL                  NO
+   OVLY                NO
+   PACK,PRIME          NO,NO
+   PAGE ALIGN          NO
+   REFR                NO
+   RENT                NO
+   REUS                NO
+   RMODE               ANY
+   SCTR                NO
+   SIGN                NO
+   SSI
+   SYM GENERATED       NO
+   TEST                NO
+   XPLINK              NO
+   MODULE SIZE (HEX)   0000386C
+   DASD SIZE (HEX)     00013000
+ 
+ 
+ ENTRY POINT AND ALIAS SUMMARY:
+ 
+ NAME:            ENTRY TYPE AMODE C_OFFSET CLASS NAME        STATUS
+ 
+ PCS1PRG1          MAIN_EP      31 00000000 C_CODE
+ 
+                         *** E N D   O F   O P E R A T I O N   S U M M A R Y   R E P O R T ***
+ 
+ 
+ 
+ 
+z/OS V2 R3 BINDER     16:31:03 THURSDAY JULY 16, 2020
+BATCH EMULATOR  JOB(JCS1CL  ) STEP(S1      ) PGM= IEWBLINK  PROCEDURE(LKED    )
+IEW2008I 0F03 PROCESSING COMPLETED.  RETURN CODE =  0.
+ 
+ 
+ 
+----------------------
+MESSAGE SUMMARY REPORT
+----------------------
+ TERMINAL MESSAGES      (SEVERITY = 16)
+ NONE
+ 
+ SEVERE MESSAGES        (SEVERITY = 12)
+ NONE
+ 
+ ERROR MESSAGES         (SEVERITY = 08)
+ NONE
+ 
+ WARNING MESSAGES       (SEVERITY = 04)
+ NONE
+ 
+ INFORMATIONAL MESSAGES (SEVERITY = 00)
+ 2008
+ 
+ 
+ **** END OF MESSAGE SUMMARY REPORT ****
+ 
+ PAGE   1                             ABC CORPORATION                         07/16/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 100
+LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+Friesen        Sonia            $63,222.23      $4,244.32      $58,977.91     $1,963.96       ***
+Orlando        Randolph         $70,814.29        $322.58      $70,491.71     $2,072.46      ****
+Rowan          Eileen           $77,317.12        $838.83      $76,478.29     $3,059.13      ****
+DeGaetano      Catherine        $41,516.79        $231.82      $41,284.97     $1,589.47       ***
+Flynn          Ashley           $77,374.53        $127.38      $77,247.15     $2,572.33      ****
+Hau            Jayne            $70,896.27         $13.29      $70,882.98     $1,694.10      ****
+Steele         Karen            $77,360.06        $128.99      $77,231.07     $2,602.69      ****
+Baker          Anna             $70,834.11        $443.37      $70,390.74     $2,660.77      ****
+Appel          Anne             $70,813.31        $210.11      $70,603.20     $2,577.02      ****
+Patchik        Joseph           $21,952.56        $117.54      $21,835.02       $842.83        **
+Banasiak       Nancy            $70,840.52      $1,113.91      $69,726.61     $2,091.80      ****
+TOTAL FOR BRANCH: 100          $712,941.79      $7,792.14     $705,149.65    $23,726.56
+                              ------------     ------------    ------------    ------------
+ PAGE   2                             ABC CORPORATION                         07/16/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 200
+LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+Mosak          Brian            $31,272.01        $236.73      $31,035.28     $1,170.03        **
+Doherty        Derek            $31,211.71        $124.23      $31,087.48     $1,025.89        **
+Anderson       Susan            $81,512.17        $910.77      $80,601.40     $2,933.89     *****
+Ziccardi       Brandon          $70,861.70        $251.03      $70,610.67     $2,492.56      ****
+Marcus         Aili             $70,892.09      $1,098.29      $69,793.80     $2,463.72      ****
+Brockmann      Nelson           $21,901.02        $121.92      $21,779.10       $622.88        **
+Corbett        Lynn             $70,883.22        $111.98      $70,771.24     $1,542.81      ****
+VanLanen       Joanna           $77,396.44        $123.07      $77,273.37     $1,684.56      ****
+King           Bryan            $31,275.98      $1,119.41      $30,156.57       $889.62        **
+McGannon       Margaret         $63,079.20        $219.61      $62,859.59     $2,156.08      ****
+Canario        Margaret         $70,821.91        $667.13      $70,154.78     $2,707.97      ****
+Cavaretta      Katherine        $63,009.61      $2,002.16      $61,007.45     $2,031.55      ****
+Orlando        Catherine        $70,891.86        $320.99      $70,570.87     $2,822.83      ****
+Appel          Judy             $84,761.77      $3,003.36      $81,758.41       $997.45     *****
+Kimble         Kathleen         $31,205.09        $122.04      $31,083.05     $1,019.52        **
+Fricker        Kathleen         $77,342.92        $447.27      $76,895.65     $2,983.55      ****
+Moreno         Jan              $70,863.41      $1,224.65      $69,638.76     $2,590.56      ****
+Jordan         John             $31,214.64        $323.27      $30,891.37     $1,130.62        **
+Manahan        Clifford         $70,888.88      $3,003.23      $67,885.65     $2,511.77      ****
+DeMatteo       Michele          $70,801.53        $112.31      $70,689.22     $2,785.16      ****
+Lee            Christine        $70,880.57        $118.77      $70,761.80     $2,151.16      ****
+Lee            Genoa            $70,838.59        $216.40      $70,622.19     $1,412.44      ****
+Race           JoAnn            $31,235.05      $2,007.19      $29,227.86     $1,166.19        **
+Marek          Jonathan         $21,906.84      $1,222.94      $20,683.90       $709.46        **
+Poradzisz      Scott            $31,272.88        $125.93      $31,146.95       $750.64        **
+TOTAL FOR BRANCH: 200        $1,418,221.09     $19,234.68   $1,398,986.41    $44,752.91
+                              ------------     ------------    ------------    ------------
+ PAGE   3                             ABC CORPORATION                         07/16/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 300
+LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+Rotatori       Cynthia          $81,571.56      $1,129.49      $80,442.07     $2,059.32     *****
+Kredens        Richard          $70,883.33        $433.22      $70,450.11     $2,254.40      ****
+Gencius        Daniel           $70,827.29        $213.97      $70,613.32     $2,570.32      ****
+Novak          Mary             $21,955.95      $2,004.47      $19,951.48       $754.17         *
+Natanek        Maureen          $63,025.63      $1,116.01      $61,909.62     $1,219.62      ****
+Pukala         Yasmeen          $81,525.57      $2,002.81      $79,522.76     $2,926.44      ****
+DeRenzo        Dianne           $70,878.78      $2,006.74      $68,872.04     $2,265.89      ****
+Randol         Johnnette        $70,812.82          $5.62      $70,807.20     $2,492.41      ****
+Kowalski       Laurence         $63,079.12        $125.51      $62,953.61     $2,404.83      ****
+Ade            Julie            $70,872.23      $2,118.71      $68,753.52     $2,323.87      ****
+Roe            Brian            $63,056.32        $211.51      $62,844.81     $1,954.47      ****
+Read           Mac              $31,259.91      $1,008.67      $30,251.24       $871.24        **
+Solpa          Amanda           $31,229.54        $112.39      $31,117.15       $830.83        **
+De Vita        Sharon           $31,263.67        $321.50      $30,942.17     $1,194.37        **
+Obradovic      Rita             $70,810.19        $117.64      $70,692.55     $2,509.59      ****
+McMahon        Margaret         $70,833.26        $213.48      $70,619.78     $2,160.97      ****
+Wogan          Myron            $70,821.56        $313.60      $70,507.96     $2,362.02      ****
+Price          Ruth             $70,867.54         $91.51      $70,776.03     $2,293.14      ****
+Boudos         Lynn             $70,818.58        $114.78      $70,703.80     $2,333.23      ****
+Goodfellow     Gale             $63,086.72      $1,113.34      $61,973.38     $2,274.42      ****
+Broderick      Cathleen         $70,897.61      $2,108.55      $68,789.06     $2,118.70      ****
+Gruca          Loretta          $84,766.34        $149.42      $84,616.92     $2,073.11     *****
+Streeter       Farhad           $70,827.22        $122.26      $70,704.96     $1,470.66      ****
+Serbins        Michael          $77,328.83        $324.16      $77,004.67     $2,263.94      ****
+Klick          Dick             $84,780.50      $1,108.26      $83,672.24     $2,585.47     *****
+O'Malley       Kathleen         $21,932.37        $412.78      $21,519.59       $839.26        **
+Bogacz         Martin           $84,736.01        $141.77      $84,594.24     $2,918.50     *****
+Vogel          Sandra           $81,592.56        $220.08      $81,372.48     $2,848.04     *****
+Eaheart        Joette           $84,770.71        $121.98      $84,648.73     $3,140.47     *****
+Ehlers         Joan             $81,508.22        $217.23      $81,290.99     $2,454.99     *****
+Thier          Donna            $70,843.22        $314.30      $70,528.92     $2,369.77      ****
+Eaheart        Beatrice         $84,773.35        $325.91      $84,447.44     $2,668.54     *****
+Boyer          Cathie           $21,954.42        $149.56      $21,804.86       $741.37        **
+Minet          Augustus         $70,822.23      $1,114.65      $69,707.58     $2,579.18      ****
+Breems         Mark             $70,843.04        $768.09      $70,074.95     $2,676.86      ****
+TOTAL FOR BRANCH: 300        $2,301,856.20     $22,373.97   $2,279,482.23    $73,804.41
+                              ------------     ------------    ------------    ------------
+ PAGE   4                             ABC CORPORATION                         07/16/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 400
+LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+Woodrow        Ursula           $70,829.51        $339.75      $70,489.76     $2,368.46      ****
+Boyer          Kenneth          $21,956.71        $339.99      $21,616.72       $667.96        **
+O'Callaghan    Kenyon           $84,745.68        $780.54      $83,965.14     $3,325.02     *****
+McCoy          Hanah            $70,888.16        $212.62      $70,675.54     $2,127.33      ****
+Waymel         Bradley          $70,826.89      $1,544.99      $69,281.90     $2,681.21      ****
+Wood           Ann              $70,819.73        $218.50      $70,601.23     $1,800.33      ****
+Dugan          Holly            $70,849.47      $1,112.20      $69,737.27     $2,182.78      ****
+Gehl           Adriane          $70,872.21        $126.81      $70,745.40     $2,447.79      ****
+McCabe         Jason            $63,047.70      $4,206.87      $58,840.83     $2,288.91       ***
+Bond           Patricia         $70,838.71        $436.47      $70,402.24     $2,485.20      ****
+Vilella        Reza             $70,816.43      $1,657.99      $69,158.44     $2,275.31      ****
+Werderitch     Carol            $63,034.63        $125.06      $62,909.57     $1,981.65      ****
+TOTAL FOR BRANCH: 400          $799,525.83     $11,101.79     $788,424.04    $26,631.95
+                              ------------     ------------    ------------    ------------
+ PAGE   5                             ABC CORPORATION                         07/16/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 500
+LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+Theis          Sean             $31,277.95        $216.56      $31,061.39     $1,226.92        **
+Dube           Jason            $31,242.51        $980.08      $30,262.43       $983.53        **
+Mohammadi      Mary             $70,801.70        $211.51      $70,590.19     $2,618.90      ****
+Reed           Margaret         $77,376.36        $321.77      $77,054.59     $2,481.16      ****
+Gibbs          Janelle          $81,585.98        $113.35      $81,472.63     $2,973.75     *****
+Crean          Kathleen         $77,323.99        $329.59      $76,994.40     $2,671.71      ****
+Roe            Eileen           $70,824.38        $118.83      $70,705.55     $2,785.80      ****
+Holtz          Rachel           $63,072.26        $127.09      $62,945.17     $2,517.81      ****
+Hazard         Mary             $70,807.16      $1,121.74      $69,685.42     $2,209.03      ****
+Ford           Dalia            $77,331.45      $1,326.30      $76,005.15     $1,565.71      ****
+Doherty        Elizabeth        $81,593.90        $211.72      $81,382.18     $2,465.88     *****
+Stockover      Nancy            $70,823.37        $112.03      $70,711.34     $2,149.62      ****
+TOTAL FOR BRANCH: 500          $804,061.01      $5,190.57     $798,870.44    $26,649.82
+                              ------------     ------------    ------------    ------------
+COMPANY TOTALS               $5,642,243.72     $37,361.45   $5,604,882.27   $194,348.50
+                            ==============     ==========  ==============   ===========
+AS OF CURRENT DATE OF: 2020/07/16
+THE SALES REP WITH THE HIGHEST Net Sales IS Eaheart   , Joette
+WITH Net Sales OF:    $84,648.73
+Of the 3 star (***) Salesperson. The Salesperson with the Highest Commission Earned is McCabe    , Jason
+With Commission Earned Of  $2,288.91 using a commission Rate Of: 0389010

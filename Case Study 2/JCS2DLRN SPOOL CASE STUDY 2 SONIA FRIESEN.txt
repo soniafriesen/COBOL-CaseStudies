@@ -1,0 +1,497 @@
+                   J E S 2  J O B  L O G  --  S Y S T E M  2 9 6 4  --  N O D E  S V S C J E S 2
+ 
+15.04.42 JOB05878 ---- FRIDAY,    07 AUG 2020 ----
+15.04.42 JOB05878  IRR010I  USERID KC03G9C  IS ASSIGNED TO THIS JOB.
+15.04.42 JOB05878  ICH70001I KC03G9C  LAST ACCESS AT 15:04:33 ON FRIDAY, AUGUST 7, 2020
+15.04.42 JOB05878  $HASP373 JCS2DLRN STARTED - INIT 2    - CLASS A        - SYS 2964
+15.04.59 JOB05878  $HASP395 JCS2DLRN ENDED - RC=0000
+------ JES2 JOB STATISTICS ------
+  07 AUG 2020 JOB EXECUTION DATE
+           78 CARDS READ
+          482 SYSOUT PRINT RECORDS
+            0 SYSOUT PUNCH RECORDS
+           44 SYSOUT SPOOL KBYTES
+         0.28 MINUTES EXECUTION TIME
+        1 //JCS2DLRN JOB 1,NOTIFY=&SYSUID                                         JOB05878
+          //******************************************************
+          //* DELETE DEFINE INDEXED VSAM KSDS - SLSPKSDS         *
+          //******************************************************
+          IEFC653I SUBSTITUTION JCL - 1,NOTIFY=KC03G9C
+        2 //STEP1    EXEC PGM=IDCAMS
+        3 //SYSPRINT DD SYSOUT=*
+        4 //SYSIN    DD *
+        5 //          IF RC < 8 THEN
+          //******************************************************
+          //*  COPY  CS2SLSPSS TO VSAM SLSPKSDS - KEY 1-5        *
+          //******************************************************
+        6 //STEP2 EXEC PGM=SORT,REGION=1024K
+        7 //SYSOUT     DD SYSOUT=*
+        8 //SORTIN     DD DSN=&SYSUID..CS2SLSPS,DISP=SHR
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.CS2SLSPS,DISP=SHR
+        9 //SORTOUT    DD DSN=&SYSUID..SLSPKSDS,DISP=SHR
+          //****  INSERT YOUR Sort  HERE:
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.SLSPKSDS,DISP=SHR
+       10 //SYSIN      DD *
+       11 //          ENDIF
+          //******************************************************
+          //* BUILD AIX FROM LOADED KSDS ON BRANCH#              *
+          //******************************************************
+       12 //          IF RC < 8 THEN
+       13 //STEP3     EXEC PGM=IDCAMS
+       14 //SYSPRINT  DD SYSOUT=*
+       15 //SYSIN     DD *
+       16 //          ENDIF
+       17 //         IF RC < 8 THEN
+          //******************************************************
+          //* EXECUTE COBOL PROGRAM FOR TRANSACTION PROCESSING   *
+          //******************************************************
+       18 //STEP4 EXEC PGM=PCS2PRG1
+       19 //STEPLIB  DD DSN=&SYSUID..LOAD,DISP=SHR
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.LOAD,DISP=SHR
+       20 //PRNT     DD SYSOUT=*
+       21 //SLSPKS   DD DSN=KC03G9C.SLSPKSDS,DISP=SHR
+       22 //SLSPKS1  DD DSN=KC03G9C.SLSP.BRN.PATH,DISP=SHR
+       23 //SLSTRANS DD DSN=KC03G9C.SLSTRANS,DISP=SHR
+          /*
+       24 //          ENDIF
+       25 //         IF RC < 8 THEN
+          //******************************************************
+          //* EXECUTE COBOL PROGRAM FOR BRANCH SALES PROCESSING  *
+          //******************************************************
+       26 //STEP5 EXEC PGM=PCS2PRG2
+       27 //STEPLIB  DD DSN=&SYSUID..LOAD,DISP=SHR
+          IEFC653I SUBSTITUTION JCL - DSN=KC03G9C.LOAD,DISP=SHR
+       28 //PRNT     DD SYSOUT=*
+       29 //SLSPKS   DD DSN=KC03G9C.SLSPKSDS,DISP=SHR
+       30 //SLSPKS1  DD DSN=KC03G9C.SLSP.BRN.PATH,DISP=SHR
+          /*
+       31 //          ENDIF
+ICH70001I KC03G9C  LAST ACCESS AT 15:04:33 ON FRIDAY, AUGUST 7, 2020
+IEFA111I JCS2DLRN IS USING THE FOLLOWING JOB RELATED SETTINGS:
+         SWA=ABOVE,TIOT SIZE=32K,DSENQSHR=DISALLOW,GDGBIAS=JOB
+IEF236I ALLOC. FOR JCS2DLRN STEP1
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO SYSIN
+IGD103I SMS ALLOCATED TO DDNAME SYS00001
+IGD104I KC03G9C.SLSPKSDS                             RETAINED,  DDNAME=SYS00001
+IEF142I JCS2DLRN STEP1 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   KC03G9C.JCS2DLRN.JOB05878.D0000104.?         SYSOUT
+IEF285I   KC03G9C.JCS2DLRN.JOB05878.D0000101.?         SYSIN
+IEF373I STEP/STEP1   /START 2020220.1504
+IEF032I STEP/STEP1   /STOP  2020220.1504
+        CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:   400K  SYS:   268K  EXT:      328K  SYS:    12288K
+        ATB- REAL:                  4128K  SLOTS:                     0K
+             VIRT- ALLOC:      13M SHRD:       0M
+IEF236I ALLOC. FOR JCS2DLRN STEP2
+IEF237I JES2 ALLOCATED TO SYSOUT
+IGD103I SMS ALLOCATED TO DDNAME SORTIN
+IGD103I SMS ALLOCATED TO DDNAME SORTOUT
+IEF237I JES2 ALLOCATED TO SYSIN
+IEF142I JCS2DLRN STEP2 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   KC03G9C.JCS2DLRN.JOB05878.D0000105.?         SYSOUT
+IGD104I KC03G9C.CS2SLSPS                             RETAINED,  DDNAME=SORTIN
+IGD104I KC03G9C.SLSPKSDS                             RETAINED,  DDNAME=SORTOUT
+IEF285I   KC03G9C.JCS2DLRN.JOB05878.D0000102.?         SYSIN
+IEF373I STEP/STEP2   /START 2020220.1504
+IEF032I STEP/STEP2   /STOP  2020220.1504
+        CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:  1072K  SYS:   256K  EXT:     6204K  SYS:    12428K
+        ATB- REAL:                  4156K  SLOTS:                     0K
+             VIRT- ALLOC:      15M SHRD:       0M
+IEF236I ALLOC. FOR JCS2DLRN STEP3
+IEF237I JES2 ALLOCATED TO SYSPRINT
+IEF237I JES2 ALLOCATED TO SYSIN
+IEF237I JES2 ALLOCATED TO SYSOUT
+IGD103I SMS ALLOCATED TO DDNAME SYS00002
+IGD103I SMS ALLOCATED TO DDNAME SYS00003
+IGD101I SMS ALLOCATED TO DDNAME (SORTWK01)
+        DSN (SYS20220.T150449.RA000.JCS2DLRN.R0144280    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SORTWK02)
+        DSN (SYS20220.T150449.RA000.JCS2DLRN.R0144281    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD101I SMS ALLOCATED TO DDNAME (SORTWK03)
+        DSN (SYS20220.T150449.RA000.JCS2DLRN.R0144282    )
+        STORCLAS (TEMPSC) MGMTCLAS (        ) DATACLAS (        )
+        VOL SER NOS= TEMP00
+IGD105I SYS20220.T150449.RA000.JCS2DLRN.R0144280     DELETED,   DDNAME=SORTWK01
+IGD105I SYS20220.T150449.RA000.JCS2DLRN.R0144281     DELETED,   DDNAME=SORTWK02
+IGD105I SYS20220.T150449.RA000.JCS2DLRN.R0144282     DELETED,   DDNAME=SORTWK03
+IGD104I KC03G9C.SLSP.BRN.AIX                         RETAINED,  DDNAME=SYS00003
+IGD104I KC03G9C.SLSPKSDS                             RETAINED,  DDNAME=SYS00002
+IGD103I SMS ALLOCATED TO DDNAME SYS00004
+IGD104I KC03G9C.SLSP.BRN.AIX                         RETAINED,  DDNAME=SYS00004
+IEF142I JCS2DLRN STEP3 - STEP WAS EXECUTED - COND CODE 0000
+IEF285I   KC03G9C.JCS2DLRN.JOB05878.D0000106.?         SYSOUT
+IEF285I   KC03G9C.JCS2DLRN.JOB05878.D0000103.?         SYSIN
+IEF285I   KC03G9C.JCS2DLRN.JOB05878.D0000109.?         SYSOUT
+IEF373I STEP/STEP3   /START 2020220.1504
+IEF032I STEP/STEP3   /STOP  2020220.1504
+        CPU:     0 HR  00 MIN  00.03 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:  1040K  SYS:   276K  EXT:     6256K  SYS:    12552K
+        ATB- REAL:                  4168K  SLOTS:                     0K
+             VIRT- ALLOC:      15M SHRD:       0M
+IEF236I ALLOC. FOR JCS2DLRN STEP4
+IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+IEF237I JES2 ALLOCATED TO PRNT
+IGD103I SMS ALLOCATED TO DDNAME SLSPKS
+IGD103I SMS ALLOCATED TO DDNAME SLSPKS1
+IGD103I SMS ALLOCATED TO DDNAME SLSTRANS
+IEF142I JCS2DLRN STEP4 - STEP WAS EXECUTED - COND CODE 0000
+IGD104I KC03G9C.LOAD                                 RETAINED,  DDNAME=STEPLIB
+IEF285I   KC03G9C.JCS2DLRN.JOB05878.D0000107.?         SYSOUT
+IGD104I KC03G9C.SLSPKSDS                             RETAINED,  DDNAME=SLSPKS
+IGD104I KC03G9C.SLSP.BRN.PATH                        RETAINED,  DDNAME=SLSPKS1
+IGD104I KC03G9C.SLSTRANS                             RETAINED,  DDNAME=SLSTRANS
+IEF373I STEP/STEP4   /START 2020220.1504
+IEF032I STEP/STEP4   /STOP  2020220.1504
+        CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:   108K  SYS:   280K  EXT:     2872K  SYS:    12560K
+        ATB- REAL:                  4160K  SLOTS:                     0K
+             VIRT- ALLOC:      15M SHRD:       0M
+IEF236I ALLOC. FOR JCS2DLRN STEP5
+IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+IEF237I JES2 ALLOCATED TO PRNT
+IGD103I SMS ALLOCATED TO DDNAME SLSPKS
+IGD103I SMS ALLOCATED TO DDNAME SLSPKS1
+IEF142I JCS2DLRN STEP5 - STEP WAS EXECUTED - COND CODE 0000
+IGD104I KC03G9C.LOAD                                 RETAINED,  DDNAME=STEPLIB
+IEF285I   KC03G9C.JCS2DLRN.JOB05878.D0000108.?         SYSOUT
+IGD104I KC03G9C.SLSPKSDS                             RETAINED,  DDNAME=SLSPKS
+IGD104I KC03G9C.SLSP.BRN.PATH                        RETAINED,  DDNAME=SLSPKS1
+IEF373I STEP/STEP5   /START 2020220.1504
+IEF032I STEP/STEP5   /STOP  2020220.1504
+        CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+        VIRT:    96K  SYS:   280K  EXT:     2736K  SYS:    12556K
+        ATB- REAL:                  4172K  SLOTS:                     0K
+             VIRT- ALLOC:      15M SHRD:       0M
+IEF375I  JOB/JCS2DLRN/START 2020220.1504
+IEF033I  JOB/JCS2DLRN/STOP  2020220.1504
+        CPU:     0 HR  00 MIN  00.07 SEC    SRB:     0 HR  00 MIN  00.00 SEC
+ DELETE KC03G9C.SLSPKSDS CLUSTER
+ DEFINE CLUSTER (NAME(KC03G9C.SLSPKSDS)       -
+       RECORDS(100 10)                        -
+       RECORDSIZE(52 52)                      -
+       INDEXED                                -
+       KEYS(5 0)                              -
+       )                                      -
+       DATA (NAME(KC03G9C.SLSPKSDS.DATA))     -
+       INDEX (NAME(KC03G9C.SLSPKSDS.INDEX))
+    SORT FIELDS(1,5,CH,A)
+  DEFINE AIX (NAME(KC03G9C.SLSP.BRN.AIX)       -
+       RELATE(KC03G9C.SLSPKSDS)               -
+       RECORDS(100 10)                        -
+       KEYS(5 43)                             -
+       NONUNIQUEKEY                           -
+       )                                      -
+       DATA (NAME(KC03G9C.SLSP.BRN.AIX.DATA)) -
+       INDEX (NAME(KC03G9C.SLSP.BRN.AIX.IDX))
+ DEFINE PATH (NAME(KC03G9C.SLSP.BRN.PATH)     -
+        PATHENTRY(KC03G9C.SLSP.BRN.AIX)       -
+        UPDATE)
+ BLDINDEX INDATASET(KC03G9C.SLSPKSDS)         -
+          OUTDATASET(KC03G9C.SLSP.BRN.AIX)
+ PRINT INDATASET(KC03G9C.SLSP.BRN.AIX)        -
+       CHARACTER                              -
+       COUNT(5)
+IDCAMS  SYSTEM SERVICES                                           TIME: 15:04:42        08/07/20     PAGE      1
+ 
+ DELETE KC03G9C.SLSPKSDS CLUSTER
+IDC0550I ENTRY (R) KC03G9C.SLSP.BRN.PATH DELETED
+IDC0550I ENTRY (D) KC03G9C.SLSP.BRN.AIX.DATA DELETED
+IDC0550I ENTRY (I) KC03G9C.SLSP.BRN.AIX.IDX DELETED
+IDC0550I ENTRY (G) KC03G9C.SLSP.BRN.AIX DELETED
+IDC0550I ENTRY (D) KC03G9C.SLSPKSDS.DATA DELETED
+IDC0550I ENTRY (I) KC03G9C.SLSPKSDS.INDEX DELETED
+IDC0550I ENTRY (C) KC03G9C.SLSPKSDS DELETED
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0
+ 
+ DEFINE CLUSTER (NAME(KC03G9C.SLSPKSDS)       -
+       RECORDS(100 10)                        -
+       RECORDSIZE(52 52)                      -
+       INDEXED                                -
+       KEYS(5 0)                              -
+       )                                      -
+       DATA (NAME(KC03G9C.SLSPKSDS.DATA))     -
+       INDEX (NAME(KC03G9C.SLSPKSDS.INDEX))
+IDC0508I DATA ALLOCATION STATUS FOR VOLUME KCTR02 IS 0
+IDC0509I INDEX ALLOCATION STATUS FOR VOLUME KCTR02 IS 0
+IDC0181I STORAGECLASS USED IS PRIM90
+IDC0181I MANAGEMENTCLASS USED IS DEFAULT
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0
+ 
+IDC0002I IDCAMS PROCESSING COMPLETE. MAXIMUM CONDITION CODE WAS 0
+ICE201I B RECORD TYPE IS F - DATA STARTS IN POSITION 1
+ICE751I 0 C5-I58435 C6-BASE   C7-I58435 C8-I58435 EE-I58435 E4-BASE   C9-BASE   E5-I58435 E7-I58377
+ICE143I 0 BLOCKSET     SORT  TECHNIQUE SELECTED
+ICE250I 0 VISIT http://www.ibm.com/storage/dfsort FOR DFSORT PAPERS, EXAMPLES AND MORE
+ICE000I 1 - CONTROL STATEMENTS FOR 5650-ZOS, Z/OS DFSORT V2R3  - 15:04 ON FRI AUG 07, 2020 -
+              SORT FIELDS(1,5,CH,A)
+ICE193I 0 ICEAM1 INVOCATION ENVIRONMENT IN EFFECT - ICEAM1 ENVIRONMENT SELECTED
+ICE252I 1 PARMLIB OPTIONS WERE MERGED WITH INSTALLATION MODULE DEFAULTS
+ICE088I 1 JCS2DLRN.STEP2   .        , INPUT LRECL = 80, BLKSIZE = 27920, TYPE = FB
+ICE093I 0 MAIN STORAGE = (MAX,6291456,6291456)
+ICE156I 0 MAIN STORAGE ABOVE 16MB = (6234096,6234096)
+ICE127I 0 OPTIONS: OVFLO=RC0 ,PAD=RC0 ,TRUNC=RC0 ,SPANINC=RC16,VLSCMP=N,SZERO=Y,RESET=Y,VSAMEMT=Y,DYNSPC=256
+ICE128I 0 OPTIONS: SIZE=6291456,MAXLIM=1048576,MINLIM=450560,EQUALS=N,LIST=Y,ERET=RC16 ,MSGDDN=SYSOUT
+ICE129I 0 OPTIONS: VIO=N,RESDNT=ALL ,SMF=NO   ,WRKSEC=Y,OUTSEC=Y,VERIFY=Y,CHALT=N,DYNALOC=N             ,ABCODE=MSG
+ICE130I 0 OPTIONS: RESALL=4096,RESINV=0,SVC=109 ,CHECK=Y,WRKREL=Y,OUTREL=Y,CKPT=N,COBEXIT=COB2
+ICE131I 0 OPTIONS: TMAXLIM=6291456,ARESALL=0,ARESINV=0,OVERRGN=65536,CINV=Y,CFW=Y,DSA=0
+ICE132I 0 OPTIONS: VLSHRT=N,ZDPRINT=Y,IEXIT=N,TEXIT=N,LISTX=N,EFS=NONE    ,EXITCK=S,PARMDDN=DFSPARM ,FSZEST=N
+ICE133I 0 OPTIONS: HIPRMAX=OPTIMAL,DSPSIZE=MAX ,ODMAXBF=0,SOLRF=Y,VLLONG=N,VSAMIO=N,MOSIZE=MAX
+ICE235I 0 OPTIONS: NULLOUT=RC0
+ICE236I 0 OPTIONS: DYNAPCT=10 ,MOWRK=Y,TUNE=STOR,EXPMAX=MAX    ,EXPOLD=50%    ,EXPRES=10%
+ICE084I 1 VSAM ACCESS METHOD USED FOR SORTOUT
+ICE084I 0 EXCP ACCESS METHOD USED FOR SORTIN
+ICE750I 0 DC 27920 TC 0 CS DSVVV KSZ 5 VSZ 5
+ICE752I 0 FSZ=349 RC  IGN=0 E  AVG=52 0  WSP=23 C  DYN=0 0
+ICE751I 1 DE-I58435 D5-I58435 D9-I58435 E8-I58435
+ICE090I 0 OUTPUT LRECL = 52, BLKSIZE = 18432, TYPE = F
+ICE080I 0 IN MAIN STORAGE SORT
+ICE055I 0 INSERT 0, DELETE 0
+ICE054I 0 RECORDS - IN: 95, OUT: 95
+ICE134I 0 NUMBER OF BYTES SORTED: 7600
+ICE253I 0 RECORDS SORTED - PROCESSED: 95, EXPECTED: 349
+ICE199I 0 MEMORY OBJECT USED AS MAIN STORAGE = 0M BYTES
+ICE299I 0 MEMORY OBJECT USED AS WORK STORAGE = 0M BYTES
+ICE180I 0 HIPERSPACE STORAGE USED = 0K BYTES
+ICE188I 0 DATA SPACE STORAGE USED = 0K BYTES
+ICE052I 0 END OF DFSORT
+IDCAMS  SYSTEM SERVICES                                           TIME: 15:04:46        08/07/20     PAGE      1
+ 
+  DEFINE AIX (NAME(KC03G9C.SLSP.BRN.AIX)       -
+       RELATE(KC03G9C.SLSPKSDS)               -
+       RECORDS(100 10)                        -
+       KEYS(5 43)                             -
+       NONUNIQUEKEY                           -
+       )                                      -
+       DATA (NAME(KC03G9C.SLSP.BRN.AIX.DATA)) -
+       INDEX (NAME(KC03G9C.SLSP.BRN.AIX.IDX))
+IDC0508I DATA ALLOCATION STATUS FOR VOLUME KCTR46 IS 0
+IDC0509I INDEX ALLOCATION STATUS FOR VOLUME KCTR46 IS 0
+IDC0181I STORAGECLASS USED IS PRIM90
+IDC0181I MANAGEMENTCLASS USED IS DEFAULT
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0
+ 
+ DEFINE PATH (NAME(KC03G9C.SLSP.BRN.PATH)     -
+        PATHENTRY(KC03G9C.SLSP.BRN.AIX)       -
+        UPDATE)
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0
+ 
+ BLDINDEX INDATASET(KC03G9C.SLSPKSDS)         -
+          OUTDATASET(KC03G9C.SLSP.BRN.AIX)
+IDC0652I KC03G9C.SLSP.BRN.AIX SUCCESSFULLY BUILT
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0
+ 
+ PRINT INDATASET(KC03G9C.SLSP.BRN.AIX)        -
+       CHARACTER                              -
+       COUNT(5)
+IDCAMS  SYSTEM SERVICES                                           TIME: 15:04:46        08/07/20     PAGE      2
+LISTING OF DATA SET -KC03G9C.SLSP.BRN.AIX
+KEY OF RECORD - 10010
+.....1001002153021580261302690077002430226002
+KEY OF RECORD - 10020
+.....1002024927249302686826916
+KEY OF RECORD - 20010
+.....20010102162606926123
+KEY OF RECORD - 20020
+.....20020092231050710559193042242692493
+KEY OF RECORD - 20030
+.....200300463204743226082264324781
+IDC0005I NUMBER OF RECORDS PROCESSED WAS 5
+IDC0001I FUNCTION COMPLETED, HIGHEST CONDITION CODE WAS 0
+IDCAMS  SYSTEM SERVICES                                           TIME: 15:04:46        08/07/20     PAGE      3
+ 
+IDC0002I IDCAMS PROCESSING COMPLETE. MAXIMUM CONDITION CODE WAS 0
+ PAGE   1                         ABC CORPORATION                         08/07/2020
+                              SALES TRANSACTION LOG
+TRANS NO  SALESPERSON     TRANS DATE       TYPE       AMOUNT
+ 00001       19304         13/11/01       SALE       $4,974.96
+ 00002       92493         13/11/01       SALE       $6,402.10
+ 00003       10559         13/11/03       SALE       $7,220.33
+ 00004       16825         13/11/03       DELETE
+ 00005       22643         13/11/03       RETURN     $9,265.42CR
+ 00006       86948         13/11/04       SALE         $171.02
+ 00007       26913         13/11/04       SALE       $1,947.46
+ 00008       84932         13/11/05       SALE       $2,840.23
+ 00009       27206         13/11/05       SALE       $3,634.90
+ 00010       13458         13/11/05       RETURN     $5,621.87CR
+ 00011       19294         13/11/05       SALE       $4,422.50
+ 00012       17402         13/11/05       SALE       $5,260.94
+ 00013       44931         13/11/05       DELETE
+ 00014       PROBLEM DOING xxxxx STATUS IS: 23      02300
+ 00015       19644         13/11/06       ADD
+ 00016       26813         13/11/06       SALE       $9,668.19
+ 00017       26702         13/11/07       RETURN     $1,878.10CR
+ 00018       26881         13/11/07       SALE       $2,733.31
+ 00019       54931         13/11/07       SALE       $3,506.43
+ 00020       26881         13/11/07       SALE       $4,411.83
+ 00021       94927         13/11/08       SALE       $5,250.38
+ 00022       84931         13/11/12       SALE       $5,397.00
+ 00023       PROBLEM DOING xxxxx STATUS IS: 23      02300
+ 00024       94927         13/11/12       RETURN     $7,244.54CR
+ 00025       46827         13/11/12       ADD
+ 00026       PROBLEM DOING xxxxx STATUS IS: 23      02300
+ 00027       PROBLEM DOING xxxxx STATUS IS: 23      02300
+ 00028       19294         13/11/18       SALE       $2,634.34
+ 00029       17402         13/11/18       SALE       $5,453.21
+ 00030       26702         13/11/18       SALE       $3,454.07
+ 00031       10559         13/11/18       CHANGE
+ 00032       17402         13/11/18       CHANGE
+ 00033       19538         13/11/26       RETURN     $6,334.54CR
+ 00034       10507         13/11/26       SALE       $8,187.44
+ 00035       96948         13/11/28       SALE       $7,910.77
+ 00035       96948         13/11/28       SALE       $7,910.77
+# OF SALES TRANS  025
+# OF RETURN TRANS 005
+# OF ADD TRANS  002
+# OF DELETE TRANS 002
+# OF CHANGE TRANS 002
+# OF INVALID TRANS  004
+ PAGE   1                             ABC CORPORATION                         08/07/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 100
+DEPT NO      LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+   10        Friesen        Sonia            $63,222.23      $4,244.32      $58,977.91     $1,963.96       ***
+   10        Flynn          Ashley           $77,374.53        $127.38      $77,247.15     $2,572.33      ****
+   10        Rowan          Eileen           $77,317.12        $838.83      $76,478.29     $3,059.13      ****
+   10        DeGaetano      Catherine        $41,516.79        $231.82      $41,284.97     $1,589.47        **
+   10        Orlando        Randolph         $70,814.29        $322.58      $70,491.71     $2,072.46      ****
+   10        Banasiak       Nancy            $70,840.52      $1,113.91      $69,726.61     $2,091.80       ***
+   10        Hau            Jayne            $70,896.27         $13.29      $70,882.98     $1,694.10      ****
+             TOTAL DEPARTMENT: 10           $471,981.75      $6,892.13     $465,089.62    $15,043.25
+   20        Appel          Anne             $70,813.31        $210.11      $70,603.20     $2,577.02      ****
+   20        Baker          Anna             $70,834.11        $443.37      $70,390.74     $2,660.77      ****
+   20        Patchik        Joseph           $21,952.56        $117.54      $21,835.02       $842.83        **
+   20        Steele         Karen            $77,360.06        $128.99      $77,231.07     $2,602.69     *****
+             TOTAL DEPARTMENT: 20           $240,960.04        $900.01     $240,060.03     $8,683.31
+             TOTAL FOR BRANCH: 100          $712,941.79      $7,792.14     $705,149.65    $23,726.56
+                                          --------------     ------------    ------------    ------------
+ PAGE   2                             ABC CORPORATION                         08/07/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 200
+DEPT NO      LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+   10        King           Bryan            $31,275.98      $1,119.41      $30,156.57       $889.62        **
+   10        Lee            Christine        $70,880.57        $118.77      $70,761.80     $2,151.16      ****
+   10        Lee            Genoa            $70,838.59        $216.40      $70,622.19     $1,412.44      ****
+             TOTAL DEPARTMENT: 10           $172,995.14      $1,454.58     $171,540.56     $4,453.22
+   20        VanLanen       Joanna           $77,396.44        $123.07      $77,273.37     $1,684.56     *****
+   20        Canario        Margaret         $79,009.35        $667.13      $78,342.22     $3,024.01     *****
+   20        Cavaretta      Katherine        $67,984.57      $2,002.16      $65,982.41     $2,197.21      ****
+   20        DeMatteo       Michele          $70,801.53        $112.31      $70,689.22     $2,785.16      ****
+   20        Poradzisz      Scott            $37,674.98        $125.93      $37,549.05       $904.93       ***
+             TOTAL DEPARTMENT: 20           $332,866.87      $3,030.60     $329,836.27    $10,595.87
+   30        Mosak          Brian            $31,272.01        $236.73      $31,035.28     $1,170.03        **
+   30        Corbett        Lynn             $70,883.22        $111.98      $70,771.24     $1,542.81      ****
+   30        Manahan        Clifford         $70,888.88      $3,003.23      $67,885.65     $2,511.77      ****
+   30        Orlando        Catherine        $70,891.86      $9,586.41      $61,305.45     $2,452.22       ***
+   30        Kimble         Kathleen         $31,205.09        $122.04      $31,083.05     $1,019.52        **
+   30        Newman         Sid                    $.00           $.00            $.00          $.00     N/R
+   30        Obradovic      Rita             $81,524.34        $117.64      $81,406.70     $1,628.13     *****
+             TOTAL DEPARTMENT: 30           $356,665.40     $13,178.03     $343,487.37    $10,324.48
+   40        Brockmann      Nelson           $21,901.02        $121.92      $21,779.10       $622.88        **
+   40        Marcus         Aili             $70,892.09      $1,098.29      $69,793.80     $2,463.72      ****
+   40        Doherty        Derek            $31,211.71        $124.23      $31,087.48     $1,025.89       ***
+   40        Anderson       Susan            $81,512.17        $910.77      $80,601.40     $2,933.89     *****
+   40        Ziccardi       Brandon          $70,861.70        $251.03      $70,610.67     $2,492.56      ****
+   40        Jordan         John             $31,214.64        $323.27      $30,891.37     $1,130.62       ***
+   40        Fricker        Kathleen         $77,342.92        $447.27      $76,895.65     $2,983.55     *****
+   40        Moreno         Jan              $72,810.87      $1,224.65      $71,586.22     $2,663.01      ****
+   40        Appel          Judy             $84,761.77      $3,003.36      $81,758.41       $997.45     *****
+   40        Marek          Jonathan         $24,747.07      $1,222.94      $23,524.13       $806.88        **
+   40        Race           JoAnn            $31,406.07      $2,007.19      $29,398.88     $1,173.02       ***
+             TOTAL DEPARTMENT: 40           $598,662.03     $10,734.92     $587,927.11    $19,293.47
+             TOTAL FOR BRANCH: 200        $1,492,465.42     $29,517.54   $1,432,791.31    $44,667.04
+                                          --------------     ------------    ------------    ------------
+ PAGE   3                             ABC CORPORATION                         08/07/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 300
+DEPT NO      LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+   10        Ade            Julie            $70,872.23      $2,118.71      $68,753.52     $2,323.87       ***
+   10        Read           Mac              $31,259.91      $1,008.67      $30,251.24       $871.24        **
+   10        Roe            Brian            $63,056.32        $211.51      $62,844.81     $1,954.47       ***
+   10        Solpa          Amanda           $31,229.54        $112.39      $31,117.15       $830.83        **
+             TOTAL DEPARTMENT: 10           $196,418.00      $3,451.28     $192,966.72     $5,980.41
+   20        Rotatori       Cynthia          $81,571.56      $1,129.49      $80,442.07     $2,059.32     *****
+   20        Wogan          Myron            $70,821.56      $5,935.47      $64,886.09     $2,173.68      ****
+   20        De Vita        Sharon           $38,320.51        $321.50      $37,999.01     $1,466.76       ***
+   20        Bogacz         Martin           $84,736.01        $141.77      $84,594.24     $2,918.50     *****
+   20        O'Malley       Kathleen         $25,567.27        $412.78      $25,154.49       $981.03        **
+   20        Martin         Jordan                 $.00           $.00            $.00          $.00     N/R
+             TOTAL DEPARTMENT: 20           $301,016.91      $7,941.01     $293,075.90     $9,599.29
+   30        Novak          Mary             $21,955.95      $2,004.47      $19,951.48       $754.17         *
+   30        Pukala         Yasmeen          $81,525.57      $2,002.81      $79,522.76     $2,926.44     *****
+   30        Natanek        Maureen          $63,025.63      $1,116.01      $61,909.62     $1,219.62       ***
+   30        McMahon        Margaret         $70,833.26      $6,548.02      $64,285.24     $1,967.13       ***
+   30        McGannon       Margaret         $70,299.53        $219.61      $70,079.92     $2,803.20      ****
+             TOTAL DEPARTMENT: 30           $307,639.94     $11,890.92     $295,749.02     $9,670.56
+   40        Kredens        Richard          $70,883.33        $433.22      $70,450.11     $2,254.40      ****
+   40        Kowalski       Laurence         $63,079.12        $125.51      $62,953.61     $2,404.83      ****
+   40        Gencius        Daniel           $70,827.29        $213.97      $70,613.32     $2,570.32      ****
+   40        Randol         Johnnette        $70,812.82          $5.62      $70,807.20     $2,492.41      ****
+   40        Serbins        Michael          $80,782.90      $2,202.26      $78,580.64     $2,310.27     *****
+   40        Broderick      Cathleen         $80,565.80      $2,108.55      $78,457.25     $2,416.48     *****
+   40        Klick          Dick             $84,780.50      $1,108.26      $83,672.24     $2,585.47     *****
+   40        Gruca          Loretta          $84,766.34        $149.42      $84,616.92     $2,073.11     *****
+   40        Goodfellow     Gale             $70,231.86      $1,113.34      $69,118.52     $2,536.65      ****
+             TOTAL DEPARTMENT: 40           $676,729.96      $7,460.15     $669,269.81    $21,643.94
+   50        DeRenzo        Dianne           $70,878.78      $2,006.74      $68,872.04     $2,265.89      ****
+   50        Streeter       Farhad           $70,827.22        $122.26      $70,704.96     $1,470.66      ****
+   50        Boudos         Lynn             $70,818.58        $114.78      $70,703.80     $2,333.23      ****
+   50        Vogel          Sandra           $81,592.56        $220.08      $81,372.48     $2,848.04     *****
+   50        Ehlers         Joan             $85,014.65        $217.23      $84,797.42     $2,560.88     *****
+   50        Thier          Donna            $70,843.22        $314.30      $70,528.92     $2,369.77      ****
+   50        Eaheart        Beatrice         $84,773.35        $325.91      $84,447.44     $2,668.54     *****
+   50        Boyer          Cathie           $27,351.42        $149.56      $27,201.86       $924.86         *
+   50        Minet          Augustus         $76,072.61      $8,359.19      $67,713.42     $2,505.40      ****
+   50        Breems         Mark             $86,664.58        $768.09      $85,896.49     $3,281.25     *****
+             TOTAL DEPARTMENT: 50           $724,836.97     $12,598.14     $712,238.83    $23,228.52
+             TOTAL FOR BRANCH: 300        $2,277,514.01     $45,460.21   $2,163,300.28    $70,122.72
+                                          --------------     ------------    ------------    ------------
+ PAGE   4                             ABC CORPORATION                         08/07/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 400
+DEPT NO      LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+   10        Waymel         Bradley          $70,826.89      $1,544.99      $69,281.90     $2,681.21       ***
+   10        Gehl           Adriane          $70,872.21        $126.81      $70,745.40     $2,447.79      ****
+   10        McCoy          Hanah            $70,888.16        $212.62      $70,675.54     $2,127.33      ****
+             TOTAL DEPARTMENT: 10           $212,587.26      $1,884.42     $210,702.84     $7,256.33
+   20        O'Callaghan    Kenyon           $84,745.68        $780.54      $83,965.14     $3,325.02     *****
+   20        Dugan          Holly            $70,849.47      $1,112.20      $69,737.27     $2,182.78      ****
+   20        McCabe         Jason            $63,047.70      $4,206.87      $58,840.83     $2,288.91      ****
+   20        Bond           Patricia         $70,838.71        $436.47      $70,402.24     $2,485.20      ****
+             TOTAL DEPARTMENT: 20           $289,481.56      $6,536.08     $282,945.48    $10,281.91
+   30        Wood           Ann              $70,819.73        $218.50      $70,601.23     $1,800.33      ****
+   30        Woodrow        Ursula           $70,829.51        $339.75      $70,489.76     $2,368.46      ****
+   30        Boyer          Kenneth          $21,956.71        $339.99      $21,616.72       $667.96         *
+   30        Vilella        Reza             $70,816.43      $1,657.99      $69,158.44     $2,275.31      ****
+   30        Werderitch     Carol            $63,034.63        $125.06      $62,909.57     $1,981.65       ***
+             TOTAL DEPARTMENT: 30           $297,457.01      $2,681.29     $294,775.72     $9,093.71
+             TOTAL FOR BRANCH: 400          $870,352.72     $12,646.78     $788,424.04    $26,631.95
+                                          --------------     ------------    ------------    ------------
+ PAGE   5                             ABC CORPORATION                         08/07/2020
+                                       SALESPERSON BY BRANCH
+BRANCH: 500
+DEPT NO      LAST NAME      FIRST NAME      GROSS SALES        RETURNS       NET SALES   COMMIISSION    RATING
+   10        Dube           Jason            $31,242.51        $980.08      $30,262.43       $983.53        **
+   10        Holtz          Rachel           $63,072.26        $127.09      $62,945.17     $2,517.81       ***
+   10        Theis          Sean             $31,277.95        $216.56      $31,061.39     $1,226.92        **
+             TOTAL DEPARTMENT: 10           $125,592.72      $1,323.73     $124,268.99     $4,728.26
+   20        Roe            Eileen           $70,824.38        $118.83      $70,705.55     $2,785.80      ****
+   20        Crean          Kathleen         $77,323.99        $329.59      $76,994.40     $2,671.71     *****
+   20        Hazard         Mary             $70,807.16      $1,121.74      $69,685.42     $2,209.03      ****
+             TOTAL DEPARTMENT: 20           $218,955.53      $1,570.16     $217,385.37     $7,666.54
+   30        Mohammadi      Mary             $70,801.70        $211.51      $70,590.19     $2,618.90      ****
+   30        Reed           Margaret         $77,376.36        $321.77      $77,054.59     $2,481.16     *****
+   30        Gibbs          Janelle          $81,585.98        $113.35      $81,472.63     $2,973.75     *****
+   30        Stockover      Nancy            $70,823.37        $112.03      $70,711.34     $2,149.62      ****
+   30        Ford           Dalia            $77,331.45      $1,326.30      $76,005.15     $1,565.71     *****
+   30        Doherty        Elizabeth        $81,593.90        $211.72      $81,382.18     $2,465.88     *****
+             TOTAL FOR BRANCH: 500          $835,303.52      $6,170.65     $798,870.44    $26,649.82
+                                          --------------     ------------    ------------    ------------
+             COMPANY TOTALS               $5,992,607.43     $53,306.41   $5,485,364.57   $192,386.74
+                                          ==============     ==========  ==============   ===========
+S
